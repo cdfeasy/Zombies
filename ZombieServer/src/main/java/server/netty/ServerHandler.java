@@ -1,13 +1,13 @@
-package server;
+package server.netty;
 
 import com.google.inject.Inject;
-import ifree.zombieserver.SendClass;
 import org.jboss.netty.channel.*;
+import org.slf4j.LoggerFactory;
 import server.game.LobbyManager;
 
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,17 +17,10 @@ import java.util.logging.Logger;
  * To change this template use File | Settings | File Templates.
  */
 public class ServerHandler  extends SimpleChannelUpstreamHandler{
-
+    org.slf4j.Logger logger= LoggerFactory.getLogger(this.getClass());
     @Inject
     LobbyManager manager;
 
-    private static final Logger logger = Logger.getLogger(ServerHandler.class.getName());
-
-    private final AtomicLong transferredMessages = new AtomicLong();
-
-    public long getTransferredMessages() {
-        return transferredMessages.get();
-    }
 
     @Override
     public void handleUpstream(
@@ -43,12 +36,12 @@ public class ServerHandler  extends SimpleChannelUpstreamHandler{
     public void messageReceived(
             ChannelHandlerContext ctx, MessageEvent e) {
         // Echo back the received object to the client.
-        transferredMessages.incrementAndGet();
-        System.out.println("received+"+e.toString());
+
+        logger.info("received+"+e.toString());
         try {
             Thread.sleep(1000);
         } catch (InterruptedException ex) {
-            Logger.getLogger(ServerHandler.class.getName()).log(Level.SEVERE, null, ex);
+            logger.error("error",ex);
         }
         manager.parseRequest(e.getChannel(),e.getMessage().toString());
     }
@@ -56,10 +49,8 @@ public class ServerHandler  extends SimpleChannelUpstreamHandler{
     @Override
     public void exceptionCaught(
             ChannelHandlerContext ctx, ExceptionEvent e) {
-        logger.log(
-                Level.WARNING,
-                "Unexpected exception from downstream.",
-                e.getCause());
+        if(!e.getCause().getClass().equals(IOException.class))
+             logger.error("error", e.getCause());
         e.getChannel().close();
     }
 }

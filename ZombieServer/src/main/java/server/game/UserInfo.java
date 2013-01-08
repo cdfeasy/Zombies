@@ -1,6 +1,7 @@
 package server.game;
 
 import org.jboss.netty.channel.Channel;
+import server.User;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,8 +12,10 @@ import org.jboss.netty.channel.Channel;
  */
 public class UserInfo {
     private long id;
+    private String token;
     private Channel channel;
     private GameManager manager;
+    private User user;
 
 
     public long getId() {
@@ -23,12 +26,28 @@ public class UserInfo {
         this.id = id;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     public Channel getChannel() {
         return channel;
     }
 
     public void setChannel(Channel channel) {
         this.channel = channel;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public GameManager getManager() {

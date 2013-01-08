@@ -8,17 +8,7 @@ package actions;
  * To change this template use File | Settings | File Templates.
  */
 public class ConnectAction {
-    long id;
     String pass;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getPass() {
         return pass;
     }

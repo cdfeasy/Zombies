@@ -1,6 +1,7 @@
 package game;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,15 +17,17 @@ public class Card {
     @GeneratedValue
     private Long id;
     private String name;
+    private String description;
     private int strength;
-    private int block;
+    private int hp;
+    private int armour;
     @Basic(fetch= FetchType.LAZY)
     @Lob
     private byte[] img;
-    private boolean isTank;
+    private int threadLevel;
     private boolean isBuilding;
     @ManyToMany(cascade = CascadeType.REFRESH)
-    private List<Abilities> abilities;
+    private List<Abilities> abilities=new ArrayList<>();
     @ManyToOne
     @JoinColumn(name="subfraction_id")
     private Subfraction subfraction;
@@ -33,6 +36,21 @@ public class Card {
     private int resourceCost2;
     private int resourceCost3;
 
+    public Card() {
+    }
+
+    public Card(String name, String description, int strength, int hp, int armour, int threadLevel, boolean building, int resourceCost1, int resourceCost2, int resourceCost3) {
+        this.name = name;
+        this.description = description;
+        this.strength = strength;
+        this.hp = hp;
+        this.armour = armour;
+        this.threadLevel = threadLevel;
+        this.isBuilding = building;
+        this.resourceCost1 = resourceCost1;
+        this.resourceCost2 = resourceCost2;
+        this.resourceCost3 = resourceCost3;
+    }
 
     public Long getId() {
         return id;
@@ -58,6 +76,22 @@ public class Card {
         this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
     public int getStrength() {
         return strength;
     }
@@ -66,20 +100,20 @@ public class Card {
         this.strength = strength;
     }
 
-    public int getBlock() {
-        return block;
+    public int getArmour() {
+        return armour;
     }
 
-    public void setBlock(int block) {
-        this.block = block;
+    public void setArmour(int block) {
+        this.armour = block;
     }
 
-    public boolean isTank() {
-        return isTank;
+    public int getThreadLevel() {
+        return threadLevel;
     }
 
-    public void setTank(boolean tank) {
-        isTank = tank;
+    public void setThreadLevel(int threadLevel) {
+        this.threadLevel = threadLevel;
     }
 
     public boolean isBuilding() {

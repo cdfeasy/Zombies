@@ -2,12 +2,15 @@ package server.game;
 
 import actions.Action;
 import actions.ActionTypeEnum;
-import org.codehaus.jackson.JsonGenerationException;
+import com.google.inject.Inject;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.jboss.netty.channel.Channel;
+import org.slf4j.LoggerFactory;
 import reply.Reply;
 import reply.ReplyBuilder;
+import server.actionworker.ActionManager;
+import server.actionworker.ConnectionWorker;
 
 import java.io.IOException;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -20,8 +23,13 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * To change this template use File | Settings | File Templates.
  */
 public class RequestManager implements Runnable {
+    org.slf4j.Logger logger= LoggerFactory.getLogger(this.getClass());
     ObjectMapper requestMapper = new ObjectMapper();
     ObjectMapper replyMapper = new ObjectMapper();
+    ConcurrentLinkedQueue<Request> requestQueue;
+    @Inject
+    ActionManager actionManager;
+
     public RequestManager(){
         try {
             requestMapper.generateJsonSchema(Action.class);
@@ -31,25 +39,12 @@ public class RequestManager implements Runnable {
         }
     }
 
-    ConcurrentLinkedQueue<Request> requestQueue;
-    public RequestManager(ConcurrentLinkedQueue<Request> requestQueue)  {
-        this.requestQueue=requestQueue;
+    public ConcurrentLinkedQueue<Request> getRequestQueue() {
+        return requestQueue;
     }
-    public Reply processRequest(Action action) throws Exception {
-        ActionTypeEnum type= ActionTypeEnum.getValue(action.getAction());
-        Reply rep=null;
-        if(type==null)
-            throw new Exception("неизвестный тип");
-        switch (type){
-            case CONNECT:
-                rep= ReplyBuilder.getConnectionReplyBuilder().setToken("12345").build();
 
-                break;
-            case GETUSERINFO:break;
-            case SEARCH:break;
-            case TURN:break;
-        }
-        return rep;
+    public void setRequestQueue(ConcurrentLinkedQueue<Request> requestQueue) {
+        this.requestQueue = requestQueue;
     }
 
     public void sendReply(Channel c,Reply reply) throws IOException {
@@ -59,13 +54,15 @@ public class RequestManager implements Runnable {
 
 
     private void process(){
+        if(requestQueue==null)
+            return;
         Request r=null;
         while((r=requestQueue.poll())!=null){
             try {
-
+                logger.info("parse "+r.getRequest());
                 Action act= requestMapper.readValue(r.getRequest(),Action.class);
-                Reply repl=processRequest(act);
-                sendReply(r.getChannel(),repl);
+                Reply reply=actionManager.processAction(act);
+                sendReply(r.getChannel(),reply);
             } catch (Exception e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
@@ -74,6 +71,6 @@ public class RequestManager implements Runnable {
 
     @Override
     public void run() {
-
+        process();
     }
 }

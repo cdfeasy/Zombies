@@ -12,7 +12,7 @@ import java.util.List;
  * Time: 13:18
  * To change this template use File | Settings | File Templates.
  */
-@Entity
+@Entity(name = "UserPlayer")
 public class User {
     @Id
     @GeneratedValue

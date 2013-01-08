@@ -2,8 +2,8 @@ package server;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import ifree.zombieserver.SendClass;
 import server.guice.ServerModule;
+import server.netty.Server;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,7 +14,7 @@ import server.guice.ServerModule;
  */
 public class App {
     public static void main(String[] args) throws Exception {
-        int port=8080;
+        int port=18080;
         Injector injector = Guice.createInjector(new ServerModule());
 
         Server server = injector.getInstance(Server.class);

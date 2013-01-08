@@ -21,6 +21,15 @@ public class Abilities {
     private String description;
     private String action;
 
+    public Abilities() {
+    }
+
+    public Abilities(String name, String description, String action) {
+        this.name = name;
+        this.description = description;
+        this.action = action;
+    }
+
     public Long getId() {
         return id;
     }

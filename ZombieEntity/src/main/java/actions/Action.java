@@ -18,6 +18,7 @@ import java.io.IOException;
 public class Action {
     private int action;
     private String token;
+    private String name;
     private ConnectAction connectAction;
     private GetUserInfoAction getUserInfo;
     private SearchAction searchAction;
@@ -63,6 +64,21 @@ public class Action {
         this.turnAction = turnAction;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public static void main(String[] args) throws IOException {
 
@@ -71,7 +87,7 @@ public class Action {
         Action act=new Action();
         act.setAction(ActionTypeEnum.CONNECT.id);
         ConnectAction ca=new ConnectAction();
-        ca.id=1;
+        act.setName("ul");
         act.setConnectAction(ca);
        System.out.println(mapper.writeValueAsString(act))  ;
 

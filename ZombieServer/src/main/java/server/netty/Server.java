@@ -1,9 +1,7 @@
-package server;
+package server.netty;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import ifree.zombieserver.ObjectEchoServerHandler;
-import ifree.zombieserver.SendClass;
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;

@@ -17,4 +17,11 @@ public class ErrorReply {
     public void setErrorText(String errorText) {
         this.errorText = errorText;
     }
+
+    public ErrorReply() {
+    }
+
+    public ErrorReply(String errorText) {
+        this.errorText = errorText;
+    }
 }

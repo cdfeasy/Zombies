@@ -10,6 +10,7 @@ import java.util.List;
  * Time: 17:30
  * To change this template use File | Settings | File Templates.
  */
+@Entity
 public class Fraction {
     @Id
     @GeneratedValue
@@ -18,6 +19,14 @@ public class Fraction {
     private String description;
     @OneToMany(mappedBy ="fraction"  , cascade = CascadeType.REFRESH)
     private List<Subfraction> deck;
+
+    public Fraction() {
+    }
+
+    public Fraction(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 
     public Long getId() {
         return id;

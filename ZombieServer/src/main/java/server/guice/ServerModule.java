@@ -2,11 +2,9 @@ package server.guice;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
-import com.google.inject.Singleton;
 import com.google.inject.name.Names;
-import server.Server;
-import server.ServerHandler;
-import server.game.GameManager;
+import server.netty.Server;
+import server.netty.ServerHandler;
 import server.game.LobbyManager;
 import server.game.NewGameStarter;
 import server.game.RequestManager;
@@ -21,7 +19,7 @@ import server.game.RequestManager;
 public class ServerModule extends AbstractModule {
     @Override
     protected void configure() {
-        bindConstant().annotatedWith(Names.named("port")).to(8080);
+        bindConstant().annotatedWith(Names.named("port")).to(18080);
        bind(Server.class).asEagerSingleton();
        bind(ServerHandler.class);
        bind(RequestManager.class).in(Scopes.SINGLETON);

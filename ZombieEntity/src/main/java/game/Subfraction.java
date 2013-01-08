@@ -1,9 +1,7 @@
 package game;
 
-import javax.persistence.CascadeType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,15 +11,26 @@ import java.util.List;
  * Time: 18:53
  * To change this template use File | Settings | File Templates.
  */
+@Entity
 public class Subfraction {
+    @Id
+    @GeneratedValue
     private Long id;
     private String name;
     private String description;
     @OneToMany(mappedBy ="subfraction"  , cascade = CascadeType.REFRESH)
-    private List<Card> deck;
+    private List<Card> deck=new ArrayList<>();
     @ManyToOne
     @JoinColumn(name="fraction_id")
     private Fraction fraction;
+
+    public Subfraction() {
+    }
+
+    public Subfraction(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 
     public Long getId() {
         return id;
