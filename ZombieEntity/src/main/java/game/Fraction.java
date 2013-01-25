@@ -1,6 +1,7 @@
 package game;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,8 +18,8 @@ public class Fraction {
     private Long id;
     private String name;
     private String description;
-    @OneToMany(mappedBy ="fraction"  , cascade = CascadeType.REFRESH)
-    private List<Subfraction> deck;
+    @OneToMany(mappedBy ="fraction")
+    private List<Subfraction> deck=new ArrayList<>();
 
     public Fraction() {
     }
@@ -27,6 +28,16 @@ public class Fraction {
         this.name = name;
         this.description = description;
     }
+
+
+    public void addSubfraction(Subfraction sub){
+        if(!this.equals(sub.getFraction()))
+            sub.setFraction(this);
+        if(!deck.contains(sub))
+            deck.add(sub);
+
+    }
+
 
     public Long getId() {
         return id;

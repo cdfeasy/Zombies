@@ -11,11 +11,11 @@ import server.game.UserInfo;
 /**
  * Created with IntelliJ IDEA.
  * User: dmitry
- * Date: 08.01.13
- * Time: 18:57
+ * Date: 13.01.13
+ * Time: 18:17
  * To change this template use File | Settings | File Templates.
  */
-public class SearchWorker implements IProcessor{
+public class StopSearchWorker implements IProcessor{
     @Inject
     NewGameStarter searcher;
 
@@ -25,7 +25,7 @@ public class SearchWorker implements IProcessor{
     @Override
     public Reply processAction(Action action) throws Exception {
         UserInfo ui=lobby.getUser(action.getName());
-        searcher.registerPlayerInQueue(ui);
-        return ReplyBuilder.getSearchReplyBuilder().build();
+        searcher.dropPlayerFromQueue(ui);
+        return ReplyBuilder.getStopSearchReplyBuilder().build();
     }
 }

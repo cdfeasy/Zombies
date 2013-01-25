@@ -3,7 +3,7 @@ package server.game;
 
 import com.google.inject.Inject;
 import org.jboss.netty.channel.Channel;
-import server.User;
+import server.game.play.GameManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,7 +61,7 @@ public class LobbyManager {
         }
     }
 
-    public void startGame(User user1,User user2){
+    public void startGame(UserInfo user1,UserInfo user2){
         runningGames.add(new GameManager(user1,user2));
     }
 

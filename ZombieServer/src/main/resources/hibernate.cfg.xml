@@ -10,6 +10,7 @@
         <property name="hibernate.hbm2ddl.auto">validate</property>
         <property name="hibernate.show_sql">true</property>
         <mapping class="game.Abilities"/>
+        <mapping class="game.Deck"/>
         <mapping class="game.Fraction"/>
         <mapping class="game.Subfraction"/>
         <mapping class="game.Card"/>

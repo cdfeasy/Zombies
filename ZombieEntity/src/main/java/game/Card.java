@@ -1,5 +1,8 @@
 package game;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +28,11 @@ public class Card {
     @Lob
     private byte[] img;
     private int threadLevel;
-    private boolean isBuilding;
-    @ManyToMany(cascade = CascadeType.REFRESH)
+    private int cardType;
+    private int cardLevel;
+    private int cardGoldCost;
+
+    @ManyToMany(cascade = CascadeType.REFRESH,fetch = FetchType.EAGER)
     private List<Abilities> abilities=new ArrayList<>();
     @ManyToOne
     @JoinColumn(name="subfraction_id")
@@ -39,14 +45,14 @@ public class Card {
     public Card() {
     }
 
-    public Card(String name, String description, int strength, int hp, int armour, int threadLevel, boolean building, int resourceCost1, int resourceCost2, int resourceCost3) {
+    public Card(String name, String description, int strength, int hp, int armour, int threadLevel, int cardType, int resourceCost1, int resourceCost2, int resourceCost3) {
         this.name = name;
         this.description = description;
         this.strength = strength;
         this.hp = hp;
         this.armour = armour;
         this.threadLevel = threadLevel;
-        this.isBuilding = building;
+        this.cardType = cardType;
         this.resourceCost1 = resourceCost1;
         this.resourceCost2 = resourceCost2;
         this.resourceCost3 = resourceCost3;
@@ -59,13 +65,14 @@ public class Card {
     public void setId(Long id) {
         this.id = id;
     }
-
+    @JsonIgnore
     public Subfraction getSubfraction() {
         return subfraction;
     }
 
     public void setSubfraction(Subfraction subfraction) {
-        this.subfraction = subfraction;
+        this.subfraction=subfraction;
+        subfraction.addCard(this);
     }
 
     public String getName() {
@@ -116,12 +123,12 @@ public class Card {
         this.threadLevel = threadLevel;
     }
 
-    public boolean isBuilding() {
-        return isBuilding;
+    public int getCardType() {
+        return cardType;
     }
 
-    public void setBuilding(boolean building) {
-        isBuilding = building;
+    public void setCardType(int cardType) {
+        this.cardType = cardType;
     }
 
     public List<Abilities> getAbilities() {
@@ -162,5 +169,21 @@ public class Card {
 
     public void setResourceCost3(int resourceCost3) {
         this.resourceCost3 = resourceCost3;
+    }
+
+    public int getCardLevel() {
+        return cardLevel;
+    }
+
+    public void setCardLevel(int cardLevel) {
+        this.cardLevel = cardLevel;
+    }
+
+    public int getCardGoldCost() {
+        return cardGoldCost;
+    }
+
+    public void setCardGoldCost(int cardGoldCost) {
+        this.cardGoldCost = cardGoldCost;
     }
 }

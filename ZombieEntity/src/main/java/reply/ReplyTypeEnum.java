@@ -12,8 +12,13 @@ import com.sun.org.apache.bcel.internal.generic.RETURN;
 public enum ReplyTypeEnum {
     ERROR(0),
     TURN(10),
-    CONNECTION(15),
-    USERINFO(20);
+    CONNECTION(20),
+    USERINFO(30),
+    SEARCH(40),
+    STOP_SEARCH(50),
+    SAVE_DECK(60),
+    SET_DECK_ACTIVE(70),
+    GET_CARD_INFO(80);
 
     int id;
 

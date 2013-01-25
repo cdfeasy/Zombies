@@ -1,5 +1,8 @@
 package server.actionworker;
 
+import actions.Action;
+import reply.Reply;
+
 /**
  * Created with IntelliJ IDEA.
  * User: dmitry
@@ -7,5 +10,9 @@ package server.actionworker;
  * Time: 18:57
  * To change this template use File | Settings | File Templates.
  */
-public class GetUserInfoWorker {
+public class GetUserInfoWorker implements IProcessor{
+    @Override
+    public Reply processAction(Action action) throws Exception {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

@@ -1,7 +1,9 @@
 package ifree.zombieserver;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,6 +27,7 @@ public class ClientHandler extends SimpleChannelUpstreamHandler {
             ObjectEchoClientHandler.class.getName());
 
     private String message;
+    private List<String> receive= Collections.synchronizedList(new ArrayList());
 
     public String getMessage() {
         return message;
@@ -32,6 +35,14 @@ public class ClientHandler extends SimpleChannelUpstreamHandler {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public List<String> getReceive() {
+        return receive;
+    }
+
+    public void setReceive(List<String> receive) {
+        this.receive = receive;
     }
 
     /**
@@ -62,6 +73,7 @@ public class ClientHandler extends SimpleChannelUpstreamHandler {
     public void messageReceived(
             ChannelHandlerContext ctx, MessageEvent e) {
         // Echo back the received object to the server.
+        receive.add(e.getMessage().toString());
         System.out.println("received"+e.toString());
         // e.getChannel().write(e.getMessage());
     }

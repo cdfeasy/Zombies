@@ -1,8 +1,10 @@
 package server;
 
 import game.Card;
+import game.Deck;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,7 +22,11 @@ public class User {
     private String name;
     private String pass;
     @ManyToMany(cascade = CascadeType.REFRESH)
-    private List<Card> deck;
+    private List<Deck> decks=new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name="activedeck_id")
+    private Deck activeDeck;
     private int level;
     private int xp;
 
@@ -48,12 +54,12 @@ public class User {
         this.pass = pass;
     }
 
-    public List<Card> getDeck() {
-        return deck;
+    public List<Deck> getDecks() {
+        return decks;
     }
 
-    public void setDeck(List<Card> deck) {
-        this.deck = deck;
+    public void setDecks(List<Deck> decks) {
+        this.decks = decks;
     }
 
     public int getLevel() {
@@ -72,6 +78,14 @@ public class User {
         this.xp = xp;
     }
 
+    public Deck getActiveDeck() {
+        return activeDeck;
+    }
+
+    public void setActiveDeck(Deck activeDeck) {
+        this.activeDeck = activeDeck;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -87,5 +101,17 @@ public class User {
     @Override
     public int hashCode() {
         return id.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", pass='" + pass + '\'' +
+                ", deck=" + decks +
+                ", level=" + level +
+                ", xp=" + xp +
+                '}';
     }
 }

@@ -23,6 +23,7 @@ public class Action {
     private GetUserInfoAction getUserInfo;
     private SearchAction searchAction;
     private TurnAction turnAction;
+    private GetCardInfoAction getCardInfoAction;
 
     public int getAction() {
         return action;
@@ -62,6 +63,14 @@ public class Action {
 
     public void setTurnAction(TurnAction turnAction) {
         this.turnAction = turnAction;
+    }
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    public GetCardInfoAction getGetCardInfoAction() {
+        return getCardInfoAction;
+    }
+
+    public void setGetCardInfoAction(GetCardInfoAction getCardInfoAction) {
+        this.getCardInfoAction = getCardInfoAction;
     }
 
     public String getName() {

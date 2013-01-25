@@ -2,6 +2,7 @@ package server.game;
 
 import org.jboss.netty.channel.Channel;
 import server.User;
+import server.game.play.GameManager;
 
 /**
  * Created with IntelliJ IDEA.
@@ -56,5 +57,16 @@ public class UserInfo {
 
     public void setManager(GameManager manager) {
         this.manager = manager;
+    }
+
+    @Override
+    public String toString() {
+        return "UserInfo{" +
+                "id=" + id +
+                ", token='" + token + '\'' +
+                ", channel=" + channel +
+                ", manager=" + manager +
+                ", user=" + user +
+                '}';
     }
 }

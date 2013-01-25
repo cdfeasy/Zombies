@@ -9,6 +9,7 @@ package reply;
  */
 public class ConnectionReply {
     private String token;
+    private String version;
 
     public ConnectionReply(String token) {
         this.token = token;
@@ -23,5 +24,13 @@ public class ConnectionReply {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
     }
 }

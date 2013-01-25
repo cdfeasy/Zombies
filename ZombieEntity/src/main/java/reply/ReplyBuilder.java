@@ -1,5 +1,9 @@
 package reply;
 
+import game.Fraction;
+
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: dmitry
@@ -29,6 +33,46 @@ public class ReplyBuilder {
         }
     }
 
+    public static class GetCardInfoReplyBuilder implements Builder{
+        List<Fraction> fraction;
+
+        public List<Fraction> getFraction() {
+            return fraction;
+        }
+
+        public GetCardInfoReplyBuilder setFractions(List<Fraction> fractions) {
+            this.fraction = fractions;
+            return this;
+        }
+
+        @Override
+        public Reply build() {
+            Reply reply =new Reply(ReplyTypeEnum.GET_CARD_INFO.getId());
+            reply.setGetCardInfoReply(new GetCardInfoReply(getFraction()));
+            return reply;
+        }
+    }
+
+    public static class SearchReplyBuilder implements Builder{
+
+        @Override
+        public Reply build() {
+            Reply reply =new Reply(ReplyTypeEnum.SEARCH.getId());
+            reply.setSearchReply(new SearchReply());
+            return reply;
+        }
+    }
+
+    public static class StopSearchReplyBuilder implements Builder{
+
+        @Override
+        public Reply build() {
+            Reply reply =new Reply(ReplyTypeEnum.STOP_SEARCH.getId());
+            reply.setStopSearchReply(new StopSearchReply());
+            return reply;
+        }
+    }
+
     public static class ErrorReplyBuilder implements Builder{
         String errorText;
         public ErrorReplyBuilder setErrorText(String errorText) {
@@ -44,13 +88,20 @@ public class ReplyBuilder {
         }
     }
 
-
-
-
     public static ConnectionReplyBuilder getConnectionReplyBuilder(){
         return new ConnectionReplyBuilder();
     }
-    public static ErrorReplyBuilder getErrorReplyBuilderBuilder(){
+    public static ErrorReplyBuilder getErrorReplyBuilder(){
         return new ErrorReplyBuilder();
+    }
+    public static SearchReplyBuilder getSearchReplyBuilder(){
+        return new SearchReplyBuilder();
+    }
+    public static StopSearchReplyBuilder getStopSearchReplyBuilder(){
+        return new StopSearchReplyBuilder();
+    }
+
+    public static GetCardInfoReplyBuilder getGetCardInfoReplyBuilder(){
+        return new GetCardInfoReplyBuilder();
     }
 }

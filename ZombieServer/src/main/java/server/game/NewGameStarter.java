@@ -16,15 +16,15 @@ import java.util.concurrent.locks.ReentrantLock;
  * To change this template use File | Settings | File Templates.
  */
 public class NewGameStarter implements Runnable {
-    Comparator<User> comp=new Comparator<User>() {
+    Comparator<UserInfo> comp=new Comparator<UserInfo>() {
         @Override
-        public int compare(User o1, User o2) {
-            return o1.getLevel()-o2.getLevel();
+        public int compare(UserInfo o1, UserInfo o2) {
+            return o1.getUser().getLevel()-o2.getUser().getLevel();
         }
     };
     ReentrantLock lock=new ReentrantLock();
-    private ArrayList<User> queue=new   ArrayList<User>();
-    int levelconst=2;
+    private ArrayList<UserInfo> queue=new   ArrayList<>();
+    int levelconst=3;
     @Inject
     LobbyManager manager;
 
@@ -37,10 +37,19 @@ public class NewGameStarter implements Runnable {
         StartGames();
     }
 
-    public void registerPlayerInQueue(User user){
+    public void registerPlayerInQueue(UserInfo user){
         lock.lock();
         try{
           queue.add(user);
+        }finally{
+            lock.unlock();
+        }
+    }
+
+    public void dropPlayerFromQueue(UserInfo user){
+        lock.lock();
+        try{
+            queue.remove(user);
         }finally{
             lock.unlock();
         }
@@ -51,11 +60,12 @@ public class NewGameStarter implements Runnable {
             Collections.sort(queue,comp);
             int index=queue.size()-1;
             while(index>0){
-                User first= queue.get(index);
+                UserInfo first= queue.get(index);
                 for(int i=index-1;i>=0;i--){
-                    User second= queue.get(i);
-                    if(first.getLevel()-second.getLevel()<levelconst) {
+                    UserInfo second= queue.get(i);
+                    if(first.getUser().getLevel()-second.getUser().getLevel()<levelconst) {
                         manager.startGame(first,second);
+                        //System.out.println("Start game:"+first+";"+second);
                         queue.remove(first);
                         queue.remove(second);
                         index=queue.size()-1;
@@ -76,27 +86,24 @@ public class NewGameStarter implements Runnable {
 
     public static void main(String[] args){
         NewGameStarter s=new NewGameStarter();
-        User us1=new User();
-        User us2=new User();
-        User us3=new User();
-        User us4=new User();
-        us1.setId(1l);
-        us1.setName("us1");
-        us1.setLevel(1);
-        us2.setId(2l);
-        us2.setName("us2");
-        us2.setLevel(2);
-        us3.setId(3l);
-        us3.setName("us3");
-        us3.setLevel(3);
-        us4.setId(4l);
-        us4.setName("us4");
-        us4.setLevel(4);
+        for(int i=0;i<10;i++){
+            User us1=new User();
+            us1.setId(Long.valueOf(i));
+            us1.setName("us"+i);
+            us1.setLevel(i*2);
+            UserInfo ui=new UserInfo();
+            ui.setUser(us1);
+            ui.setId(i);
+            s.registerPlayerInQueue(ui );
 
-        s.registerPlayerInQueue(us2 );
-        s.registerPlayerInQueue(us4 );
-        s.registerPlayerInQueue(us3 );
-        s.registerPlayerInQueue(us1 );
+        }
+        s.StartGames();
+
+
+       // s.registerPlayerInQueue(us2 );
+      //  s.registerPlayerInQueue(us4 );
+      //  s.registerPlayerInQueue(us3 );
+      //  s.registerPlayerInQueue(us1 );
        // s.sort();
 
     }
