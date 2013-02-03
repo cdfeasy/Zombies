@@ -1,16 +1,13 @@
 package server.game;
 
 import actions.Action;
-import actions.ActionTypeEnum;
 import com.google.inject.Inject;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.jboss.netty.channel.Channel;
 import org.slf4j.LoggerFactory;
 import reply.Reply;
-import reply.ReplyBuilder;
 import server.actionworker.ActionManager;
-import server.actionworker.ConnectionWorker;
 
 import java.io.IOException;
 import java.util.concurrent.ConcurrentLinkedQueue;

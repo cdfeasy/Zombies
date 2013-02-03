@@ -30,10 +30,11 @@ public class ServerModule extends AbstractModule {
        bind(ActionManager.class);
 
         bind(ConnectionWorker.class).in(Scopes.SINGLETON);
-       bind(GetUserInfoWorker.class);
+       bind(UserInfoWorker.class).in(Scopes.SINGLETON);
        bind(SearchWorker.class);
        bind(StopSearchWorker.class);
        bind(TurnWorker.class);
-        bind(GetCardInfoWorker.class).in(Scopes.SINGLETON);
+        bind(CardInfoWorker.class).in(Scopes.SINGLETON);
+        bind(CreateUserWorker.class).in(Scopes.SINGLETON);;
     }
 }

@@ -11,14 +11,14 @@ import java.util.List;
  * Time: 23:17
  * To change this template use File | Settings | File Templates.
  */
-public class GetCardInfoReply {
+public class CardInfoReply {
     private List<Fraction> fractions;
 
-    public GetCardInfoReply(List<Fraction> fractions) {
+    public CardInfoReply(List<Fraction> fractions) {
         this.fractions = fractions;
     }
 
-    public GetCardInfoReply() {
+    public CardInfoReply() {
     }
 
     public List<Fraction> getFractions() {

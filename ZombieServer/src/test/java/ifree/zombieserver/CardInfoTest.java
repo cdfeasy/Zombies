@@ -3,8 +3,7 @@ package ifree.zombieserver;
 import actions.Action;
 import actions.ActionTypeEnum;
 import actions.ConnectAction;
-import actions.GetCardInfoAction;
-import org.codehaus.jackson.map.JsonMappingException;
+import actions.CardInfoAction;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 import reply.Reply;
@@ -18,7 +17,7 @@ import java.io.IOException;
  * Time: 18:23
  * To change this template use File | Settings | File Templates.
  */
-public class CardInfoTest {
+public class CardInfoTest extends TestBase{
     @Test
     public void ConnectionTest() throws InterruptedException, IOException {
         try{
@@ -48,13 +47,13 @@ public class CardInfoTest {
             Reply rep=reply.readValue(receive,Reply.class);
 
 
-            GetCardInfoAction getCardInfo=new GetCardInfoAction();
+            CardInfoAction getCardInfo=new CardInfoAction();
             Action act=new Action();
             act.setName("User1");
             act.setToken(rep.getConnectionReply().getToken());
             act.setAction(ActionTypeEnum.GET_CARD_INFO.getId());
 
-          //  act.setGetCardInfoAction(getCardInfo);
+          //  act.setCardInfoAction(getCardInfo);
 
             c.setMessage(mapper.writeValueAsString(act));
             c.run();

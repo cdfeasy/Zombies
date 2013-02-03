@@ -1,9 +1,6 @@
 package actions;
 
-import org.codehaus.jackson.annotate.JsonWriteNullProperties;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.io.IOException;
@@ -20,10 +17,13 @@ public class Action {
     private String token;
     private String name;
     private ConnectAction connectAction;
-    private GetUserInfoAction getUserInfo;
+    private UserInfoAction userInfo;
     private SearchAction searchAction;
     private TurnAction turnAction;
-    private GetCardInfoAction getCardInfoAction;
+    private CardInfoAction cardInfoAction;
+    private SetDeckActiveAction setDeckActiveAction;
+    private  SaveDeckAction saveDeckAction;
+    private  CreateUserAction createUserAction;
 
     public int getAction() {
         return action;
@@ -41,12 +41,12 @@ public class Action {
         this.connectAction = connectAction;
     }
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-    public GetUserInfoAction getGetUserInfo() {
-        return getUserInfo;
+    public UserInfoAction getUserInfo() {
+        return userInfo;
     }
 
-    public void setGetUserInfo(GetUserInfoAction getUserInfo) {
-        this.getUserInfo = getUserInfo;
+    public void setUserInfo(UserInfoAction userInfo) {
+        this.userInfo = userInfo;
     }
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     public SearchAction getSearchAction() {
@@ -65,12 +65,36 @@ public class Action {
         this.turnAction = turnAction;
     }
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-    public GetCardInfoAction getGetCardInfoAction() {
-        return getCardInfoAction;
+    public CardInfoAction getCardInfoAction() {
+        return cardInfoAction;
     }
 
-    public void setGetCardInfoAction(GetCardInfoAction getCardInfoAction) {
-        this.getCardInfoAction = getCardInfoAction;
+    public void setCardInfoAction(CardInfoAction cardInfoAction) {
+        this.cardInfoAction = cardInfoAction;
+    }
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    public SetDeckActiveAction getSetDeckActiveAction() {
+        return setDeckActiveAction;
+    }
+
+    public void setSetDeckActiveAction(SetDeckActiveAction setDeckActiveAction) {
+        this.setDeckActiveAction = setDeckActiveAction;
+    }
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    public SaveDeckAction getSaveDeckAction() {
+        return saveDeckAction;
+    }
+
+    public void setSaveDeckAction(SaveDeckAction saveDeckAction) {
+        this.saveDeckAction = saveDeckAction;
+    }
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    public CreateUserAction getCreateUserAction() {
+        return createUserAction;
+    }
+
+    public void setCreateUserAction(CreateUserAction createUserAction) {
+        this.createUserAction = createUserAction;
     }
 
     public String getName() {

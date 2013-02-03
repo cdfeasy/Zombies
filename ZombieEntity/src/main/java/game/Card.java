@@ -45,7 +45,7 @@ public class Card {
     public Card() {
     }
 
-    public Card(String name, String description, int strength, int hp, int armour, int threadLevel, int cardType, int resourceCost1, int resourceCost2, int resourceCost3) {
+    public Card(String name, String description, int strength, int hp, int armour, int threadLevel, int cardType, int resourceCost1, int resourceCost2, int resourceCost3,int cardLevel) {
         this.name = name;
         this.description = description;
         this.strength = strength;
@@ -56,6 +56,7 @@ public class Card {
         this.resourceCost1 = resourceCost1;
         this.resourceCost2 = resourceCost2;
         this.resourceCost3 = resourceCost3;
+        this.cardLevel=cardLevel;
     }
 
     public Long getId() {

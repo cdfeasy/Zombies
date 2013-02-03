@@ -20,6 +20,7 @@ public enum ReplyTypeEnum {
     SET_DECK_ACTIVE(70),
     GET_CARD_INFO(80);
 
+
     int id;
 
     public int getId() {

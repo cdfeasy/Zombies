@@ -1,30 +1,70 @@
+package ifree.zombieserver;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import game.*;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.junit.Test;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.runner.Description;
+import org.junit.runner.Runner;
+import org.junit.runner.notification.RunNotifier;
 import server.HibernateUtil;
 import server.User;
+import server.guice.ServerModule;
+import server.netty.Server;
 import support.FillBase;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
  * User: dmitry
- * Date: 29.12.12
- * Time: 19:37
+ * Date: 30.01.13
+ * Time: 21:30
  * To change this template use File | Settings | File Templates.
  */
-public class CreateBaseTest {
+@Ignore
+public class TestBase{
+    static Server server;
+    static Boolean isCreated=false;
+    @BeforeClass
+    public static void initBase(){
+        if(!isCreated){
+             create();
+             isCreated=true;
+        }
+        try{
+            int port=18080;
+            Injector injector = Guice.createInjector(new ServerModule());
+
+            server = injector.getInstance(Server.class);
+            server.run();
+        }catch (Exception ex){
+
+        }
 
 
+    }
 
-    @Test
-    public void create() {
+
+    @AfterClass
+    public static void stop(){
+        try{
+        server.stop();
+        }catch (Exception ex){
+
+        }
+
+    }
+
+    public static void create() {
         try {
             Session ses = HibernateUtil.getSessionFactory().openSession();
             ses.getTransaction().begin();
@@ -91,4 +131,9 @@ public class CreateBaseTest {
             ex.printStackTrace();
         }
     }
+
+//   @Test
+//    public void empty(){
+//
+//   }
 }

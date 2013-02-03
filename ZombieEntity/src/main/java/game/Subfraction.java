@@ -20,6 +20,7 @@ public class Subfraction {
     private Long id;
     private String name;
     private String description;
+    private Integer level;
     @OneToMany(mappedBy ="subfraction")
     private List<Card> deck=new ArrayList<Card>();
 
@@ -101,6 +102,14 @@ public class Subfraction {
 
     public void setAbilities(List<Abilities> abilities) {
         this.abilities = abilities;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 
     public int getRes1() {

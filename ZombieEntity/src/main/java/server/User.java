@@ -21,14 +21,26 @@ public class User {
     private Long id;
     private String name;
     private String pass;
+    private Long side;
     @ManyToMany(cascade = CascadeType.REFRESH)
     private List<Deck> decks=new ArrayList<>();
+
+    @ManyToMany(cascade = CascadeType.REFRESH)
+    private List<Card> availableCards =new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name="activedeck_id")
     private Deck activeDeck;
     private int level;
     private int xp;
+
+    public Long getSide() {
+        return side;
+    }
+
+    public void setSide(Long side) {
+        this.side = side;
+    }
 
     public Long getId() {
         return id;
@@ -84,6 +96,14 @@ public class User {
 
     public void setActiveDeck(Deck activeDeck) {
         this.activeDeck = activeDeck;
+    }
+
+    public List<Card> getAvailableCards() {
+        return availableCards;
+    }
+
+    public void setAvailableCards(List<Card> availableCards) {
+        this.availableCards = availableCards;
     }
 
     @Override

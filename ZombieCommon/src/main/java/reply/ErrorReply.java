@@ -9,6 +9,7 @@ package reply;
  */
 public class ErrorReply {
     private String errorText;
+    private Integer errorCode;
 
     public String getErrorText() {
         return errorText;
@@ -18,10 +19,23 @@ public class ErrorReply {
         this.errorText = errorText;
     }
 
+    public Integer getErrorCode() {
+        return errorCode;
+    }
+
+    public void setErrorCode(Integer errorCode) {
+        this.errorCode = errorCode;
+    }
+
     public ErrorReply() {
     }
 
     public ErrorReply(String errorText) {
         this.errorText = errorText;
+    }
+
+    public ErrorReply(String errorText, Integer errorCode) {
+        this.errorText = errorText;
+        this.errorCode = errorCode;
     }
 }

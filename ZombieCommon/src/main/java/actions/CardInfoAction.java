@@ -7,5 +7,5 @@ package actions;
  * Time: 23:01
  * To change this template use File | Settings | File Templates.
  */
-public class SaveDeckAction {
+public class CardInfoAction {
 }

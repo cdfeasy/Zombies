@@ -2,6 +2,7 @@ package server.actionworker;
 
 import actions.Action;
 import com.google.inject.Inject;
+import game.Deck;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import reply.Reply;
@@ -10,16 +11,16 @@ import server.User;
 import server.game.LobbyManager;
 import server.game.UserInfo;
 
-import java.util.UUID;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
  * User: dmitry
- * Date: 08.01.13
- * Time: 17:48
+ * Date: 28.01.13
+ * Time: 22:37
  * To change this template use File | Settings | File Templates.
  */
-public class ConnectionWorker implements IProcessor {
+public class SetDeckActiveWorker implements IProcessor {
     @Inject
     LobbyManager lobbyManager;
 
@@ -29,16 +30,23 @@ public class ConnectionWorker implements IProcessor {
         try {
             Query query = ses.createQuery("select user from UserPlayer user where user.name=:name");
             query.setParameter("name", action.getName());
+            Query deckQuery = ses.createQuery("select deck from Deck deck where deck.id=:id");
+            deckQuery.setParameter("id", action.getSetDeckActiveAction().getDeckId());
+            List<Deck> lst=deckQuery.list();
+            if(lst.size()==0){
+                return ReplyBuilder.getErrorReplyBuilder().setErrorText("deck not found").build();
+            }
+            Deck d=lst.get(0);
+            int i=d.getDeck().size();
+
             if (!query.list().isEmpty()) {
                 User user = (User) query.list().get(0);
-                if (!user.getPass().equals(action.getConnectAction().getPass())) {
-                    return ReplyBuilder.getErrorReplyBuilder().setErrorText("incorrect password").build();
-                }
-                String token = UUID.randomUUID().toString();
                 UserInfo ui = lobbyManager.saveUser(action.getName());
-                ui.setUser(user);
-                ui.setToken(token);
-                return ReplyBuilder.getConnectionReplyBuilder().setToken(token).build();
+                ui.getUser().setActiveDeck(d);
+                user.setActiveDeck(d);
+                ses.merge(user);
+
+                return ReplyBuilder.getSetDeckActiveBuilder().build();
             } else {
                 return ReplyBuilder.getErrorReplyBuilder().setErrorText("user not found").build();
             }

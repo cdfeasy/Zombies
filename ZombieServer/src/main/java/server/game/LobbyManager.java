@@ -2,11 +2,18 @@ package server.game;
 
 
 import com.google.inject.Inject;
+import game.Card;
+import game.Fraction;
+import game.Subfraction;
+import org.hibernate.Hibernate;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.jboss.netty.channel.Channel;
 import server.game.play.GameManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -19,6 +26,8 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class LobbyManager {
     private HashMap<String,UserInfo> users=new HashMap<>();
+    private HashMap<Long,Card> cards;
+    private HashMap<Long,Fraction> fractions;
     private ArrayList<GameManager> runningGames=new ArrayList<GameManager>();
     private ReentrantLock userLock =new ReentrantLock();
     private ReentrantLock managerLock =new ReentrantLock();
@@ -39,6 +48,30 @@ public class LobbyManager {
     }
     @Inject
     public void init(){
+        cards=new HashMap<Long,Card>();
+        fractions=new HashMap<Long,Fraction>();
+        Session ses = server.HibernateUtil.getSessionFactory().openSession();
+        try {
+            Query query = ses.createQuery("select fraction from Fraction fraction");
+            List<Fraction> list=  (List<Fraction>)query.list();
+                for(Fraction fr: (List<Fraction>)query.list()) {
+                    fractions.put(fr.getId(),fr);
+                    int i=0;
+                    for(Subfraction sub: fr.getSubFractions()){
+                        sub.getAbilities();
+                        for(Card c:sub.getDeck()){
+                            cards.put(c.getId(),c);
+                            Hibernate.initialize(c);
+
+                        }
+                    }
+                }
+
+        } finally {
+            ses.close();
+        }
+
+
         requestManagerThread.setRequestQueue(requestQueue);
         requestParser.scheduleWithFixedDelay(requestManagerThread,0,10,TimeUnit.MILLISECONDS);
         newGameStarter.scheduleWithFixedDelay(newGameStarterThread,0,1000,TimeUnit.MILLISECONDS);
@@ -67,5 +100,13 @@ public class LobbyManager {
 
     public void parseRequest(Channel channel, String request) {
         requestQueue.add(new Request(channel,request));
+    }
+
+    public HashMap<Long, Card> getCards() {
+        return cards;
+    }
+
+    public HashMap<Long, Fraction> getFractions() {
+        return fractions;
     }
 }

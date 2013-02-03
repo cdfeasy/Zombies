@@ -3,7 +3,7 @@ package server.actionworker;
 import actions.Action;
 import com.google.inject.Inject;
 import reply.Reply;
-import reply.ReplyBuilder;
+import builder.ReplyBuilder;
 import server.game.LobbyManager;
 import server.game.NewGameStarter;
 import server.game.UserInfo;

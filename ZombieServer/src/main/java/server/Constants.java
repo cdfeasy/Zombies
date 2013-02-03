@@ -9,4 +9,5 @@ package server;
  */
 public class Constants {
     public static final String PLAYER_HAND_SIZE="player.hand.size";
+    public static final String FRACTION_BONUS_SIZE="fraction.bonus.size";
 }

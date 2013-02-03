@@ -3,9 +3,11 @@ package server.netty;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import org.jboss.netty.bootstrap.ServerBootstrap;
+import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.Channels;
+import org.jboss.netty.channel.socket.ServerSocketChannel;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.jboss.netty.handler.codec.serialization.ClassResolvers;
 import org.jboss.netty.handler.codec.serialization.ObjectDecoder;
@@ -33,6 +35,12 @@ public class Server {
     @Inject
     ServerHandler handler;
 
+    private Channel workChannel;
+
+    public void stop(){
+        workChannel.close();
+    }
+
     public void run() {
         // Configure the server.
         ServerBootstrap bootstrap = new ServerBootstrap(
@@ -55,7 +63,8 @@ public class Server {
         });
 
         // Bind and start to accept incoming connections.
-        bootstrap.bind(new InetSocketAddress(port));
+        workChannel=bootstrap.bind(new InetSocketAddress(port));
+
     }
 
 //    public static void main(String[] args) throws Exception {

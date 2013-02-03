@@ -5,16 +5,14 @@ import com.google.inject.Inject;
 import game.Card;
 import game.Fraction;
 import game.Subfraction;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import reply.Reply;
-import reply.ReplyBuilder;
-import server.User;
+import builder.ReplyBuilder;
 import server.game.LobbyManager;
-import server.game.UserInfo;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -24,7 +22,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * Time: 17:51
  * To change this template use File | Settings | File Templates.
  */
-public class GetCardInfoWorker implements IProcessor {
+public class CardInfoWorker implements IProcessor {
     @Inject
     LobbyManager lobbyManager;
 
@@ -40,9 +38,12 @@ public class GetCardInfoWorker implements IProcessor {
                 try {
                     Query query = ses.createQuery("select fraction from Fraction fraction");
                     List<Fraction> list=  (List<Fraction>)query.list();
+
                     for(Fraction fr: (List<Fraction>)query.list()) {
-                        for(Subfraction sub: fr.getDeck()){
+                        for(Subfraction sub: fr.getSubFractions()){
+                            Hibernate.initialize(sub.getAbilities());
                             for(Card c:sub.getDeck()){
+                                Hibernate.initialize(c.getAbilities());
                                 c.getImg();
                             }
                         }

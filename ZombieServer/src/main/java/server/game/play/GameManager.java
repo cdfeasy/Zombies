@@ -1,5 +1,6 @@
 package server.game.play;
 
+import actions.Action;
 import game.Card;
 import game.Deck;
 import server.User;
@@ -15,11 +16,15 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 public class GameManager {
-    private Deck player1Deck;
-    private Deck player2Deck;
     private GameTable table;
 
     public GameManager(UserInfo player1,UserInfo player2)  {
+        table=new GameTable(player1, player2);
+    }
+
+    public void addOrder(UserInfo player1,Action order){
 
     }
+
+
 }

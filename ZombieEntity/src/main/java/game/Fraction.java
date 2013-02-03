@@ -14,12 +14,11 @@ import java.util.List;
 @Entity
 public class Fraction {
     @Id
-    @GeneratedValue
     private Long id;
     private String name;
     private String description;
     @OneToMany(mappedBy ="fraction")
-    private List<Subfraction> deck=new ArrayList<>();
+    private List<Subfraction> subFractions =new ArrayList<>();
 
     public Fraction() {
     }
@@ -33,8 +32,8 @@ public class Fraction {
     public void addSubfraction(Subfraction sub){
         if(!this.equals(sub.getFraction()))
             sub.setFraction(this);
-        if(!deck.contains(sub))
-            deck.add(sub);
+        if(!subFractions.contains(sub))
+            subFractions.add(sub);
 
     }
 
@@ -64,11 +63,11 @@ public class Fraction {
         this.description = description;
     }
 
-    public List<Subfraction> getDeck() {
-        return deck;
+    public List<Subfraction> getSubFractions() {
+        return subFractions;
     }
 
-    public void setDeck(List<Subfraction> deck) {
-        this.deck = deck;
+    public void setSubFractions(List<Subfraction> deck) {
+        this.subFractions = deck;
     }
 }

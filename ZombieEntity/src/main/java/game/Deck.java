@@ -15,7 +15,10 @@ public class Deck {
     @Id
     @GeneratedValue
     private Long id;
-    @ManyToMany(cascade = CascadeType.REFRESH)
+    @ManyToMany
+    @JoinTable(name = "Deck_Cards",
+            joinColumns = {@JoinColumn(name = "Deck_ID", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "Card_ID", referencedColumnName = "id")})
     private List<Card> deck;
 
     private String name;

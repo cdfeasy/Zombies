@@ -1,5 +1,7 @@
 package server.game.play;
 
+import server.game.UserInfo;
+
 /**
  * Created with IntelliJ IDEA.
  * User: dmitry
@@ -11,8 +13,24 @@ public class GameTable {
     private TableSide player1Side;
     private TableSide player2Side;
 
-    public GameTable() {
-        player1Side=new TableSide();
-        player2Side=new TableSide();
+    public GameTable(UserInfo player1,UserInfo player2) {
+        player1Side=new TableSide(player1.getUser().getActiveDeck());
+        player2Side=new TableSide(player2.getUser().getActiveDeck());
+    }
+
+    public TableSide getPlayer1Side() {
+        return player1Side;
+    }
+
+    public void setPlayer1Side(TableSide player1Side) {
+        this.player1Side = player1Side;
+    }
+
+    public TableSide getPlayer2Side() {
+        return player2Side;
+    }
+
+    public void setPlayer2Side(TableSide player2Side) {
+        this.player2Side = player2Side;
     }
 }

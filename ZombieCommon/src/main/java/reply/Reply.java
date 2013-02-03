@@ -17,7 +17,9 @@ public class Reply {
     private ErrorReply errorReply;
     private SearchReply searchReply;
     private StopSearchReply stopSearchReply;
-    private GetCardInfoReply getCardInfoReply;
+    private CardInfoReply cardInfoReply;
+    private SuccessReply successReply;
+    private SaveDeckReply saveDeckReply;
 
     public Reply(int reply) {
         this.reply = reply;
@@ -82,11 +84,27 @@ public class Reply {
         this.stopSearchReply = stopSearchReply;
     }
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-    public GetCardInfoReply getGetCardInfoReply() {
-        return getCardInfoReply;
+    public CardInfoReply getCardInfoReply() {
+        return cardInfoReply;
     }
 
-    public void setGetCardInfoReply(GetCardInfoReply getCardInfoReply) {
-        this.getCardInfoReply = getCardInfoReply;
+    public void setCardInfoReply(CardInfoReply cardInfoReply) {
+        this.cardInfoReply = cardInfoReply;
+    }
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    public SuccessReply getSuccessReply() {
+        return successReply;
+    }
+
+    public void setSuccessReply(SuccessReply successReply) {
+        this.successReply = successReply;
+    }
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    public SaveDeckReply getSaveDeckReply() {
+        return saveDeckReply;
+    }
+
+    public void setSaveDeckReply(SaveDeckReply saveDeckReply) {
+        this.saveDeckReply = saveDeckReply;
     }
 }

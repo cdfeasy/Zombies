@@ -10,12 +10,13 @@ package actions;
 public enum ActionTypeEnum {
     CONNECT(0),
     TURN(10),
-    SEARCH(25),
+    SEARCH(20),
     STOP_SEARCH(30),
     GETUSERINFO(40),
     SAVE_DECK(50),
     SET_DECK_ACTIVE(60),
-    GET_CARD_INFO(70);
+    GET_CARD_INFO(70),
+    CREATE_USER(80);
 
 
 
