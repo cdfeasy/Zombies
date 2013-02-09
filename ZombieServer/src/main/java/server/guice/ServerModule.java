@@ -4,6 +4,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 import com.google.inject.name.Names;
 import server.actionworker.*;
+import server.game.play.GameManager;
 import server.netty.Server;
 import server.netty.ServerHandler;
 import server.game.LobbyManager;
@@ -34,6 +35,7 @@ public class ServerModule extends AbstractModule {
        bind(SearchWorker.class);
        bind(StopSearchWorker.class);
        bind(TurnWorker.class);
+       // bind(GameManager.class);
         bind(CardInfoWorker.class).in(Scopes.SINGLETON);
         bind(CreateUserWorker.class).in(Scopes.SINGLETON);;
     }

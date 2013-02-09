@@ -27,10 +27,15 @@ public class Card {
     @Basic(fetch= FetchType.LAZY)
     @Lob
     private byte[] img;
+
+    @Basic(fetch= FetchType.LAZY)
+    @Lob
+    private byte[] shortImg;
     private int threadLevel;
     private int cardType;
     private int cardLevel;
     private int cardGoldCost;
+    private boolean uniqueCard;
 
     @ManyToMany(cascade = CascadeType.REFRESH,fetch = FetchType.EAGER)
     private List<Abilities> abilities=new ArrayList<>();
@@ -146,6 +151,22 @@ public class Card {
 
     public void setImg(byte[] img) {
         this.img = img;
+    }
+
+    public byte[] getShortImg() {
+        return shortImg;
+    }
+
+    public boolean isUniqueCard() {
+        return uniqueCard;
+    }
+
+    public void setUniqueCard(boolean uniqueCard) {
+        this.uniqueCard = uniqueCard;
+    }
+
+    public void setShortImg(byte[] shortImg) {
+        this.shortImg = shortImg;
     }
 
     public int getResourceCost1() {

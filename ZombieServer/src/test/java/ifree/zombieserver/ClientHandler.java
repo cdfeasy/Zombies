@@ -27,7 +27,7 @@ public class ClientHandler extends SimpleChannelUpstreamHandler {
             ObjectEchoClientHandler.class.getName());
 
     private String message;
-    private List<String> receive= Collections.synchronizedList(new ArrayList());
+    private List<String> receive;
 
     public String getMessage() {
         return message;

@@ -33,7 +33,7 @@ public class UserInfoWorker implements IProcessor {
     ReentrantLock lock = new ReentrantLock();
 
     @Override
-    public Reply processAction(Action action) throws Exception {
+    public Reply processAction(Action action, Object... params) throws Exception {
         if (frList == null) {
          //   lock.lock();
             if (frList == null) {
@@ -43,12 +43,13 @@ public class UserInfoWorker implements IProcessor {
                     query.setParameter("name", action.getUserInfo().getUserName());
                     if (!query.list().isEmpty()) {
                         User user = (User) query.list().get(0);
-
-                        int i=user.getAvailableCards().size();
-                        for (Deck d : user.getDecks()) {
-                            i+=d.getDeck().size();
+                        User retUser;
+                        if(action.getName().equals(action.getUserInfo().getUserName())) {
+                            retUser=user.CopyUser(true,true,false,null);
+                        } else{
+                            retUser=user.CopyUser(false,false,false,null);
                         }
-                        return ReplyBuilder.getUserInfoReplyBuilder().setUser(user).build();
+                        return ReplyBuilder.getUserInfoReplyBuilder().setUser(retUser).build();
                     } else {
                         return ReplyBuilder.getErrorReplyBuilder().setErrorText("user not found").build();
                     }

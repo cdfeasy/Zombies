@@ -1,6 +1,7 @@
 package server.game.play;
 
 import server.game.UserInfo;
+import support.GameInfo;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,10 +13,16 @@ import server.game.UserInfo;
 public class GameTable {
     private TableSide player1Side;
     private TableSide player2Side;
+    private GameInfo player1Info;
+    private GameInfo player2Info;
 
     public GameTable(UserInfo player1,UserInfo player2) {
         player1Side=new TableSide(player1.getUser().getActiveDeck());
         player2Side=new TableSide(player2.getUser().getActiveDeck());
+        player1Info=new GameInfo();
+        player1Info.setEnemyName(player2.getUser().getName());
+        player2Info=new GameInfo();
+        player2Info.setEnemyName(player1.getUser().getName());
     }
 
     public TableSide getPlayer1Side() {

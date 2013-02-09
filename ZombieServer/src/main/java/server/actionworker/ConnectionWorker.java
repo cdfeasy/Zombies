@@ -2,8 +2,10 @@ package server.actionworker;
 
 import actions.Action;
 import com.google.inject.Inject;
+import game.Deck;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.jboss.netty.channel.Channel;
 import reply.Reply;
 import builder.ReplyBuilder;
 import server.User;
@@ -24,7 +26,7 @@ public class ConnectionWorker implements IProcessor {
     LobbyManager lobbyManager;
 
     @Override
-    public Reply processAction(Action action) throws Exception {
+    public Reply processAction(Action action, Object... params) throws Exception {
         Session ses = server.HibernateUtil.getSessionFactory().openSession();
         try {
             Query query = ses.createQuery("select user from UserPlayer user where user.name=:name");
@@ -36,8 +38,10 @@ public class ConnectionWorker implements IProcessor {
                 }
                 String token = UUID.randomUUID().toString();
                 UserInfo ui = lobbyManager.saveUser(action.getName());
-                ui.setUser(user);
+                User us=user.CopyUser(false,false,true,lobbyManager.getCards());
+                ui.setUser(us);
                 ui.setToken(token);
+                ui.setChannel((Channel) params[0]);
                 return ReplyBuilder.getConnectionReplyBuilder().setToken(token).build();
             } else {
                 return ReplyBuilder.getErrorReplyBuilder().setErrorText("user not found").build();

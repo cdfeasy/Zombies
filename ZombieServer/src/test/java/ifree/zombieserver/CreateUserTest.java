@@ -55,19 +55,17 @@ public class CreateUserTest extends TestBase {
             c.setMessage(mapper.writeValueAsString(connectact));
             c.run();
             i = 0;
-            while (c.getReceive().size() ==0) {
+            while (c.getReceive().size() ==1) {
                 if (i++ > 100)
                     break;
                 Thread.sleep(100);
             }
-            receive = c.getReceive().get(0);
+            receive = c.getReceive().get(1);
 
 
             Reply rep = reply.readValue(receive, Reply.class);
             final String token = rep.getConnectionReply().getToken();
 
-
-            Client cl = new Client("localhost", 18080);
             CardInfoAction getCardInfo = new CardInfoAction();
             Action act = new Action();
             act.setName("User5");
@@ -77,9 +75,13 @@ public class CreateUserTest extends TestBase {
             ObjectMapper lmapper = new ObjectMapper();
 
             lmapper.generateJsonSchema(Action.class);
-            cl.setMessage(lmapper.writeValueAsString(act));
-            cl.run();
-            Thread.sleep(5000);
+            c.setMessage(lmapper.writeValueAsString(act));
+            c.run();
+            while (c.getReceive().size() ==2) {
+                if (i++ > 100)
+                    break;
+                Thread.sleep(100);
+            }
 
         } catch (Throwable th) {
             th.printStackTrace();

@@ -16,7 +16,7 @@ public class SearchReplyBuilder implements Builder{
     @Override
     public Reply build() {
         Reply reply =new Reply(ReplyTypeEnum.SEARCH.getId());
-        reply.setSearchReply(new SearchReply());
+        reply.setSearchReply(new SearchReply("Searching started"));
         return reply;
     }
 }

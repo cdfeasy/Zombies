@@ -44,4 +44,12 @@ public class ReplyBuilder {
     public static SuccessReplyBuilder getSuccessReplyBuilder(){
         return new SuccessReplyBuilder();
     }
+
+    public static GameStartedReplyBuilder getGameStartedReplyBuilder(){
+        return new GameStartedReplyBuilder();
+    }
+
+    public static TurnReplyBuilder getTurnReplyBuilder(){
+        return new TurnReplyBuilder();
+    }
 }

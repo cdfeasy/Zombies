@@ -1,6 +1,7 @@
 package server.game;
 
 import actions.Action;
+import actions.ActionTypeEnum;
 import com.google.inject.Inject;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -11,6 +12,8 @@ import server.actionworker.ActionManager;
 
 import java.io.IOException;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,6 +29,9 @@ public class RequestManager implements Runnable {
     ConcurrentLinkedQueue<Request> requestQueue;
     @Inject
     ActionManager actionManager;
+
+    Executor longActions = Executors.newSingleThreadExecutor();
+    Executor fastActions = Executors.newSingleThreadExecutor();
 
     public RequestManager(){
         try {
@@ -49,6 +55,15 @@ public class RequestManager implements Runnable {
         c.write(replyString);
     }
 
+    private void proccessAction(Action act, Channel channel){
+        try {
+            Reply reply= actionManager.processAction(act,channel);
+            sendReply(channel,reply);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void process(){
         if(requestQueue==null)
@@ -57,17 +72,37 @@ public class RequestManager implements Runnable {
         while((r=requestQueue.poll())!=null){
             try {
                 logger.info("parse "+r.getRequest());
-                Action act= requestMapper.readValue(r.getRequest(),Action.class);
-                Reply reply=actionManager.processAction(act);
-                sendReply(r.getChannel(),reply);
+                Action act = requestMapper.readValue(r.getRequest(),Action.class);
+                ActionTypeEnum type= ActionTypeEnum.getValue(act.getAction());
+                if(type.isLong()){
+                    longActions.execute(new longOperationProcess(act, r.getChannel()));
+                }else{
+                    fastActions.execute(new longOperationProcess(act, r.getChannel()));
+                }
             } catch (Exception e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
         }
     }
 
+
     @Override
     public void run() {
         process();
+    }
+
+    private class longOperationProcess implements Runnable{
+        Action act;
+        Channel channel;
+
+        private longOperationProcess(Action act, Channel channel) {
+            this.act = act;
+            this.channel = channel;
+        }
+
+        @Override
+        public void run() {
+            proccessAction(act,channel);
+        }
     }
 }

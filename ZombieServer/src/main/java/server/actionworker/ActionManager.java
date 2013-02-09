@@ -3,6 +3,7 @@ package server.actionworker;
 import actions.Action;
 import actions.ActionTypeEnum;
 import com.google.inject.Inject;
+import org.jboss.netty.channel.Channel;
 import org.slf4j.LoggerFactory;
 import reply.Reply;
 import builder.ReplyBuilder;
@@ -30,15 +31,13 @@ public class ActionManager implements IProcessor{
     TurnWorker turnWorker;
     @Inject
     CardInfoWorker cardInfoWorker;
-
     @Inject
     CreateUserWorker createUserWorker;
-
     @Inject
     LobbyManager manager;
 
-    @Override
-    public Reply processAction(Action action) throws Exception {
+
+    public Reply processAction(Action action,Object... params) throws Exception {
         logger.info("Start process action "+action);
         ActionTypeEnum type= ActionTypeEnum.getValue(action.getAction());
         if(type!=ActionTypeEnum.CONNECT && type!=ActionTypeEnum.CREATE_USER){
@@ -56,7 +55,7 @@ public class ActionManager implements IProcessor{
             throw new Exception("неизвестный тип");
         switch (type){
             case CONNECT:
-                rep= connectionWorker.processAction(action);
+                rep= connectionWorker.processAction(action,params[0]);
                 break;
             case GETUSERINFO:
                 rep= userInfoWorker.processAction(action);

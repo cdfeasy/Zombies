@@ -25,7 +25,7 @@ public class SetDeckActiveWorker implements IProcessor {
     LobbyManager lobbyManager;
 
     @Override
-    public Reply processAction(Action action) throws Exception {
+    public Reply processAction(Action action, Object... params) throws Exception {
         Session ses = server.HibernateUtil.getSessionFactory().openSession();
         try {
             Query query = ses.createQuery("select user from UserPlayer user where user.name=:name");

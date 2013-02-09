@@ -23,7 +23,7 @@ public class StopSearchWorker implements IProcessor{
     LobbyManager lobby;
 
     @Override
-    public Reply processAction(Action action) throws Exception {
+    public Reply processAction(Action action, Object... params) throws Exception {
         UserInfo ui=lobby.getUser(action.getName());
         searcher.dropPlayerFromQueue(ui);
         return ReplyBuilder.getStopSearchReplyBuilder().build();

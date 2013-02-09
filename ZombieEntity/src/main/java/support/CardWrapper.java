@@ -1,4 +1,4 @@
-package server.game.play;
+package support;
 
 import game.Card;
 
@@ -11,20 +11,25 @@ import game.Card;
  */
 public class CardWrapper {
     private Card card;
+    private int wrapperId;
+    private int strength;
     private int hp;
+    private int armour;
     private boolean active;
 
     public CardWrapper() {
     }
 
-    public CardWrapper(Card card) {
+    public CardWrapper(Card card,int wrapperId) {
         this.card = card;
         this.hp=card.getHp();
+        this.wrapperId = wrapperId;
     }
 
-    public CardWrapper(Card card, boolean active) {
+    public CardWrapper(Card card, int wrapperId, boolean active) {
         this.card = card;
         this.active = active;
+        this.wrapperId = wrapperId;
         this.hp=card.getHp();
     }
 
@@ -52,5 +57,27 @@ public class CardWrapper {
         this.active = active;
     }
 
+    public int getStrength() {
+        return strength;
+    }
 
+    public void setStrength(int strength) {
+        this.strength = strength;
+    }
+
+    public int getArmour() {
+        return armour;
+    }
+
+    public void setArmour(int armour) {
+        this.armour = armour;
+    }
+
+    public int getWrapperId() {
+        return wrapperId;
+    }
+
+    public void setWrapperId(int wrapperId) {
+        this.wrapperId = wrapperId;
+    }
 }

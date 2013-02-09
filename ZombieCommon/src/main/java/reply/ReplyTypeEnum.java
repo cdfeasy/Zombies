@@ -18,7 +18,8 @@ public enum ReplyTypeEnum {
     STOP_SEARCH(50),
     SAVE_DECK(60),
     SET_DECK_ACTIVE(70),
-    GET_CARD_INFO(80);
+    GET_CARD_INFO(80),
+    GAME_STARTED(90);
 
 
     int id;

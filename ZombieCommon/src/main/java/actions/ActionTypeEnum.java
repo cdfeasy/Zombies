@@ -19,22 +19,33 @@ public enum ActionTypeEnum {
     CREATE_USER(80);
 
 
-
     int id;
 
     public int getId() {
         return id;
     }
 
-    ActionTypeEnum(int id){
-        this.id=id;
+    ActionTypeEnum(int id) {
+        this.id = id;
     }
-    public static ActionTypeEnum getValue(int i){
-         for(ActionTypeEnum e:ActionTypeEnum.values()){
-             if(e.getId()==i)
-                 return e;
-         }
+
+    public static ActionTypeEnum getValue(int i) {
+        for (ActionTypeEnum e : ActionTypeEnum.values()) {
+            if (e.getId() == i)
+                return e;
+        }
         return null;
+    }
+
+    public boolean isLong() {
+        if (id == CONNECT.getId() ||
+                id == GETUSERINFO.getId() ||
+                id == SAVE_DECK.getId() ||
+                id == SET_DECK_ACTIVE.getId()  ||
+                id == GET_CARD_INFO.getId()  ||
+                id == CREATE_USER.getId())
+            return true;
+        return false;
     }
 
 

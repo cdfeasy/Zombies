@@ -11,5 +11,6 @@ import reply.Reply;
  * To change this template use File | Settings | File Templates.
  */
 public interface IProcessor {
-    Reply processAction(Action action) throws Exception;
+    Reply processAction(Action action, Object... params) throws Exception;
+
 }

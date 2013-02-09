@@ -23,7 +23,7 @@ public class SearchWorker implements IProcessor{
     LobbyManager lobby;
 
     @Override
-    public Reply processAction(Action action) throws Exception {
+    public Reply processAction(Action action, Object... params) throws Exception {
         UserInfo ui=lobby.getUser(action.getName());
         searcher.registerPlayerInQueue(ui);
         return ReplyBuilder.getSearchReplyBuilder().build();

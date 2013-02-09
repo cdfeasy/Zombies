@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class SaveDeckWorker implements IProcessor{
     @Override
-    public Reply processAction(Action action) throws Exception {
+    public Reply processAction(Action action, Object... params) throws Exception {
 //        Session ses = server.HibernateUtil.getSessionFactory().openSession();
 //        try {
 //            if(action.getSaveDeckAction().getDeckId()!=null){

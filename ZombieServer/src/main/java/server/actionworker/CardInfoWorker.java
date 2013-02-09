@@ -30,7 +30,7 @@ public class CardInfoWorker implements IProcessor {
     ReentrantLock lock=new ReentrantLock();
 
     @Override
-    public Reply processAction(Action action) throws Exception {
+    public Reply processAction(Action action, Object... params) throws Exception {
         if(frList==null){
             lock.lock();
             if(frList==null){

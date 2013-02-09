@@ -12,7 +12,7 @@ import reply.Reply;
  */
 public class TurnWorker implements IProcessor{
     @Override
-    public Reply processAction(Action action) throws Exception {
+    public Reply processAction(Action action, Object... params) throws Exception {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

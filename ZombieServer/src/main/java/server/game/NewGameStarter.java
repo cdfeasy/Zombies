@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import server.User;
 
 import javax.swing.event.TreeModelListener;
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -64,7 +65,11 @@ public class NewGameStarter implements Runnable {
                 for(int i=index-1;i>=0;i--){
                     UserInfo second= queue.get(i);
                     if(first.getUser().getLevel()-second.getUser().getLevel()<levelconst) {
-                        manager.startGame(first,second);
+                        try{
+                         manager.startGame(first,second);
+                        }catch (Exception io){
+                            io.printStackTrace();
+                        }
                         //System.out.println("Start game:"+first+";"+second);
                         queue.remove(first);
                         queue.remove(second);

@@ -12,6 +12,7 @@ import org.jboss.netty.handler.codec.serialization.ObjectEncoder;
 import javax.tools.JavaCompiler;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -26,7 +27,7 @@ import java.util.concurrent.Executors;
  */
 public class Client {
     private String message;
-    private List<String> receive;
+    private List<String> receive= Collections.synchronizedList(new ArrayList());
         private final String host;
         private final int port;
 
@@ -60,7 +61,7 @@ public class Client {
 
         // Set up the pipeline factory.
         final ClientHandler ch=new ClientHandler();
-        receive=ch.getReceive();
+        ch.setReceive(receive);
         ch.setMessage(message);
         bootstrap.setPipelineFactory(new ChannelPipelineFactory() {
             public ChannelPipeline getPipeline() throws Exception {

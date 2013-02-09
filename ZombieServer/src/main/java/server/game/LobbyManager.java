@@ -11,6 +11,7 @@ import org.hibernate.Session;
 import org.jboss.netty.channel.Channel;
 import server.game.play.GameManager;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +33,7 @@ public class LobbyManager {
     private ReentrantLock userLock =new ReentrantLock();
     private ReentrantLock managerLock =new ReentrantLock();
     private ConcurrentLinkedQueue<Request> requestQueue=new ConcurrentLinkedQueue<>();
+    private ScheduledExecutorService gameTicker=Executors.newScheduledThreadPool(10);
 
 
     ScheduledExecutorService requestParser= Executors.newSingleThreadScheduledExecutor();
@@ -42,6 +44,8 @@ public class LobbyManager {
     RequestManager requestManagerThread;
     @Inject
     NewGameStarter newGameStarterThread;
+    @Inject
+    RequestManager requestManager;
 
     public LobbyManager(){
 
@@ -61,8 +65,7 @@ public class LobbyManager {
                         sub.getAbilities();
                         for(Card c:sub.getDeck()){
                             cards.put(c.getId(),c);
-                            Hibernate.initialize(c);
-
+                            Hibernate.initialize(c.getAbilities());
                         }
                     }
                 }
@@ -94,8 +97,9 @@ public class LobbyManager {
         }
     }
 
-    public void startGame(UserInfo user1,UserInfo user2){
-        runningGames.add(new GameManager(user1,user2));
+    public void startGame(UserInfo user1,UserInfo user2) throws IOException {
+       runningGames.add(new GameManager(user1,user2,requestManager));
+
     }
 
     public void parseRequest(Channel channel, String request) {
@@ -108,5 +112,9 @@ public class LobbyManager {
 
     public HashMap<Long, Fraction> getFractions() {
         return fractions;
+    }
+
+    public void addGameTicker(Runnable tick,int timeout){
+        gameTicker.schedule(tick,timeout,TimeUnit.SECONDS);
     }
 }

@@ -3,6 +3,7 @@ package server.actionworker;
 import actions.Action;
 import com.google.inject.Inject;
 import game.Card;
+import game.Deck;
 import game.Fraction;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -11,6 +12,7 @@ import builder.ReplyBuilder;
 import server.User;
 import server.game.LobbyManager;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -29,7 +31,7 @@ public class CreateUserWorker implements IProcessor {
     ReentrantLock lock = new ReentrantLock();
 
     @Override
-    public Reply processAction(Action action) throws Exception {
+    public Reply processAction(Action action, Object... params) throws Exception {
         lock.lock();
         Session ses = server.HibernateUtil.getSessionFactory().openSession();
         ses.getTransaction().begin();
@@ -49,6 +51,13 @@ public class CreateUserWorker implements IProcessor {
             usr.setPass(action.getCreateUserAction().getPass());
             usr.setSide(action.getCreateUserAction().getSide());
             usr.setAvailableCards(list);
+            final Deck deck=new Deck();
+            ArrayList<Card> cd=new ArrayList<>();
+            cd.addAll(list);
+            deck.setDeck(cd);
+            ses.persist(deck);
+            usr.setDecks(new ArrayList<Deck>(){{add(deck);}});
+            usr.setActiveDeck(deck);
             ses.persist(usr);
             return ReplyBuilder.getSuccessReplyBuilder().setSuccessText("user already exist").build();
 
