@@ -8,6 +8,19 @@ package reply;
  * To change this template use File | Settings | File Templates.
  */
 public class ErrorReply {
+    public static enum errors{
+        missing_turn(10),
+        not_you_turn(11);
+        int id;
+
+        public int getId() {
+            return id;
+        }
+
+        errors(int id){
+            this.id=id;
+        }
+    }
     private String errorText;
     private Integer errorCode;
 

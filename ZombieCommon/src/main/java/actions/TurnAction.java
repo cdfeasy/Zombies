@@ -15,6 +15,7 @@ public class TurnAction {
     }
     //0-turn, 1-end turn, 2-surrender
     private int action;
+    private int turnNumber;
     private Long cardId;
     private int position;
 
@@ -33,6 +34,14 @@ public class TurnAction {
 
     public void setAction(int action) {
         this.action = action;
+    }
+
+    public int getTurnNumber() {
+        return turnNumber;
+    }
+
+    public void setTurnNumber(int turnNumber) {
+        this.turnNumber = turnNumber;
     }
 
     public Long getCardId() {

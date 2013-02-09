@@ -55,6 +55,11 @@ public class TurnReplyBuilder implements Builder{
         return this;
     }
 
+    public  TurnReplyBuilder setTurnNumber(Integer turn ){
+        turnReply.setTurnNumber(turn);
+        return this;
+    }
+
     public  TurnReplyBuilder setPlayer2Cards(Map<Integer,CardWrapper> cards ){
         turnReply.setPlayer2Card(cards);
         return this;

@@ -23,6 +23,7 @@ public class TurnReply {
     }
     //0-turn, 1-end turn, 2-you win,3-you lose
     private int action;
+    private int turnNumber;
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     private Long cardId;
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
@@ -47,6 +48,14 @@ public class TurnReply {
 
     public void setAction(int action) {
         this.action = action;
+    }
+
+    public int getTurnNumber() {
+        return turnNumber;
+    }
+
+    public void setTurnNumber(int turnNumber) {
+        this.turnNumber = turnNumber;
     }
 
     public Long getCardId() {

@@ -75,9 +75,9 @@ public class RequestManager implements Runnable {
                 Action act = requestMapper.readValue(r.getRequest(),Action.class);
                 ActionTypeEnum type= ActionTypeEnum.getValue(act.getAction());
                 if(type.isLong()){
-                    longActions.execute(new longOperationProcess(act, r.getChannel()));
+                    longActions.execute(new OperationProcess(act, r.getChannel()));
                 }else{
-                    fastActions.execute(new longOperationProcess(act, r.getChannel()));
+                    fastActions.execute(new OperationProcess(act, r.getChannel()));
                 }
             } catch (Exception e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -91,11 +91,11 @@ public class RequestManager implements Runnable {
         process();
     }
 
-    private class longOperationProcess implements Runnable{
+    private class OperationProcess implements Runnable{
         Action act;
         Channel channel;
 
-        private longOperationProcess(Action act, Channel channel) {
+        private OperationProcess(Action act, Channel channel) {
             this.act = act;
             this.channel = channel;
         }
