@@ -15,10 +15,12 @@ public class GameTable {
     private TableSide player2Side;
     private GameInfo player1Info;
     private GameInfo player2Info;
+    private GameManager manager;
 
-    public GameTable(UserInfo player1,UserInfo player2) {
-        player1Side=new TableSide(player1.getUser().getActiveDeck());
-        player2Side=new TableSide(player2.getUser().getActiveDeck());
+    public GameTable(UserInfo player1,UserInfo player2,GameManager manager) {
+        this.manager=manager;
+        player1Side=new TableSide(player1.getUser().getActiveDeck(),manager);
+        player2Side=new TableSide(player2.getUser().getActiveDeck(),manager);
         player1Info=new GameInfo();
         player1Info.setEnemyName(player2.getUser().getName());
         player2Info=new GameInfo();

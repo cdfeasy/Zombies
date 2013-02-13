@@ -15,7 +15,7 @@ public class CardWrapper {
     private int strength;
     private int hp;
     private int armour;
-    private boolean active;
+    private boolean active=false;
 
     public CardWrapper() {
     }
@@ -23,6 +23,8 @@ public class CardWrapper {
     public CardWrapper(Card card,int wrapperId) {
         this.card = card;
         this.hp=card.getHp();
+        this.armour=card.getArmour();
+        this.strength=card.getStrength();
         this.wrapperId = wrapperId;
     }
 
@@ -31,6 +33,8 @@ public class CardWrapper {
         this.active = active;
         this.wrapperId = wrapperId;
         this.hp=card.getHp();
+        this.armour=card.getArmour();
+        this.strength=card.getStrength();
     }
 
     public Card getCard() {

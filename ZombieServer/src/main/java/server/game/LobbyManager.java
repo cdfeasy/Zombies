@@ -41,8 +41,6 @@ public class LobbyManager {
 
 
     @Inject
-    RequestManager requestManagerThread;
-    @Inject
     NewGameStarter newGameStarterThread;
     @Inject
     RequestManager requestManager;
@@ -75,8 +73,8 @@ public class LobbyManager {
         }
 
 
-        requestManagerThread.setRequestQueue(requestQueue);
-        requestParser.scheduleWithFixedDelay(requestManagerThread,0,10,TimeUnit.MILLISECONDS);
+        requestManager.setRequestQueue(requestQueue);
+        requestParser.scheduleWithFixedDelay(requestManager,0,10,TimeUnit.MILLISECONDS);
         newGameStarter.scheduleWithFixedDelay(newGameStarterThread,0,1000,TimeUnit.MILLISECONDS);
     }
 
@@ -98,7 +96,7 @@ public class LobbyManager {
     }
 
     public void startGame(UserInfo user1,UserInfo user2) throws IOException {
-       runningGames.add(new GameManager(user1,user2,requestManager));
+       runningGames.add(new GameManager(user1,user2,this));
 
     }
 
@@ -117,4 +115,9 @@ public class LobbyManager {
     public void addGameTicker(Runnable tick,int timeout){
         gameTicker.schedule(tick,timeout,TimeUnit.SECONDS);
     }
+
+    public RequestManager getRequestManager() {
+        return requestManager;
+    }
+
 }

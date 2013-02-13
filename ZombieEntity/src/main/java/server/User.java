@@ -49,7 +49,7 @@ public class User {
     @Basic(fetch= FetchType.LAZY)
     @Lob
     private byte[] avatar;
-
+     //1-zzmby 0-surv
     public Long getSide() {
         return side;
     }

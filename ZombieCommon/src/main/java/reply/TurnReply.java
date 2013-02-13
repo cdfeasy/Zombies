@@ -24,8 +24,10 @@ public class TurnReply {
     //0-turn, 1-end turn, 2-you win,3-you lose
     private int action;
     private int turnNumber;
+    //карта, ответ на ход противника
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     private Long cardId;
+    //Позиция карты, ответ на ход противника
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     private Integer position;
 

@@ -10,18 +10,20 @@ import game.Deck;
  * To change this template use File | Settings | File Templates.
  */
 public class TableSide {
-    public final static int CELL_COUNT=8;
+    public final static int CELL_COUNT=6;
     private SideCell[] cells=new SideCell[CELL_COUNT];
     private SideCell structures;
     private PlayerCards cards;
     private  int res1Income;
     private  int res2Income;
     private  int res3Income;
-    public TableSide(Deck userDeck){
+    private GameManager manager;
+    public TableSide(Deck userDeck,GameManager manager){
+        this.manager=manager;
        cards=new PlayerCards(userDeck.getDeck());
        for(int i=0;i<CELL_COUNT;i++)
-           cells[i]=new SideCell();
-        structures=new SideCell();
+           cells[i]=new SideCell(manager);
+        structures=new SideCell(manager);
     }
 
     public SideCell getCell(int index){
