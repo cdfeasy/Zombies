@@ -16,9 +16,11 @@ public class Fraction {
     @Id
     private Long id;
     private String name;
+    private String nameEng;
     private String description;
+    private String descriptionEng;
     @OneToMany(mappedBy ="fraction")
-    private List<Subfraction> subFractions =new ArrayList<>();
+    private List<SubFraction> subFractions =new ArrayList<>();
 
     public Fraction() {
     }
@@ -29,7 +31,7 @@ public class Fraction {
     }
 
 
-    public void addSubfraction(Subfraction sub){
+    public void addSubFraction(SubFraction sub){
         if(!this.equals(sub.getFraction()))
             sub.setFraction(this);
         if(!subFractions.contains(sub))
@@ -63,11 +65,27 @@ public class Fraction {
         this.description = description;
     }
 
-    public List<Subfraction> getSubFractions() {
+    public List<SubFraction> getSubFractions() {
         return subFractions;
     }
 
-    public void setSubFractions(List<Subfraction> deck) {
+    public void setSubFractions(List<SubFraction> deck) {
         this.subFractions = deck;
+    }
+
+    public String getNameEng() {
+        return nameEng;
+    }
+
+    public void setNameEng(String nameEng) {
+        this.nameEng = nameEng;
+    }
+
+    public String getDescriptionEng() {
+        return descriptionEng;
+    }
+
+    public void setDescriptionEng(String descriptionEng) {
+        this.descriptionEng = descriptionEng;
     }
 }

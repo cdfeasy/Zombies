@@ -18,7 +18,9 @@ public class Abilities {
     @GeneratedValue
     private Long id;
     private String name;
+    private String nameEng;
     private String description;
+    private String descriptionEng;
     private String action;
 
     public Abilities() {
@@ -60,5 +62,21 @@ public class Abilities {
 
     public void setAction(String action) {
         this.action = action;
+    }
+
+    public String getNameEng() {
+        return nameEng;
+    }
+
+    public void setNameEng(String nameEng) {
+        this.nameEng = nameEng;
+    }
+
+    public String getDescriptionEng() {
+        return descriptionEng;
+    }
+
+    public void setDescriptionEng(String descriptionEng) {
+        this.descriptionEng = descriptionEng;
     }
 }

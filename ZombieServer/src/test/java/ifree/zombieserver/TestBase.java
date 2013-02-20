@@ -14,6 +14,7 @@ import org.junit.runner.Description;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
 import server.HibernateUtil;
+import server.History;
 import server.User;
 import server.guice.ServerModule;
 import server.netty.Server;
@@ -67,11 +68,53 @@ public class TestBase{
     public static void create() {
         try {
             Session ses = HibernateUtil.getSessionFactory().openSession();
+
+            ses.getTransaction().begin();
+            Query querydel1= ses.createQuery("select h from History h");
+            for(History u:(List<History>)querydel1.list()){
+                ses.delete(u);
+            }
+
+            Query querydel5= ses.createQuery("select h from Deck h");
+            for(Deck u:(List<Deck>)querydel5.list()){
+                ses.delete(u);
+            }
+
+            Query querydel2= ses.createQuery("select up from UserPlayer up");
+            for(User u:(List<User>)querydel2.list()){
+                ses.delete(u);
+            }
+
+
+            Query querydel3 = ses.createQuery("select fraction from Fraction fraction");
+            List<Fraction> fdel1=querydel3.list();
+            for(Fraction fl:fdel1){
+                for(SubFraction s:fl.getSubFractions()){
+                    for(Card c:s.getDeck()) {
+                        ses.delete(c);
+                    }
+                    ses.delete(s);
+                }
+                ses.delete(fl);
+            }
+            Query querydel4 = ses.createQuery("select ab from Abilities ab");
+            List<Abilities> ab=querydel4.list();
+            for(Abilities u:ab){
+                ses.delete(u);
+            }
+
+
+
+            ses.getTransaction().commit();
+            ses.close();
+            ses = HibernateUtil.getSessionFactory().openSession();
+
             ses.getTransaction().begin();
             // Query query = ses.createQuery("select card from Card card").setMaxResults(10);
             FillBase.createZombies(ses);
             FillBase.createPeoples(ses);
-
+            ses.getTransaction().commit();
+            ses.getTransaction().begin();
             User u1 = new User();
             u1.setLevel(1);
             u1.setXp(100);
@@ -119,10 +162,24 @@ public class TestBase{
             ses.merge(u1);
             ses.save(u1);
 
-            ObjectMapper requestMapper = new ObjectMapper();
-            requestMapper.generateJsonSchema(Fraction.class);
-            String s=requestMapper.writeValueAsString(f.get(0));
-            System.out.println(s);
+
+            Query query1 = ses.createQuery("select fraction from Fraction fraction where fraction.id=1");
+            List<Fraction> f1=query1.list();
+            Fraction zmb1=f.get(0);
+            zmb1.getSubFractions();
+            Deck deck1=new Deck();
+            List<Card> av2=new ArrayList<Card>(zmb1.getSubFractions().get(0).getDeck().size());
+            av2.addAll(zmb1.getSubFractions().get(0).getDeck());
+            deck1.setDeck(av1);
+            ses.persist(deck1);
+
+            u2.getDecks().add(deck1);
+            u2.setActiveDeck(deck1);
+            List<Card> av3=new ArrayList<Card>(zmb1.getSubFractions().get(0).getDeck().size());
+            av3.addAll(zmb1.getSubFractions().get(0).getDeck());
+            u2.setAvailableCards(av3);
+            ses.merge(u2);
+            ses.save(u2);
 
             //List<Long> itemlist=query.list();
             ses.getTransaction().commit();

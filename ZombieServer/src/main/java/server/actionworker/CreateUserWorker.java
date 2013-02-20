@@ -14,6 +14,7 @@ import server.game.LobbyManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -30,13 +31,15 @@ public class CreateUserWorker implements IProcessor {
     volatile List<Fraction> frList = null;
     ReentrantLock lock = new ReentrantLock();
 
+    private int deckSize=30;
+
     @Override
     public Reply processAction(Action action, Object... params) throws Exception {
         lock.lock();
         Session ses = server.HibernateUtil.getSessionFactory().openSession();
         ses.getTransaction().begin();
         try {
-            Query query = ses.createQuery("select card from Card card where card.subfraction.fraction.id=:id and card.subfraction.level=1 and card.cardLevel=1");
+            Query query = ses.createQuery("select card from Card card where card.subFraction.fraction.id=:id and card.subFraction.level=1 and card.cardLevel=1");
             query.setParameter("id", action.getCreateUserAction().getSide());
             List<Card> list = (List<Card>) query.list();
             Query query1 = ses.createQuery("select user from UserPlayer user where user.name=:name");
@@ -50,15 +53,20 @@ public class CreateUserWorker implements IProcessor {
             usr.setName(action.getCreateUserAction().getName());
             usr.setPass(action.getCreateUserAction().getPass());
             usr.setSide(action.getCreateUserAction().getSide());
+            ses.persist(usr);
             usr.setAvailableCards(list);
             final Deck deck=new Deck();
             ArrayList<Card> cd=new ArrayList<>();
-            cd.addAll(list);
+            Random r=new Random();
+            for(int i=0;i<deckSize;i++){
+                int ind=r.nextInt(list.size());
+                cd.add(list.get(ind));
+            }
             deck.setDeck(cd);
             ses.persist(deck);
             usr.setDecks(new ArrayList<Deck>(){{add(deck);}});
             usr.setActiveDeck(deck);
-            ses.persist(usr);
+            ses.merge(usr);
             return ReplyBuilder.getSuccessReplyBuilder().setSuccessText("user already exist").build();
 
         } finally {

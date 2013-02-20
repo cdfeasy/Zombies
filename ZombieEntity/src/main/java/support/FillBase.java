@@ -14,6 +14,7 @@ import java.io.IOException;
  */
 public class FillBase {
     public static void  createZombies(Session ses) throws IOException {
+        try{
         Card slow = new Card("Медленный зомби", "Медленный зомби", 1, 10, 0, 4, CardTypeEnum.creature.getId(), 1, 0, 0,1);
         Card zombie = new Card("Зомби", "Обычный зомби", 1, 10, 0, 5, CardTypeEnum.creature.getId(), 2, 0, 0,1);
         Card fast = new Card("Быстрый зомби", "Быстрый зомби", 1, 5, 0, 4, CardTypeEnum.creature.getId(), 2, 0, 0,1);
@@ -43,21 +44,24 @@ public class FillBase {
         fast.getAbilities().add(evade);
 
 
-        Subfraction simpleSombies = new Subfraction("Простые зомби", "Простые зомби");
+        SubFraction simpleSombies = new SubFraction("Простые зомби", "Простые зомби");
         simpleSombies.setLevel(1);
+            simpleSombies.setRes1(2);
+            simpleSombies.setRes2(0);
+            simpleSombies.setRes3(0);
         Fraction zombies = new Fraction("Зомби", "Зомби");
         zombies.setId(1l);
         simpleSombies.setFraction(zombies);
 
 
-        slow.setSubfraction(simpleSombies);
-        zombie.setSubfraction(simpleSombies);
-        fast.setSubfraction(simpleSombies);
-        fat.setSubfraction(simpleSombies);
-        half.setSubfraction(simpleSombies);
-        hospital.setSubfraction(simpleSombies);
-        aero.setSubfraction(simpleSombies);
-        tec.setSubfraction(simpleSombies);
+        slow.setSubFraction(simpleSombies);
+        zombie.setSubFraction(simpleSombies);
+        fast.setSubFraction(simpleSombies);
+        fat.setSubFraction(simpleSombies);
+        half.setSubFraction(simpleSombies);
+        hospital.setSubFraction(simpleSombies);
+        aero.setSubFraction(simpleSombies);
+        tec.setSubFraction(simpleSombies);
 
         ses.persist(genereateCorpse);
         ses.persist(genereateVirus);
@@ -78,11 +82,15 @@ public class FillBase {
 
         ses.persist(simpleSombies);
         ses.persist(zombies);
+        } catch (Throwable th){
+            th.printStackTrace();
+        }
 
 
     }
 
     public static void createPeoples(Session ses) {
+        try{
         Card peysan = new Card("Горожанин", "Обычный горожанин с топором", 1, 10, 0, 4, CardTypeEnum.creature.getId(), 1, 0, 0,1);
         Card shotgun = new Card("Горожанин с дробовиком", "горожанин с дробовиком", 1, 10, 0, 5, CardTypeEnum.creature.getId(), 2, 0, 0,1);
         Card medic = new Card("Медик", "Медик", 1, 5, 0, 4, CardTypeEnum.creature.getId(), 2, 0, 0,1);
@@ -114,22 +122,25 @@ public class FillBase {
         zombiebus.getAbilities().add(bunkerBus);
         molotov.getAbilities().add(molotovCoctail);
 
-        Subfraction simplePeoples = new Subfraction("Горожане", "Горожане");
+        SubFraction simplePeoples = new SubFraction("Горожане", "Горожане");
         simplePeoples.setLevel(1);
+            simplePeoples.setRes1(2);
+            simplePeoples.setRes2(0);
+            simplePeoples.setRes3(0);
         Fraction survival = new Fraction("Выжившие", "Выжившие");
         survival.setId(0l);
         simplePeoples.setFraction(survival);
 
-        peysan.setSubfraction(simplePeoples);
-        shotgun.setSubfraction(simplePeoples);
-        medic.setSubfraction(simplePeoples);
-        molotov.setSubfraction(simplePeoples);
-        barricade.setSubfraction(simplePeoples);
-        zombiebus.setSubfraction(simplePeoples);
-        peysan.setSubfraction(simplePeoples);
-        hospital.setSubfraction(simplePeoples);
-        tech.setSubfraction(simplePeoples);
-        market.setSubfraction(simplePeoples);
+        peysan.setSubFraction(simplePeoples);
+        shotgun.setSubFraction(simplePeoples);
+        medic.setSubFraction(simplePeoples);
+        molotov.setSubFraction(simplePeoples);
+        barricade.setSubFraction(simplePeoples);
+        zombiebus.setSubFraction(simplePeoples);
+        peysan.setSubFraction(simplePeoples);
+        hospital.setSubFraction(simplePeoples);
+        tech.setSubFraction(simplePeoples);
+        market.setSubFraction(simplePeoples);
 
         ses.persist(genereatePeoples);
         ses.persist(genereateTech);
@@ -156,5 +167,8 @@ public class FillBase {
 
         ses.persist(simplePeoples);
         ses.persist(survival);
+        } catch (Throwable th){
+            th.printStackTrace();
+        }
     }
 }

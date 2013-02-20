@@ -4,7 +4,7 @@ package server.game;
 import com.google.inject.Inject;
 import game.Card;
 import game.Fraction;
-import game.Subfraction;
+import game.SubFraction;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -59,11 +59,13 @@ public class LobbyManager {
                 for(Fraction fr: (List<Fraction>)query.list()) {
                     fractions.put(fr.getId(),fr);
                     int i=0;
-                    for(Subfraction sub: fr.getSubFractions()){
+                    for(SubFraction sub: fr.getSubFractions()){
                         sub.getAbilities();
+                        Hibernate.initialize(sub.getAbilities());
                         for(Card c:sub.getDeck()){
                             cards.put(c.getId(),c);
                             Hibernate.initialize(c.getAbilities());
+
                         }
                     }
                 }

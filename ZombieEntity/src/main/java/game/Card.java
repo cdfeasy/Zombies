@@ -1,7 +1,6 @@
 package game;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -20,7 +19,9 @@ public class Card {
     @GeneratedValue
     private Long id;
     private String name;
+    private String nameEng;
     private String description;
+    private String descriptionEng;
     private int strength;
     private int hp;
     private int armour;
@@ -40,8 +41,8 @@ public class Card {
     @ManyToMany(cascade = CascadeType.REFRESH,fetch = FetchType.EAGER)
     private List<Abilities> abilities=new ArrayList<>();
     @ManyToOne
-    @JoinColumn(name="subfraction_id")
-    private Subfraction subfraction;
+    @JoinColumn(name="subFraction_id")
+    private SubFraction subFraction;
 
     private int resourceCost1;
     private int resourceCost2;
@@ -72,13 +73,13 @@ public class Card {
         this.id = id;
     }
     @JsonIgnore
-    public Subfraction getSubfraction() {
-        return subfraction;
+    public SubFraction getSubFraction() {
+        return subFraction;
     }
 
-    public void setSubfraction(Subfraction subfraction) {
-        this.subfraction=subfraction;
-        subfraction.addCard(this);
+    public void setSubFraction(SubFraction subFraction) {
+        this.subFraction = subFraction;
+        subFraction.addCard(this);
     }
 
     public String getName() {
@@ -207,5 +208,21 @@ public class Card {
 
     public void setCardGoldCost(int cardGoldCost) {
         this.cardGoldCost = cardGoldCost;
+    }
+
+    public String getNameEng() {
+        return nameEng;
+    }
+
+    public void setNameEng(String nameEng) {
+        this.nameEng = nameEng;
+    }
+
+    public String getDescriptionEng() {
+        return descriptionEng;
+    }
+
+    public void setDescriptionEng(String descriptionEng) {
+        this.descriptionEng = descriptionEng;
     }
 }

@@ -1,10 +1,14 @@
 package builder;
 
+import game.Card;
 import reply.GameStartedReply;
 import reply.Reply;
 import reply.ReplyTypeEnum;
 import reply.UserInfoReply;
 import server.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,7 +18,12 @@ import server.User;
  * To change this template use File | Settings | File Templates.
  */
 public class GameStartedReplyBuilder implements Builder{
-    User user;
+    private User user;
+    private List<Long> cardIds;
+    private int position;
+    private int res1;
+    private int res2;
+    private int res3;
 
     public User getUser() {
         return user;
@@ -25,10 +34,37 @@ public class GameStartedReplyBuilder implements Builder{
         return this;
     }
 
+    public GameStartedReplyBuilder setCards(List<Card> cards) {
+        List<Long> cardIds=new ArrayList<Long>();
+        for(Card c:cards){
+            cardIds.add(c.getId());
+        }
+        this.cardIds=cardIds;
+        return this;
+    }
+
+    public GameStartedReplyBuilder setPosition(int position) {
+        this.position=position;
+        return this;
+    }
+
+    public GameStartedReplyBuilder setRes(int res1,int res2,int res3) {
+        this.res1=res1;
+        this.res2=res2;
+        this.res3=res3;
+        return this;
+    }
+
     @Override
     public Reply build() {
         Reply reply =new Reply(ReplyTypeEnum.GAME_STARTED.getId());
-        reply.setGameStartedReply(new GameStartedReply(getUser()));
+        GameStartedReply gsr= new GameStartedReply(getUser().CopyUser(false,false,false,null));
+        gsr.setPosition(position);
+        gsr.setCards(cardIds);
+        gsr.setRes1(res1);
+        gsr.setRes2(res2);
+        gsr.setRes3(res3);
+        reply.setGameStartedReply(gsr);
         return reply;
     }
 }

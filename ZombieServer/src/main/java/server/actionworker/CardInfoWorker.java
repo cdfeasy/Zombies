@@ -4,7 +4,7 @@ import actions.Action;
 import com.google.inject.Inject;
 import game.Card;
 import game.Fraction;
-import game.Subfraction;
+import game.SubFraction;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -12,6 +12,8 @@ import reply.Reply;
 import builder.ReplyBuilder;
 import server.game.LobbyManager;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -26,35 +28,9 @@ public class CardInfoWorker implements IProcessor {
     @Inject
     LobbyManager lobbyManager;
 
-    volatile List<Fraction> frList=null;
-    ReentrantLock lock=new ReentrantLock();
-
     @Override
     public Reply processAction(Action action, Object... params) throws Exception {
-        if(frList==null){
-            lock.lock();
-            if(frList==null){
-                Session ses = server.HibernateUtil.getSessionFactory().openSession();
-                try {
-                    Query query = ses.createQuery("select fraction from Fraction fraction");
-                    List<Fraction> list=  (List<Fraction>)query.list();
-
-                    for(Fraction fr: (List<Fraction>)query.list()) {
-                        for(Subfraction sub: fr.getSubFractions()){
-                            Hibernate.initialize(sub.getAbilities());
-                            for(Card c:sub.getDeck()){
-                                Hibernate.initialize(c.getAbilities());
-                                c.getImg();
-                            }
-                        }
-                    }
-                    frList=list;
-                } finally {
-                    lock.unlock();
-                    ses.close();
-                }
-            }
-        }
-        return ReplyBuilder.getGetCardInfoReplyBuilder().setFractions(frList).build();
+        List<Fraction> list= new ArrayList<>(lobbyManager.getFractions().values());
+        return ReplyBuilder.getGetCardInfoReplyBuilder().setFractions(list).build();
     }
 }

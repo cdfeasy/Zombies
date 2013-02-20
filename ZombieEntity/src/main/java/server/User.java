@@ -145,7 +145,7 @@ public class User {
     public void setAvatar(byte[] avatar) {
         this.avatar = avatar;
     }
-
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     public List<DeckInfo> getDecksIds() {
         return decksIds;
     }
@@ -153,7 +153,7 @@ public class User {
     public void setDecksIds(List<DeckInfo> decksIds) {
         this.decksIds = decksIds;
     }
-
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     public List<Long> getAvailableCardsIds() {
         return availableCardsIds;
     }
@@ -161,7 +161,7 @@ public class User {
     public void setAvailableCardsIds(List<Long> availableCardsIds) {
         this.availableCardsIds = availableCardsIds;
     }
-
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     public DeckInfo getActiveDeckIds() {
         return activeDeckIds;
     }
@@ -175,6 +175,7 @@ public class User {
         u.setName(this.getName());
         u.setLevel(this.getLevel());
         u.setAvatar(this.getAvatar());
+        u.setSide(this.getSide());
         if(privateInfo){
          u.setXp(this.getXp());
          u.setGold(this.getGold());
@@ -196,7 +197,6 @@ public class User {
             u.setXp(this.getXp());
             u.setGold(this.getGold());
             u.setPayed(this.getPayed());
-            u.setSide(this.getSide());
             u.setPass(this.getPass());
             if(!this.getDecks().isEmpty()) {
                 u.setDecks(new ArrayList<Deck>());
@@ -213,11 +213,11 @@ public class User {
                 }
             }
             Deck dCopy=new Deck();
-            dCopy.setId(u.getActiveDeck().getId());
-            dCopy.setName(u.getActiveDeck().getName());
-            dCopy.setDescription(u.getActiveDeck().getDescription());
+            dCopy.setId(this.getActiveDeck().getId());
+            dCopy.setName(this.getActiveDeck().getName());
+            dCopy.setDescription(this.getActiveDeck().getDescription());
             dCopy.setDeck(new ArrayList<Card>());
-            for(Card c:u.getActiveDeck().getDeck()){
+            for(Card c:this.getActiveDeck().getDeck()){
                 dCopy.getDeck().add(cardMap.get(c.getId()));
             }
             u.setActiveDeck(dCopy);

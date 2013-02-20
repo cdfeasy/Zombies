@@ -12,10 +12,11 @@
         <mapping class="game.Abilities"/>
         <mapping class="game.Deck"/>
         <mapping class="game.Fraction"/>
-        <mapping class="game.Subfraction"/>
+        <mapping class="game.SubFraction"/>
         <mapping class="game.Card"/>
         <mapping class="server.History"/>
         <mapping class="server.User"/>
+        <mapping class="server.GameVersion"/>
 
     </session-factory>
 </hibernate-configuration>

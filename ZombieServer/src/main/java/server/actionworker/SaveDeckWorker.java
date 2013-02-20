@@ -1,14 +1,7 @@
 package server.actionworker;
 
 import actions.Action;
-import game.Card;
-import game.Fraction;
-import game.Subfraction;
-import org.hibernate.Query;
-import org.hibernate.Session;
 import reply.Reply;
-
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,7 +19,7 @@ public class SaveDeckWorker implements IProcessor{
 //                Query query = ses.createQuery("select fraction from Fraction fraction");
 //                List<Fraction> list=  (List<Fraction>)query.list();
 //                for(Fraction fr: (List<Fraction>)query.list()) {
-//                    for(Subfraction sub: fr.getSubFractions()){
+//                    for(SubFraction sub: fr.getSubFractions()){
 //                        for(Card c:sub.getDeck()){
 //                            c.getImg();
 //                        }

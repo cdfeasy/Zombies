@@ -14,14 +14,16 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 @Entity
-public class Subfraction {
+public class SubFraction {
     @Id
     @GeneratedValue
     private Long id;
     private String name;
+    private String nameEng;
     private String description;
+    private String descriptionEng;
     private Integer level;
-    @OneToMany(mappedBy ="subfraction")
+    @OneToMany(mappedBy ="subFraction")
     private List<Card> deck=new ArrayList<Card>();
 
     @ManyToOne
@@ -40,17 +42,17 @@ public class Subfraction {
     private int res2;
     private int res3;
 
-    public Subfraction() {
+    public SubFraction() {
     }
 
-    public Subfraction(String name, String description) {
+    public SubFraction(String name, String description) {
         this.name = name;
         this.description = description;
     }
 
     public void addCard(Card c){
-        if(!this.equals(c.getSubfraction()))
-            c.setSubfraction(this);
+        if(!this.equals(c.getSubFraction()))
+            c.setSubFraction(this);
         if(!deck.contains(c))
             deck.add(c);
     }
@@ -73,7 +75,7 @@ public class Subfraction {
 
     public void setFraction(Fraction fraction) {
         this.fraction=fraction;
-        fraction.addSubfraction(this);
+        fraction.addSubFraction(this);
     }
 
     public void setName(String name) {
@@ -136,9 +138,25 @@ public class Subfraction {
         this.res3 = res3;
     }
 
+    public String getNameEng() {
+        return nameEng;
+    }
+
+    public void setNameEng(String nameEng) {
+        this.nameEng = nameEng;
+    }
+
+    public String getDescriptionEng() {
+        return descriptionEng;
+    }
+
+    public void setDescriptionEng(String descriptionEng) {
+        this.descriptionEng = descriptionEng;
+    }
+
     @Override
     public String toString() {
-        return "Subfraction{" +
+        return "SubFraction{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +

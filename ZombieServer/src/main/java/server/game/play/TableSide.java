@@ -24,6 +24,10 @@ public class TableSide {
        for(int i=0;i<CELL_COUNT;i++)
            cells[i]=new SideCell(manager);
         structures=new SideCell(manager);
+        res1Income+=cards.getBaseRes1();
+        res2Income+=cards.getBaseRes2();
+        res3Income+=cards.getBaseRes3();
+
     }
 
     public SideCell getCell(int index){

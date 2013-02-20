@@ -2,6 +2,7 @@ package server.game.play;
 
 import actions.Action;
 import actions.TurnAction;
+import builder.GameStartedReplyBuilder;
 import builder.ReplyBuilder;
 import builder.TurnReplyBuilder;
 import game.Card;
@@ -43,8 +44,8 @@ public class GameManager {
     private List<TurnAction> currTurnAction = new ArrayList<>();
     private ReentrantLock lock = new ReentrantLock();
     private int cardWrapperNum = 0;
-    private int user1Hp=100;
-    private int user2Hp=100;
+    private int user1Hp = 100;
+    private int user2Hp = 100;
     private GameInfo player1Info;
     private GameInfo player2Info;
 
@@ -54,24 +55,25 @@ public class GameManager {
         table = new GameTable(player1, player2, this);
         player1Name = player1.getUser().getName();
         player2Name = player2.getUser().getName();
-        player1Info=new GameInfo();
+        player1Info = new GameInfo();
         player1Info.setEnemyName(player2Name);
-        player2Info=new GameInfo();
+        player2Info = new GameInfo();
         player2Info.setEnemyName(player1Name);
         sendGameStartedMessage(player1, player2);
+        lobbyManager.addGameTicker(new ticker(this, turn.get()), turnSize);
     }
 
     public void sendGameStartedMessage(UserInfo player1, UserInfo player2) throws IOException {
         this.player1 = player1;
         this.player2 = player2;
-        Reply reply1 = ReplyBuilder.getGameStartedReplyBuilder().setUser(player1.getUser()).build();
-        Reply reply2 = ReplyBuilder.getGameStartedReplyBuilder().setUser(player2.getUser()).build();
-
-        lobbyManager.getRequestManager().sendReply(player1.getChannel(), reply2);
-        lobbyManager.getRequestManager().sendReply(player2.getChannel(), reply1);
+        GameStartedReplyBuilder replyBuilder1 = ReplyBuilder.getGameStartedReplyBuilder().setUser(player1.getUser()).setCards(table.getPlayer2Side().getCards().getPlayerHand()).setPosition(1);
+        replyBuilder1.setRes(table.getPlayer2Side().getRes1Income(),table.getPlayer2Side().getRes2Income(),table.getPlayer2Side().getRes3Income()) ;
+        GameStartedReplyBuilder replyBuilder2 = ReplyBuilder.getGameStartedReplyBuilder().setUser(player2.getUser()).setCards(table.getPlayer1Side().getCards().getPlayerHand()).setPosition(2);
+        replyBuilder2.setRes(table.getPlayer1Side().getRes1Income(),table.getPlayer1Side().getRes2Income(),table.getPlayer1Side().getRes3Income()) ;
+        lobbyManager.getRequestManager().sendReply(player1.getChannel(), replyBuilder2.build());
+        lobbyManager.getRequestManager().sendReply(player2.getChannel(), replyBuilder1.build());
 
     }
-
 
     protected void processTurn(int turnNumber) {
         lock.lock();
@@ -87,102 +89,154 @@ public class GameManager {
             TurnReplyBuilder turnReplyBuilder = ReplyBuilder.getTurnReplyBuilder();
             turnReplyBuilder.setTurnNumber(turn.get());
             turnReplyBuilder.setAction(TurnReply.actionEnum.endturn.ordinal());
-            int spendHpUser1=0;
-            int spendHpUser2=0;
+            int spendHpUser1 = 0;
+            int spendHpUser2 = 0;
             for (TurnAction action : currTurnAction) {
                 Card c = lobbyManager.getCards().get(action.getCardId());
                 TableSide side = null;
                 if (turn.get() % 2 == 1) {
                     if (CardTypeEnum.getValue(c.getCardType()).equals(CardTypeEnum.damageSpell)) {
                         side = table.getPlayer2Side();
-                    }
-                    else{
+                    } else {
                         side = table.getPlayer1Side();
                     }
                 } else {
-                    if (CardTypeEnum.getValue(c.getCardType()).equals(CardTypeEnum.damageSpell)){
+                    if (CardTypeEnum.getValue(c.getCardType()).equals(CardTypeEnum.damageSpell)) {
                         side = table.getPlayer1Side();
-                    }
-                    else {
+                    } else {
                         side = table.getPlayer2Side();
                     }
                 }
                 SideCell cell = side.getCell(action.getPosition());
-                switch (CardTypeEnum.getValue(c.getCardType())){
-                    case  buffSpell: break;
-                    case  damageSpell: break;
-                    case  globalSpell: break;
-                    default: addCreature(cell,c,turnReplyBuilder); break;
+                switch (CardTypeEnum.getValue(c.getCardType())) {
+                    case buffSpell:
+                        break;
+                    case damageSpell:
+                        break;
+                    case globalSpell:
+                        break;
+                    default:
+                        addCreature(cell, c, turnReplyBuilder);
+                        break;
                 }
-
-                for(int i=0;i<TableSide.CELL_COUNT;i++){
-                    SideCell p1cell=table.getPlayer1Side().getCell(i);
-                    SideCell p2cell=table.getPlayer1Side().getCell(i);
-                    spendHpUser2 = processCell(turnReplyBuilder, p1cell, p2cell);
-                    spendHpUser1 = processCell(turnReplyBuilder, p2cell, p1cell);
-                }
-
-                deleteCasualties(turnReplyBuilder);
-
-
             }
+
+            for (int i = 0; i < TableSide.CELL_COUNT; i++) {
+                SideCell p1cell = table.getPlayer1Side().getCell(i);
+                SideCell p2cell = table.getPlayer1Side().getCell(i);
+                spendHpUser2 = processCell(turnReplyBuilder, p1cell, p2cell);
+                spendHpUser1 = processCell(turnReplyBuilder, p2cell, p1cell);
+            }
+            if (spendHpUser1 > 0) {
+                user1Hp -= spendHpUser1;
+            }
+            if (spendHpUser2 > 0) {
+                user2Hp -= spendHpUser2;
+            }
+
+            deleteCasualties(turnReplyBuilder);
+
+            for (int i = 0; i < TableSide.CELL_COUNT; i++) {
+                turnReplyBuilder.setPlayer1Cards(i, table.getPlayer1Side().getCell(i).getCards());
+                turnReplyBuilder.setPlayer2Cards(i, table.getPlayer2Side().getCell(i).getCards());
+            }
+
+            if (turn.get() % 2 == 1) {
+                turnReplyBuilder.setNextTurnUser(player2Name);
+
+            } else {
+                turnReplyBuilder.setNextTurnUser(player1Name);
+            }
+
+
+
+            try {
+                turnReplyBuilder.setCards(table.getPlayer1Side().getCards().getPlayerHand());
+                if (turn.get() % 2 == 1) {
+                    processRes(turnReplyBuilder, table.getPlayer1Side());
+                }
+                Reply rep1 = turnReplyBuilder.build();
+                lobbyManager.getRequestManager().sendReply(player1.getChannel(), rep1);
+
+                turnReplyBuilder.setRes(0,0,0);
+
+                if (turn.get() % 2 == 0) {
+                    processRes(turnReplyBuilder,table.getPlayer2Side());
+                }
+                turnReplyBuilder.setCards(table.getPlayer2Side().getCards().getPlayerHand());
+                Reply rep2 = turnReplyBuilder.build();
+                lobbyManager.getRequestManager().sendReply(player2.getChannel(), rep2);
+            } catch (IOException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+
 
             currTurnAction.clear();
             turn.incrementAndGet();
+        }catch (Throwable th){
+            th.printStackTrace();
         } finally {
             lock.unlock();
         }
     }
 
-    private void deleteCasualties(TurnReplyBuilder turnReplyBuilder){
-        for(int i=0;i<TableSide.CELL_COUNT;i++){
-            SideCell p1cell=table.getPlayer1Side().getCell(i);
-            SideCell p2cell=table.getPlayer1Side().getCell(i);
-            for(CardWrapper c:p1cell.getCards()){
-                if(c.getHp()==0){
-                    turnReplyBuilder.addActionInfo(c.getWrapperId(),String.format("%s dead",c.getCard().getName()));
-                    if(player2.getUser().getSide()==0){
-                        player1Info.setSurvivalsKilled(player1Info.getSurvivalsKilled()+1);
-                    } else{
-                        player1Info.setZombyKilled(player1Info.getZombyKilled()+1);
+    private void processRes(TurnReplyBuilder turnReplyBuilder,TableSide side){
+        turnReplyBuilder.setRes(side.getRes1Income(),side.getRes2Income(),side.getRes3Income());
+
+    }
+
+    private void deleteCasualties(TurnReplyBuilder turnReplyBuilder) {
+        for (int i = 0; i < TableSide.CELL_COUNT; i++) {
+            SideCell p1cell = table.getPlayer1Side().getCell(i);
+            SideCell p2cell = table.getPlayer1Side().getCell(i);
+            for (CardWrapper c : p1cell.getCards()) {
+                if (c.getHp() == 0) {
+                    turnReplyBuilder.addActionInfo(c.getWrapperId(), String.format("%s dead", c.getCard().getName()));
+                    if (player2.getUser().getSide() == 0) {
+                        player1Info.setSurvivalsKilled(player1Info.getSurvivalsKilled() + 1);
+                    } else {
+                        player1Info.setZombyKilled(player1Info.getZombyKilled() + 1);
                     }
                 }
             }
 
-            for(CardWrapper c:p2cell.getCards()){
-                if(c.getHp()==0){
-                    turnReplyBuilder.addActionInfo(c.getWrapperId(),String.format("%s dead",c.getCard().getName()));
-                    if(player1.getUser().getSide()==0){
-                        player2Info.setSurvivalsKilled(player2Info.getSurvivalsKilled()+1);
-                    } else{
-                        player2Info.setZombyKilled(player2Info.getZombyKilled()+1);
+            for (CardWrapper c : p2cell.getCards()) {
+                if (c.getHp() == 0) {
+                    turnReplyBuilder.addActionInfo(c.getWrapperId(), String.format("%s dead", c.getCard().getName()));
+                    if (player1.getUser().getSide() == 0) {
+                        player2Info.setSurvivalsKilled(player2Info.getSurvivalsKilled() + 1);
+                    } else {
+                        player2Info.setZombyKilled(player2Info.getZombyKilled() + 1);
                     }
                 }
             }
             p1cell.clearDead();
-            p2cell.clearDead();
+
         }
 
     }
 
     private int processCell(TurnReplyBuilder turnReplyBuilder, SideCell p1cell, SideCell p2cell) {
-        int sumDmg=0;
-        for(CardWrapper cr:p1cell.getCards()){
-           int damage=cr.getStrength();
-           int spend=0;
-           CardWrapper cw=null;
-           while((cw=p2cell.getTopCard())!=null && (spend=p2cell.hit(damage,cw))>0){
-               turnReplyBuilder.addActionInfo(cr.getWrapperId(),String.format("%s hit %s on %s damage",cr.getCard().getName(),cw.getCard().getName(),Integer.toString(spend)));
-               damage=damage-spend;
-           }
-            sumDmg+=damage;
-         }
+        int sumDmg = 0;
+        for (CardWrapper cr : p1cell.getCards()) {
+            int damage = cr.getStrength();
+            int spend = 0;
+            CardWrapper cw = null;
+            while ((cw = p2cell.getTopCard()) != null && (spend = p2cell.hit(damage, cw)) > 0) {
+                turnReplyBuilder.addActionInfo(cr.getWrapperId(), String.format("%s hit %s on %s damage", cr.getCard().getName(), cw.getCard().getName(), Integer.toString(spend)));
+                damage = damage - spend;
+            }
+            sumDmg += damage;
+            if(damage>0){
+                turnReplyBuilder.addActionInfo(cr.getWrapperId(), String.format("%s hit %s player on %s damage", cr.getCard().getName(), cw.getCard().getName(), Integer.toString(spend)));
+            }
+        }
         return sumDmg;
     }
 
-    private void addCreature(SideCell cell,Card card,TurnReplyBuilder builder){
-        CardWrapper cr= cell.addCard(card);
-        builder.addActionInfo(cr.getWrapperId(),String.format("%s enter the battle",card.getName()));
+    private void addCreature(SideCell cell, Card card, TurnReplyBuilder builder) {
+        CardWrapper cr = cell.addCard(card);
+        builder.addActionInfo(cr.getWrapperId(), String.format("%s enter the battle", card.getName()));
     }
 
     public void addOrder(UserInfo player, Action order) throws IOException {
@@ -261,7 +315,6 @@ public class GameManager {
         return cardWrapperNum++;
     }
 
-
     /**
      * Проверка что игрок ходит в свой ход
      *
@@ -286,7 +339,6 @@ public class GameManager {
         }
         return true;
     }
-
 
     class ticker implements Runnable {
         private GameManager manager;

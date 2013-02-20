@@ -1,12 +1,17 @@
 package builder;
 
+import game.Card;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import reply.Reply;
 import reply.ReplyTypeEnum;
 import reply.TurnReply;
 import reply.UserInfoReply;
 import support.CardWrapper;
+import support.GameInfo;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,7 +22,46 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class TurnReplyBuilder implements Builder{
-    TurnReply turnReply =new TurnReply();
+
+    private int action;
+    private int turnNumber;
+    private String nextTurnUser;
+    private Long cardId;
+    private Integer position;
+    private GameInfo info;
+    private Map<Integer,String> actions;
+    private Map<Integer,List<CardWrapper>> player1Card;
+    private Map<Integer,List<CardWrapper>> player2Card;
+    private List<Long> playerHand;
+    private Integer res1;
+    private Integer res2;
+    private Integer res3;
+
+    private int getTurnNumber() {
+        return turnNumber;
+    }
+
+    private GameInfo getInfo() {
+        return info;
+    }
+
+    private Map<Integer, String> getActions() {
+        return actions;
+    }
+
+    private Map<Integer, List<CardWrapper>> getPlayer1Card() {
+        return player1Card;
+    }
+
+    private Map<Integer, List<CardWrapper>> getPlayer2Card() {
+        return player2Card;
+    }
+
+    private List<Long> getPlayerHand() {
+        return playerHand;
+    }
+
+
 
     /**
      * 0-turn, 1-end turn, 2-you win,3-you lose
@@ -25,43 +69,70 @@ public class TurnReplyBuilder implements Builder{
      * @return
      */
     public TurnReplyBuilder setAction(int action) {
-        this.turnReply.setAction(action);
+        this.action=action;
         return this;
     }
     public TurnReplyBuilder setCardId(Long cardId) {
-        this.turnReply.setCardId(cardId);
+        this.cardId=cardId;
         return this;
     }
     public TurnReplyBuilder setPosition(Integer position) {
-        this.turnReply.setPosition(position);
+        this.position=position;
+        return this;
+    }
+
+    public TurnReplyBuilder setRes(int res1,int res2,int res3) {
+        this.res1=res1;
+        this.res2=res2;
+        this.res3=res3;
         return this;
     }
 
     public  TurnReplyBuilder addActionInfo(Integer cardWrapperId, String action ){
-        if(turnReply.getActions()==null)                         {
-            turnReply.setActions(new HashMap<Integer, String>());
+        if(getActions()==null)                         {
+            this.actions=new HashMap<Integer, String>();
         }
-        turnReply.getActions().put(cardWrapperId,action);
+        getActions().put(cardWrapperId,action);
         return this;
     }
 
     public  TurnReplyBuilder setActionInfo(Map<Integer, String> actionsInfo ){
-        turnReply.setActions(actionsInfo);
+        this.actions=actionsInfo;
         return this;
     }
 
-    public  TurnReplyBuilder setPlayer1Cards(Map<Integer,CardWrapper> cards ){
-        turnReply.setPlayer1Card(cards);
+    public  TurnReplyBuilder setPlayer1Cards(Integer index, List<CardWrapper> cards ){
+        if(getPlayer1Card()==null){
+            this.player1Card=new HashMap<Integer, List<CardWrapper>>();
+        }
+        getPlayer1Card().put(index,cards)  ;
         return this;
     }
 
     public  TurnReplyBuilder setTurnNumber(Integer turn ){
-        turnReply.setTurnNumber(turn);
+        this.turnNumber=turn;
         return this;
     }
 
-    public  TurnReplyBuilder setPlayer2Cards(Map<Integer,CardWrapper> cards ){
-        turnReply.setPlayer2Card(cards);
+    public  TurnReplyBuilder setNextTurnUser(String name ){
+        this.nextTurnUser=name;
+        return this;
+    }
+
+    public TurnReplyBuilder setCards(List<Card> cards) {
+        List<Long> cardIds=new ArrayList<Long>();
+        for(Card c:cards){
+            cardIds.add(c.getId());
+        }
+        this.playerHand=cardIds;
+        return this;
+    }
+
+    public  TurnReplyBuilder setPlayer2Cards(Integer index, List<CardWrapper> cards ){
+        if(getPlayer2Card()==null){
+            this.player2Card=new HashMap<Integer, List<CardWrapper>>();
+        }
+        getPlayer2Card().put(index,cards)  ;
         return this;
     }
 
@@ -69,6 +140,10 @@ public class TurnReplyBuilder implements Builder{
     @Override
     public Reply build() {
         Reply reply =new Reply(ReplyTypeEnum.TURN.getId());
+        TurnReply turnReply =new TurnReply(action,turnNumber,nextTurnUser,cardId,position,info,actions,player1Card,player2Card,playerHand);
+        turnReply.setRes1(res1);
+        turnReply.setRes2(res2);
+        turnReply.setRes3(res3);
         reply.setTurnReply(turnReply);
         return reply;
     }
