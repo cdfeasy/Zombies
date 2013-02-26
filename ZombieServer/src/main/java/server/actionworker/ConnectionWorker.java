@@ -27,6 +27,18 @@ public class ConnectionWorker implements IProcessor {
 
     @Override
     public Reply processAction(Action action, Object... params) throws Exception {
+        UserInfo uiCached = lobbyManager.saveUser(action.getName());
+        if(uiCached.getUser()!=null){
+            if (!uiCached.getUser().getPass().equals(action.getConnectAction().getPass())) {
+                return ReplyBuilder.getErrorReplyBuilder().setErrorText("incorrect password").build();
+            }
+            String token = UUID.randomUUID().toString().substring(0,10);
+            uiCached.setToken(token);
+            uiCached.setChannel((Channel) params[0]);
+            return ReplyBuilder.getConnectionReplyBuilder().setToken(token).build();
+        }
+
+
         Session ses = server.HibernateUtil.getSessionFactory().openSession();
         try {
             Query query = ses.createQuery("select user from UserPlayer user where user.name=:name");
@@ -36,7 +48,7 @@ public class ConnectionWorker implements IProcessor {
                 if (!user.getPass().equals(action.getConnectAction().getPass())) {
                     return ReplyBuilder.getErrorReplyBuilder().setErrorText("incorrect password").build();
                 }
-                String token = UUID.randomUUID().toString();
+                String token = UUID.randomUUID().toString().substring(0,10);
                 UserInfo ui = lobbyManager.saveUser(action.getName());
                 User us=user.CopyUser(false,false,true,lobbyManager.getCards());
                 ui.setUser(us);

@@ -11,9 +11,13 @@ import reply.Reply;
 import server.actionworker.ActionManager;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,11 +30,11 @@ public class RequestManager implements Runnable {
     org.slf4j.Logger logger= LoggerFactory.getLogger(this.getClass());
     ObjectMapper requestMapper = new ObjectMapper();
     ObjectMapper replyMapper = new ObjectMapper();
-    ConcurrentLinkedQueue<Request> requestQueue;
+    LinkedBlockingQueue<Request> requestQueue;
     @Inject
     ActionManager actionManager;
 
-    Executor longActions = Executors.newSingleThreadExecutor();
+    Executor longActions = Executors.newFixedThreadPool(10);
     Executor fastActions = Executors.newSingleThreadExecutor();
 
     public RequestManager(){
@@ -42,11 +46,11 @@ public class RequestManager implements Runnable {
         }
     }
 
-    public ConcurrentLinkedQueue<Request> getRequestQueue() {
+    public LinkedBlockingQueue<Request> getRequestQueue() {
         return requestQueue;
     }
 
-    public void setRequestQueue(ConcurrentLinkedQueue<Request> requestQueue) {
+    public void setRequestQueue(LinkedBlockingQueue<Request> requestQueue) {
         this.requestQueue = requestQueue;
     }
 
@@ -57,8 +61,13 @@ public class RequestManager implements Runnable {
 
     private void proccessAction(Action act, Channel channel){
         try {
+        //   Date d=new Date();
             Reply reply= actionManager.processAction(act,channel);
-            sendReply(channel,reply);
+            if(reply!=null){
+                 sendReply(channel,reply);
+            }
+         //   Date d1=new Date();
+         //   logger.info("request {} time {}",act,Long.toString(d1.getTime()-d.getTime()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -66,12 +75,15 @@ public class RequestManager implements Runnable {
 
 
     private void process(){
-        if(requestQueue==null)
+        if(requestQueue==null || requestQueue.size()==0)
             return;
-        Request r=null;
-        while((r=requestQueue.poll())!=null){
+        List<Request> tempList=new ArrayList<>();
+        requestQueue.drainTo(tempList) ;
+        for(Request r:tempList){
             try {
-                logger.info("parse "+r.getRequest());
+//                if(r.getRequest().contains("turnAction")) {
+//                     logger.info(String.format("parse %s, %s", r.getRequest(), new Date()).toString());
+//                }
                 Action act = requestMapper.readValue(r.getRequest(),Action.class);
                 ActionTypeEnum type= ActionTypeEnum.getValue(act.getAction());
                 if(type.isLong()){

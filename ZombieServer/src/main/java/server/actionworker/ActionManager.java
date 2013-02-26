@@ -38,7 +38,7 @@ public class ActionManager implements IProcessor{
 
 
     public Reply processAction(Action action,Object... params) throws Exception {
-        logger.info("Start process action "+action);
+        logger.debug("Start process action "+action);
         ActionTypeEnum type= ActionTypeEnum.getValue(action.getAction());
         if(type!=ActionTypeEnum.CONNECT && type!=ActionTypeEnum.CREATE_USER){
             if(manager.getUser(action.getName())==null){

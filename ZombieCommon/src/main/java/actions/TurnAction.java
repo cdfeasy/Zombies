@@ -14,10 +14,10 @@ public class TurnAction {
         surrender;
     }
     //0-turn, 1-end turn, 2-surrender
-    private int action;
-    private int turnNumber;
+    private Integer action;
+    private Integer turnNumber;
     private Long cardId;
-    private int position;
+    private Integer position;
 
     public TurnAction() {
     }
@@ -28,19 +28,19 @@ public class TurnAction {
         this.position = position;
     }
 
-    public int getAction() {
+    public Integer getAction() {
         return action;
     }
 
-    public void setAction(int action) {
+    public void setAction(Integer action) {
         this.action = action;
     }
 
-    public int getTurnNumber() {
+    public Integer getTurnNumber() {
         return turnNumber;
     }
 
-    public void setTurnNumber(int turnNumber) {
+    public void setTurnNumber(Integer turnNumber) {
         this.turnNumber = turnNumber;
     }
 
@@ -52,11 +52,21 @@ public class TurnAction {
         this.cardId = cardId;
     }
 
-    public int getPosition() {
+    public Integer getPosition() {
         return position;
     }
 
-    public void setPosition(int position) {
+    public void setPosition(Integer position) {
         this.position = position;
+    }
+
+    @Override
+    public String toString() {
+        return "TurnAction{" +
+                "action=" + action +
+                ", turnNumber=" + turnNumber +
+                ", cardId=" + cardId +
+                ", position=" + position +
+                '}';
     }
 }

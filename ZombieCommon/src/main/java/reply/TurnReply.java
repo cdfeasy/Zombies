@@ -25,10 +25,12 @@ public class TurnReply {
     //0-turn, 1-end turn, 2-you win,3-you lose
     private Integer action;
     private Integer turnNumber;
-    private String nextTurnUser;
+    private Integer nextTurnUser;
     //карт, ответ на ход противника
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     private Long cardId;
     //Позиция карты, ответ на ход противника
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     private Integer position;
 
     private GameInfo info;
@@ -36,7 +38,7 @@ public class TurnReply {
     /**
      * Мапа, ключ- кардВрапперИд, значение-стринговая иформация, например погибла, получила 10 урона от итд
      */
-    private Map<Integer,String> actions;
+    private Map<Integer,List<String>> actions;
     private Map<Integer,List<CardWrapper>> player1Card;
 
     private Map<Integer,List<CardWrapper>> player2Card;
@@ -50,7 +52,7 @@ public class TurnReply {
     public TurnReply() {
     }
 
-    public TurnReply(int action, int turnNumber, String nextTurnUser, Long cardId, Integer position, GameInfo info, Map<Integer, String> actions, Map<Integer, List<CardWrapper>> player1Card, Map<Integer, List<CardWrapper>> player2Card, List<Long> playerHand) {
+    public TurnReply(int action, int turnNumber, Integer nextTurnUser, Long cardId, Integer position, GameInfo info, Map<Integer, List<String>> actions, Map<Integer, List<CardWrapper>> player1Card, Map<Integer, List<CardWrapper>> player2Card, List<Long> playerHand) {
         this.action = action;
         this.turnNumber = turnNumber;
         this.nextTurnUser = nextTurnUser;
@@ -103,21 +105,21 @@ public class TurnReply {
         this.info = info;
     }
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-    public Map<Integer, String> getActions() {
+    public Map<Integer, List<String>> getActions() {
         return actions;
     }
 
 
-    public void setActions(Map<Integer, String> actions) {
+    public void setActions(Map<Integer, List<String>> actions) {
         this.actions = actions;
     }
 
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-    public String getNextTurnUser() {
+    public Integer getNextTurnUser() {
         return nextTurnUser;
     }
 
-    public void setNextTurnUser(String nextTurnUser) {
+    public void setNextTurnUser(Integer nextTurnUser) {
         this.nextTurnUser = nextTurnUser;
     }
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)

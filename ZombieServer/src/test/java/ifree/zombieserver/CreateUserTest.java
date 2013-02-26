@@ -18,6 +18,10 @@ import java.io.IOException;
  */
 public class CreateUserTest extends TestBase {
     @Test
+    public void test(){
+
+    }
+   // @Test
     public void ConnectionTest() throws InterruptedException, IOException {
         try {
             ObjectMapper mapper = new ObjectMapper();

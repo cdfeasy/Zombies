@@ -2,6 +2,7 @@ package server.game;
 
 import com.google.common.collect.Ordering;
 import com.google.inject.Inject;
+import org.slf4j.LoggerFactory;
 import server.User;
 
 import javax.swing.event.TreeModelListener;
@@ -17,6 +18,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * To change this template use File | Settings | File Templates.
  */
 public class NewGameStarter implements Runnable {
+    private  static org.slf4j.Logger logger= LoggerFactory.getLogger(NewGameStarter.class);
     Comparator<UserInfo> comp=new Comparator<UserInfo>() {
         @Override
         public int compare(UserInfo o1, UserInfo o2) {
@@ -57,6 +59,7 @@ public class NewGameStarter implements Runnable {
     }
     private void StartGames(){
         lock.lock();
+       // logger.info("Queue size {}",Integer.toString(queue.size()));
         try{
             Collections.sort(queue,comp);
             int index=queue.size()-1;
@@ -70,9 +73,11 @@ public class NewGameStarter implements Runnable {
                         }catch (Exception io){
                             io.printStackTrace();
                         }
+
                         //System.out.println("Start game:"+first+";"+second);
                         queue.remove(first);
                         queue.remove(second);
+
                         index=queue.size()-1;
                         break;
                     }

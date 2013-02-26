@@ -34,9 +34,9 @@ public class CardInfoTest extends TestBase{
 
 
             Client c=new Client("localhost",18080);
-
             c.setMessage(mapper.writeValueAsString(connectact));
             c.run();
+            c.send();
             int i=0;
             while (c.getReceive().size()==0){
                 if(i++>100)
@@ -56,7 +56,7 @@ public class CardInfoTest extends TestBase{
           //  act.setCardInfoAction(getCardInfo);
 
             c.setMessage(mapper.writeValueAsString(act));
-            c.run();
+            c.send();
             Thread.sleep(10000);
         }catch (Throwable th){
             th.printStackTrace();

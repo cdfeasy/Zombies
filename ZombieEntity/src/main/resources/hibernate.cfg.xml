@@ -15,6 +15,7 @@
         <mapping class="game.SubFraction"/>
         <mapping class="game.Card"/>
         <mapping class="server.History"/>
+        <mapping class="server.DetailStatistic"/>
         <mapping class="server.User"/>
         <mapping class="server.GameVersion"/>
 

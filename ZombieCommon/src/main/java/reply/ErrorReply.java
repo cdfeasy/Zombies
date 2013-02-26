@@ -51,4 +51,12 @@ public class ErrorReply {
         this.errorText = errorText;
         this.errorCode = errorCode;
     }
+
+    @Override
+    public String toString() {
+        return "ErrorReply{" +
+                "errorText='" + errorText + '\'' +
+                ", errorCode=" + errorCode +
+                '}';
+    }
 }

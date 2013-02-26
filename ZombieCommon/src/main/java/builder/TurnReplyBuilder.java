@@ -25,11 +25,11 @@ public class TurnReplyBuilder implements Builder{
 
     private int action;
     private int turnNumber;
-    private String nextTurnUser;
+    private Integer nextTurnUser;
     private Long cardId;
     private Integer position;
     private GameInfo info;
-    private Map<Integer,String> actions;
+    private Map<Integer,List<String>> actions;
     private Map<Integer,List<CardWrapper>> player1Card;
     private Map<Integer,List<CardWrapper>> player2Card;
     private List<Long> playerHand;
@@ -45,7 +45,7 @@ public class TurnReplyBuilder implements Builder{
         return info;
     }
 
-    private Map<Integer, String> getActions() {
+    private Map<Integer, List<String>> getActions() {
         return actions;
     }
 
@@ -90,13 +90,16 @@ public class TurnReplyBuilder implements Builder{
 
     public  TurnReplyBuilder addActionInfo(Integer cardWrapperId, String action ){
         if(getActions()==null)                         {
-            this.actions=new HashMap<Integer, String>();
+            this.actions=new HashMap<Integer, List<String>>();
         }
-        getActions().put(cardWrapperId,action);
+        if(getActions().get(cardWrapperId)==null){
+            getActions().put(cardWrapperId,new ArrayList<String>()) ;
+        }
+        getActions().get(cardWrapperId).add(action);
         return this;
     }
 
-    public  TurnReplyBuilder setActionInfo(Map<Integer, String> actionsInfo ){
+    public  TurnReplyBuilder setActionInfo(Map<Integer, List<String>> actionsInfo ){
         this.actions=actionsInfo;
         return this;
     }
@@ -105,7 +108,13 @@ public class TurnReplyBuilder implements Builder{
         if(getPlayer1Card()==null){
             this.player1Card=new HashMap<Integer, List<CardWrapper>>();
         }
-        getPlayer1Card().put(index,cards)  ;
+//        List<CardWrapper> tclone=new ArrayList<>();
+//        for(CardWrapper cw:cards){
+//            tclone.add(cw.transportClone());
+//        }
+        if(!cards.isEmpty()) {
+            getPlayer1Card().put(index,cards)  ;
+        }
         return this;
     }
 
@@ -114,7 +123,12 @@ public class TurnReplyBuilder implements Builder{
         return this;
     }
 
-    public  TurnReplyBuilder setNextTurnUser(String name ){
+    public  TurnReplyBuilder setInfo(GameInfo info ){
+        this.info=info;
+        return this;
+    }
+
+    public  TurnReplyBuilder setNextTurnUser(Integer name ){
         this.nextTurnUser=name;
         return this;
     }
@@ -132,7 +146,13 @@ public class TurnReplyBuilder implements Builder{
         if(getPlayer2Card()==null){
             this.player2Card=new HashMap<Integer, List<CardWrapper>>();
         }
-        getPlayer2Card().put(index,cards)  ;
+//        List<CardWrapper> tclone=new ArrayList<>();
+//        for(CardWrapper cw:cards){
+//            tclone.add(cw.transportClone());
+//        }
+        if(!cards.isEmpty()) {
+             getPlayer2Card().put(index,cards)  ;
+        }
         return this;
     }
 

@@ -7,7 +7,7 @@
         <property name="hibernate.connection.url">jdbc:postgresql://78.47.52.69:5432/zombiestest1</property>
         <property name="hibernate.connection.username">wh40</property>
         <property name="hibernate.connection.password">wh40pass</property>
-        <property name="hibernate.hbm2ddl.auto">validate</property>
+        <property name="hibernate.hbm2ddl.auto">create-drop</property>
         <property name="hibernate.show_sql">false</property>
         <mapping class="game.Abilities"/>
         <mapping class="game.Deck"/>
@@ -15,6 +15,7 @@
         <mapping class="game.SubFraction"/>
         <mapping class="game.Card"/>
         <mapping class="server.History"/>
+        <mapping class="server.DetailStatistic"/>
         <mapping class="server.User"/>
         <mapping class="server.GameVersion"/>
 

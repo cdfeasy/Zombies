@@ -125,4 +125,15 @@ public class Action {
        System.out.println(mapper.writeValueAsString(act))  ;
 
     }
+
+    @Override
+    public String toString() {
+        return "Action{" +
+                "action=" + action +
+                ", token='" + token + '\'' +
+                ", name='" + name + '\'' +
+                ", turnAction=" + turnAction +
+                '}';
+    }
 }
+

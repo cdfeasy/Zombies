@@ -1,5 +1,8 @@
 package support;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created with IntelliJ IDEA.
  * User: dmitry
@@ -9,10 +12,13 @@ package support;
  */
 public class GameInfo {
     private String enemyName;
-    private int zombyKilled;
+    private int zombieKilled;
     private int survivalsKilled;
     private int xp;
     private int gold;
+    private Map<Long,Integer> killed=new HashMap<Long,Integer>();
+    private Map<Long,Integer> dead=new HashMap<Long,Integer>();
+    private Map<Long,Integer> used=new HashMap<Long,Integer>();
 
     public String getEnemyName() {
         return enemyName;
@@ -22,12 +28,12 @@ public class GameInfo {
         this.enemyName = enemyName;
     }
 
-    public int getZombyKilled() {
-        return zombyKilled;
+    public int getZombieKilled() {
+        return zombieKilled;
     }
 
-    public void setZombyKilled(int zombyKilled) {
-        this.zombyKilled = zombyKilled;
+    public void setZombieKilled(int zombieKilled) {
+        this.zombieKilled = zombieKilled;
     }
 
     public int getSurvivalsKilled() {
@@ -52,5 +58,61 @@ public class GameInfo {
 
     public void setGold(int gold) {
         this.gold = gold;
+    }
+
+    public Map<Long, Integer> getKilled() {
+        return killed;
+    }
+
+    public void setKilled(Map<Long, Integer> killed) {
+        this.killed = killed;
+    }
+
+    public void incKilled(Long card) {
+        Integer cnt=getKilled().get(card);
+        if(cnt==null){
+            getKilled().put(card,1);
+        } else{
+            getKilled().put(card,cnt+1);
+        }
+    }
+
+    public Map<Long, Integer> getDead() {
+        return dead;
+    }
+
+    public void setDead(Map<Long, Integer> dead) {
+        this.dead = dead;
+    }
+    public void incDead(Long card) {
+        Integer cnt=getDead().get(card);
+        if(cnt==null){
+            getDead().put(card,1);
+        } else{
+            getDead().put(card,cnt+1);
+        }
+    }
+
+    public Map<Long, Integer> getUsed() {
+        return used;
+    }
+
+    public void setUsed(Map<Long, Integer> used) {
+        this.used = used;
+    }
+
+    public void incUsed(Long card) {
+        Integer cnt=getUsed().get(card);
+        if(cnt==null){
+            getUsed().put(card,1);
+        } else{
+            getUsed().put(card,cnt+1);
+        }
+    }
+    public void incZombieKilled(){
+        zombieKilled++;
+    }
+    public void incSurvivalsKilled(){
+        survivalsKilled++;
     }
 }

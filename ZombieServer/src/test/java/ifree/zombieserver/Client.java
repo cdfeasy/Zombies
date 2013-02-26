@@ -28,12 +28,15 @@ import java.util.concurrent.Executors;
 public class Client {
     private String message;
     private List<String> receive= Collections.synchronizedList(new ArrayList());
+    final ClientHandler ch=new ClientHandler();
+    org.jboss.netty.channel.ChannelFuture ftr;
         private final String host;
         private final int port;
 
         public Client(String host, int port) {
             this.host = host;
             this.port = port;
+            ch.setReceive(receive);
         }
 
     public String getMessage() {
@@ -42,6 +45,7 @@ public class Client {
 
     public void setMessage(String message) {
         this.message = message;
+        ch.setMessage(message);
     }
 
     public List<String> getReceive() {
@@ -52,7 +56,12 @@ public class Client {
         this.receive = receive;
     }
 
+    public void send(){
+       ch.send();
+    }
+
     public void run() {
+
         // Configure the client.
         ClientBootstrap bootstrap = new ClientBootstrap(
                 new NioClientSocketChannelFactory(
@@ -60,9 +69,8 @@ public class Client {
                         Executors.newCachedThreadPool()));
 
         // Set up the pipeline factory.
-        final ClientHandler ch=new ClientHandler();
-        ch.setReceive(receive);
-        ch.setMessage(message);
+
+
         bootstrap.setPipelineFactory(new ChannelPipelineFactory() {
             public ChannelPipeline getPipeline() throws Exception {
                 return Channels.pipeline(
@@ -74,8 +82,7 @@ public class Client {
         });
 
         // Start the connection attempt.
-        bootstrap.connect(new InetSocketAddress(host, port));
-
+        ftr= bootstrap.connect(new InetSocketAddress(host, port));
     }
 
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -56,17 +57,32 @@ public class ClientHandler extends SimpleChannelUpstreamHandler {
             ChannelHandlerContext ctx, ChannelEvent e) throws Exception {
         if (e instanceof ChannelStateEvent &&
                 ((ChannelStateEvent) e).getState() != ChannelState.INTEREST_OPS) {
-            System.out.println(e.toString());
+           // System.out.println(e.toString());
         }
         super.handleUpstream(ctx, e);
     }
-
+    org.jboss.netty.channel.Channel c;
+    private AtomicBoolean isInited=new AtomicBoolean(false);
     @Override
     public void channelConnected(
             ChannelHandlerContext ctx, ChannelStateEvent e) {
         // Send the first message if this handler is a client-side handler.
-        System.out.println("send "+ message);
-        e.getChannel().write(message);
+         c=e.getChannel();
+        isInited.set(true);
+    }
+
+    public void send(){
+
+            while (!isInited.get()){
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+            }
+
+      //  System.out.println("send "+ message);
+        c.write(message);
     }
 
     @Override

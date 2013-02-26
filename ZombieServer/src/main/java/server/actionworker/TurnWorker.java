@@ -1,7 +1,10 @@
 package server.actionworker;
 
 import actions.Action;
+import com.google.inject.Inject;
 import reply.Reply;
+import server.game.LobbyManager;
+import server.game.UserInfo;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,8 +14,13 @@ import reply.Reply;
  * To change this template use File | Settings | File Templates.
  */
 public class TurnWorker implements IProcessor{
+    @Inject
+    LobbyManager lobby;
+
     @Override
     public Reply processAction(Action action, Object... params) throws Exception {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        UserInfo ui=lobby.getUser(action.getName());
+        ui.getManager().addOrder(ui,action);
+        return null;
     }
 }

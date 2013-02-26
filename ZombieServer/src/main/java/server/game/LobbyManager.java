@@ -32,8 +32,8 @@ public class LobbyManager {
     private ArrayList<GameManager> runningGames=new ArrayList<GameManager>();
     private ReentrantLock userLock =new ReentrantLock();
     private ReentrantLock managerLock =new ReentrantLock();
-    private ConcurrentLinkedQueue<Request> requestQueue=new ConcurrentLinkedQueue<>();
-    private ScheduledExecutorService gameTicker=Executors.newScheduledThreadPool(10);
+    private LinkedBlockingQueue<Request> requestQueue=new LinkedBlockingQueue<>();
+    private ScheduledExecutorService gameTicker=Executors.newSingleThreadScheduledExecutor();
 
 
     ScheduledExecutorService requestParser= Executors.newSingleThreadScheduledExecutor();

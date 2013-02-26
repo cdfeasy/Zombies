@@ -157,4 +157,21 @@ public class Reply {
         System.out.println(String.format("time1 [%s] time2 [%s]", Long.toString(d2.getTime() - d1.getTime()), Long.toString(d3.getTime() - d2.getTime())));
 
     }
+
+    @Override
+    public String toString() {
+        return "Reply{" +
+                "reply=" + reply +
+                ", connectionReply=" + connectionReply +
+                ", turnReply=" + turnReply +
+                ", userInfoReply=" + userInfoReply +
+                ", errorReply=" + errorReply +
+                ", searchReply=" + searchReply +
+                ", stopSearchReply=" + stopSearchReply +
+                ", cardInfoReply=" + cardInfoReply +
+                ", successReply=" + successReply +
+                ", saveDeckReply=" + saveDeckReply +
+                ", gameStartedReply=" + gameStartedReply +
+                '}';
+    }
 }

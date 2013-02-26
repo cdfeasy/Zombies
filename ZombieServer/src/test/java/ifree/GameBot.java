@@ -1,6 +1,10 @@
 package ifree;
 
 import actions.*;
+import game.Card;
+import game.CardTypeEnum;
+import game.Fraction;
+import game.SubFraction;
 import ifree.zombieserver.Client;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -8,6 +12,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import reply.Reply;
 
 import java.io.IOException;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,12 +22,18 @@ import java.io.IOException;
  * To change this template use File | Settings | File Templates.
  */
 public class GameBot implements Runnable{
-    String username;
-    Long side;
-
+    public String username;
+    public Long side;
+    public String token;
+    public List<Fraction> fr;
+    public Map<Long,Card> cards=new HashMap<>() ;
+    public List<Card> currCards=new ArrayList<>();
     ObjectMapper mapper = new ObjectMapper();
 
     ObjectMapper reply = new ObjectMapper();
+    public int currReceive=0;
+    public int currTurn=0;
+    public int playerQueue=0;
 
 
 
@@ -55,13 +66,14 @@ public class GameBot implements Runnable{
         createUser.setCreateUserAction(cra);
 
         c.setMessage(mapper.writeValueAsString(createUser));
-        c.run();
+        c.send();
         int i = 0;
-        while (c.getReceive().size() == 0) {
-            if (i++ > 100)
+        while (c.getReceive().size() == currReceive) {
+            if (i++ > 10000)
                 break;
             Thread.sleep(100);
         }
+        currReceive++;
         String receive = c.getReceive().get(0);
     }
 
@@ -74,19 +86,52 @@ public class GameBot implements Runnable{
         connectact.setConnectAction(ca);
 
         c.setMessage(mapper.writeValueAsString(connectact));
-        c.run();
+        c.send();
         int i = 0;
-        while (c.getReceive().size() ==1) {
-            if (i++ > 100)
+        while (c.getReceive().size() ==currReceive) {
+            if (i++ > 10000)
                 break;
             Thread.sleep(100);
         }
-        String receive = c.getReceive().get(1);
+        String receive = c.getReceive().get(currReceive);
+        currReceive++;
 
 
         Reply rep = reply.readValue(receive, Reply.class);
         final String token = rep.getConnectionReply().getToken();
         return token;
+
+    }
+
+    private void  cardInfo(Client c,String token) throws IOException, InterruptedException {
+        CardInfoAction getCardInfo=new CardInfoAction();
+        Action act=new Action();
+        act.setName(username);
+        act.setToken(token);
+        act.setAction(ActionTypeEnum.GET_CARD_INFO.getId());
+
+        c.setMessage(mapper.writeValueAsString(act));
+        c.send();
+        int i = 0;
+        while (c.getReceive().size() ==currReceive) {
+            if (i++ > 10000)
+                break;
+            Thread.sleep(100);
+        }
+        String receive = c.getReceive().get(currReceive);
+        currReceive++;
+
+
+        Reply rep = reply.readValue(receive, Reply.class);
+        fr=rep.getCardInfoReply().getFractions();
+        for(Fraction f:fr){
+            for(SubFraction sub:f.getSubFractions()){
+                for(Card cd:sub.getDeck()){
+                     cards.put(cd.getId(),cd);
+                }
+            }
+        }
+
 
     }
 
@@ -97,32 +142,68 @@ public class GameBot implements Runnable{
         act.setAction(ActionTypeEnum.SEARCH.getId());
         //   act.setSearchAction(new SearchAction());
         c.setMessage(mapper.writeValueAsString(act));
-        c.run();
-        int i = 0;
-        while (c.getReceive().size() ==2) {
-            if (i++ > 100)
-                break;
-            Thread.sleep(100);
-        }
+        c.send();
+//        int i = 0;
+//        while (c.getReceive().size() ==currReceive) {
+//            if (i++ > 10000)
+//                break;
+//            Thread.sleep(100);
+//        }
+//        currReceive++;
     }
+
+    private void doTurn(Client c,String token) throws IOException, InterruptedException {
+        Action act = new Action();
+        act.setName(username);
+        act.setToken(token);
+        act.setAction(ActionTypeEnum.TURN.getId());
+        TurnAction ta=new TurnAction();
+        ta.setTurnNumber(1);
+        ta.setAction(TurnAction.actionEnum.endturn.ordinal());
+        act.setTurnAction(ta);
+        c.setMessage(mapper.writeValueAsString(act));
+        c.send();
+    }
+
 
     @Override
     public void run() {
         try {
             Client c = new Client("localhost", 18080);
+            c.run();
             create(c);
-            String token=connect(c);
-            search(c,token);
+            String _token=connect(c);
+            this.token=_token;
+            cardInfo(c,_token);
+            search(c,_token);
 
             int i = 0;
-            while (c.getReceive().size() ==3) {
+            while (c.getReceive().size() ==currReceive) {
                 if (i++ > 10000)
                     break;
                 Thread.sleep(100);
             }
+            Reply rep = reply.readValue(c.getReceive().get(currReceive), Reply.class);
+            currReceive++;
 
-            Thread.sleep(100000);
+            if(rep.getGameStartedReply()==null){
+                int ind=new Random().nextInt(100000);
+                for(int k=0;k<c.getReceive().size();k++){
+                      System.out.println(Integer.toString(ind)+"ERROR!!!"+c.getReceive().get(k));
+                }
+            }
+            for(Long l:rep.getGameStartedReply().getCards())   {
+                currCards.add(cards.get(l));
+            }
+            playerQueue=rep.getGameStartedReply().getPosition();
+            TurnProcessor tp=new TurnProcessor(c,this);
+            Thread ttp=new Thread(tp);
+            ttp.start();
+            if(playerQueue==0){
+                doTurn(c,token);
+            }
 
+            ttp.join();
 
         } catch (Throwable th) {
             th.printStackTrace();

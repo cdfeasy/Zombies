@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import server.game.LobbyManager;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.concurrent.atomic.AtomicLong;
 
 
@@ -27,7 +28,7 @@ public class ServerHandler  extends SimpleChannelUpstreamHandler{
             ChannelHandlerContext ctx, ChannelEvent e) throws Exception {
         if (e instanceof ChannelStateEvent &&
                 ((ChannelStateEvent) e).getState() != ChannelState.INTEREST_OPS) {
-            System.out.println(e.toString());
+            //System.out.println(e.toString());
         }
         super.handleUpstream(ctx, e);
     }
@@ -37,20 +38,24 @@ public class ServerHandler  extends SimpleChannelUpstreamHandler{
             ChannelHandlerContext ctx, MessageEvent e) {
         // Echo back the received object to the client.
 
-        logger.info("received+"+e.toString());
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            logger.error("error",ex);
-        }
+       // logger.debug("received+" + e.toString());
+//        if(e.toString().contains("turnAction")) {
+//            logger.info(String.format("parse %s, %s, %s", e.toString(),new Date().toString(),Long.toString(new Date().getTime())));
+//        }
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException ex) {
+//            logger.error("error",ex);
+//        }
         manager.parseRequest(e.getChannel(),e.getMessage().toString());
     }
 
     @Override
     public void exceptionCaught(
             ChannelHandlerContext ctx, ExceptionEvent e) {
-        if(!e.getCause().getClass().equals(IOException.class))
+        if(!e.getCause().getClass().equals(IOException.class)) {
              logger.error("error", e.getCause());
+        }
         e.getChannel().close();
     }
 }

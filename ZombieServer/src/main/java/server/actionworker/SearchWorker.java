@@ -26,6 +26,6 @@ public class SearchWorker implements IProcessor{
     public Reply processAction(Action action, Object... params) throws Exception {
         UserInfo ui=lobby.getUser(action.getName());
         searcher.registerPlayerInQueue(ui);
-        return ReplyBuilder.getSearchReplyBuilder().build();
+        return null;//ReplyBuilder.getSearchReplyBuilder().build();
     }
 }
