@@ -25,18 +25,18 @@ public class FillBase {
         Card aero = new Card("Аэропорт", "Увеличивает приток вируса", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0,1);
         Card tec = new Card("Теплоэлектростанция", "Увеличивает приток энергии", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0,1);
 
-        Abilities genereateCorpse = new Abilities("Увеличение притока тел", "Увеличение притока тел", "+2res1");
-        Abilities genereateVirus = new Abilities("Увеличение притока вируса", "Увеличение притока вируса", "+2res2");
-        Abilities genereateEnergy = new Abilities("Увеличение притока энергии", "Увеличение притока энергии", "+2res3");
+        Abilities genereateCorpse = new Abilities("Увеличение притока тел", "Увеличение притока тел", "res1=2");
+        Abilities genereateVirus = new Abilities("Увеличение притока вируса", "Увеличение притока вируса", "res2=2");
+        Abilities genereateEnergy = new Abilities("Увеличение притока энергии", "Увеличение притока энергии", "res3=2");
 
         hospital.getAbilities().add(genereateCorpse);
         aero.getAbilities().add(genereateVirus);
         tec.getAbilities().add(genereateEnergy);
 
-        Abilities ignoreBlock = new Abilities("Атакует за баррикадами", "Атакует за баррикадами", "reverse threat");
-        Abilities meatmass = new Abilities("Без лимита на ячейку", "Без лимита на ячейку", "no limit");
-        Abilities unweldy = new Abilities("Промахивается каждый третий удар", "Промахивается каждый третий удар", "miss30");
-        Abilities evade = new Abilities("Игнорирует половину урона", "Игнорирует половину урона", "evade50");
+        Abilities ignoreBlock = new Abilities("Атакует за баррикадами", "Атакует за баррикадами", "backstub");
+        Abilities meatmass = new Abilities("Без лимита на ячейку", "Без лимита на ячейку", "nolimit");
+        Abilities unweldy = new Abilities("Промахивается каждый третий удар", "Промахивается каждый третий удар", "miss=30");
+        Abilities evade = new Abilities("Игнорирует половину урона", "Игнорирует половину урона", "evade=50");
 
         slow.getAbilities().add(meatmass);
         slow.getAbilities().add(unweldy);
@@ -106,9 +106,9 @@ public class FillBase {
         Card tech = new Card("Автостоянка", "Увеличивает приток техники", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0,1);
         Card market = new Card("Оружиейны магазин", "Увеличивает приток оружия", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0,1);
 
-        Abilities genereatePeoples = new Abilities("Увеличение притока людей", "Увеличение притока людей", "+2res1");
-        Abilities genereateTech = new Abilities("Увеличение притока техники", "Увеличение притока техники", "+2res2");
-        Abilities genereateWeapon = new Abilities("Увеличение притока оружия", "Увеличение притока оружия", "+2res3");
+        Abilities genereatePeoples = new Abilities("Увеличение притока людей", "Увеличение притока людей", "res1=2");
+        Abilities genereateTech = new Abilities("Увеличение притока техники", "Увеличение притока техники", "res2=2");
+        Abilities genereateWeapon = new Abilities("Увеличение притока оружия", "Увеличение притока оружия", "res3=2");
 
         hospital.getAbilities().add(genereatePeoples);
         tech.getAbilities().add(genereateTech);
@@ -116,10 +116,8 @@ public class FillBase {
 
         Abilities molotovCoctail = new Abilities("Коктейл молотова", "Поджигает всех врагов", "splash=1");
         Abilities healAbility = new Abilities("Лечение", "Лечит союзников", "heal=5");
-        Abilities bunkerBus = new Abilities("Транспорт", "Пока не уничтожен никто не получает урона", "transport");
 
         medic.getAbilities().add(healAbility);
-        zombiebus.getAbilities().add(bunkerBus);
         molotov.getAbilities().add(molotovCoctail);
 
         SubFraction simplePeoples = new SubFraction("Горожане", "Горожане");
@@ -147,7 +145,6 @@ public class FillBase {
         ses.persist(genereateWeapon);
         ses.persist(molotovCoctail);
         ses.persist(healAbility);
-        ses.persist(bunkerBus);
 
 
         ses.persist(peysan);

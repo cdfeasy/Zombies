@@ -3,10 +3,16 @@ package ifree.zombieserver;
 import actions.*;
 import ifree.GameBot;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.junit.Test;
 import reply.Reply;
+import server.DetailStatistic;
+import server.HibernateUtil;
+import server.History;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -35,6 +41,20 @@ public class ComplexGameTest extends TestBase {
             for(int i=0;i<cnt;i++){
                 t[i].join();
             }
+            Thread.sleep(1000);
+
+            Session ses = HibernateUtil.getSessionFactory().openSession();
+
+           Query querydel1= ses.createQuery("select h from History h");
+            for(History u:(List<History>)querydel1.list()){
+                System.out.println(u);
+            }
+
+            Query querydel2= ses.createQuery("select h from DetailStatistic h");
+            for(DetailStatistic u:(List<DetailStatistic>)querydel2.list()){
+                System.out.println(u);
+            }
+            ses.close();
 
         } catch (Throwable th) {
             th.printStackTrace();

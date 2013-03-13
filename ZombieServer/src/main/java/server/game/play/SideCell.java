@@ -5,8 +5,6 @@ import game.CardTypeEnum;
 import support.CardWrapper;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -19,6 +17,7 @@ import java.util.List;
 public class SideCell {
     private ArrayList<CardWrapper> cards=new ArrayList<CardWrapper>() ;
     private GameManager manager;
+
 
     public SideCell(GameManager manager) {
         this.manager = manager;
@@ -39,16 +38,16 @@ public class SideCell {
 
     public int hit(int damage,CardWrapper c){
         int spend=0;
-        if(damage<c.getArmour()){
+        if(damage<c.resultDamage()){
             return 0;
         }
 
-        if(damage>c.getHp()+c.getArmour()){
-            spend=c.getHp()+c.getArmour();
+        if(damage>c.getHp()+c.resultDamage()){
+            spend=c.getHp()+c.resultDamage();
             c.setHp(0);
             return spend;
         }
-        c.setHp(c.getHp()-damage+c.getArmour());
+        c.setHp(c.getHp()-damage+c.resultDamage());
         return damage;
     }
 
@@ -79,13 +78,27 @@ public class SideCell {
         return  cards;
     }
 
+    /**
+     * возвращает или первую или последнюю карту, в зависимости от флага
+     * @param isTop
+     * @return
+     */
+    public CardWrapper getCard(boolean isTop){
+        if(isTop)
+            return getTopCard();
+        else
+            return getLastCard();
+
+    }
+
     public CardWrapper getLastCard(){
         if(cards.isEmpty())
             return null;
         int min=9999;
         int index=-1;
+        int strIndex=-1;
         for(int i=0;i<cards.size();i++){
-            if(cards.get(i).getCard().getThreadLevel()<min && cards.get(i).getHp()>0){
+            if(cards.get(i).getCard().getThreadLevel()<min && cards.get(i).getHp()>0 && !CardTypeEnum.getValue(cards.get(i).getCard().getCardType()).equals(CardTypeEnum.structure)){
                 index=i;
                 min=cards.get(i).getCard().getThreadLevel();
             }
@@ -93,8 +106,14 @@ public class SideCell {
                 index=i;
                 min=-9999;
             }
-        }
+            if(cards.get(i).getCard().getThreadLevel()<min && cards.get(i).getHp()>0 && CardTypeEnum.getValue(cards.get(i).getCard().getCardType()).equals(CardTypeEnum.structure)){
+                strIndex=i;
+            }
+          }
         if(index==-1){
+            if(strIndex!=-1){
+                return  cards.get(strIndex) ;
+            }
             return null;
         }
         CardWrapper last= cards.get(index);

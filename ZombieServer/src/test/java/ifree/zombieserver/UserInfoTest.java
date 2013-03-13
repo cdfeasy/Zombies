@@ -37,6 +37,7 @@ public class UserInfoTest extends TestBase{
 
             c.setMessage(mapper.writeValueAsString(connectact));
             c.run();
+            c.send();
             int i = 0;
             while (c.getReceive().size() == 0) {
                 if (i++ > 100)

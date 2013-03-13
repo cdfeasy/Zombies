@@ -27,6 +27,7 @@ public class Reply {
     private SuccessReply successReply;
     private SaveDeckReply saveDeckReply;
     private GameStartedReply gameStartedReply;
+    private AchievementsReply achievementsReply;
 
     public Reply(int reply) {
         this.reply = reply;
@@ -132,7 +133,14 @@ public class Reply {
     public void setGameStartedReply(GameStartedReply gameStartedReply) {
         this.gameStartedReply = gameStartedReply;
     }
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    public AchievementsReply getAchievementsReply() {
+        return achievementsReply;
+    }
 
+    public void setAchievementsReply(AchievementsReply achievementsReply) {
+        this.achievementsReply = achievementsReply;
+    }
 
     public static void main(String[] args) throws IOException {
 

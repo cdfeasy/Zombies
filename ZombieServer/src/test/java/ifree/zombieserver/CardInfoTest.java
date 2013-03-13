@@ -17,7 +17,7 @@ import java.io.IOException;
  * Time: 18:23
  * To change this template use File | Settings | File Templates.
  */
-public class CardInfoTest extends TestBase{
+public class CardInfoTest {
     @Test
     public void ConnectionTest() throws InterruptedException, IOException {
         try{
@@ -33,7 +33,7 @@ public class CardInfoTest extends TestBase{
             connectact.setConnectAction(ca);
 
 
-            Client c=new Client("localhost",18080);
+            Client c=new Client("78.47.52.69",18080);
             c.setMessage(mapper.writeValueAsString(connectact));
             c.run();
             c.send();

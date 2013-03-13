@@ -81,7 +81,7 @@ public class ClientHandler extends SimpleChannelUpstreamHandler {
                 }
             }
 
-      //  System.out.println("send "+ message);
+        System.out.println("send "+ message);
         c.write(message);
     }
 

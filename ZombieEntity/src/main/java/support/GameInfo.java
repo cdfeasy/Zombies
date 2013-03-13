@@ -16,6 +16,8 @@ public class GameInfo {
     private int survivalsKilled;
     private int xp;
     private int gold;
+    private boolean win=false;
+    private byte gameType=0;
     private Map<Long,Integer> killed=new HashMap<Long,Integer>();
     private Map<Long,Integer> dead=new HashMap<Long,Integer>();
     private Map<Long,Integer> used=new HashMap<Long,Integer>();
@@ -62,6 +64,22 @@ public class GameInfo {
 
     public Map<Long, Integer> getKilled() {
         return killed;
+    }
+
+    public boolean isWin() {
+        return win;
+    }
+
+    public void setWin(boolean win) {
+        this.win = win;
+    }
+
+    public byte getGameType() {
+        return gameType;
+    }
+
+    public void setGameType(byte gameType) {
+        this.gameType = gameType;
     }
 
     public void setKilled(Map<Long, Integer> killed) {

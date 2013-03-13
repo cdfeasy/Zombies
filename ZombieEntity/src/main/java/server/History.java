@@ -20,7 +20,8 @@ public class History {
     @ManyToOne(optional=false)
     @JoinColumn(name="player2", nullable=false, updatable=false)
     private User player2;
-    private int result;
+    private byte result;
+    private byte gameType;
 
     public long getId() {
         return id;
@@ -46,11 +47,30 @@ public class History {
         this.player2 = player2;
     }
 
-    public int getResult() {
+    public byte getResult() {
         return result;
     }
 
-    public void setResult(int result) {
+    public void setResult(byte result) {
         this.result = result;
+    }
+
+    public byte getGameType() {
+        return gameType;
+    }
+
+    public void setGameType(byte gameType) {
+        this.gameType = gameType;
+    }
+
+    @Override
+    public String toString() {
+        return "History{" +
+                "id=" + id +
+                ", player1=" + player1 +
+                ", player2=" + player2 +
+                ", result=" + result +
+                ", gameType=" + gameType +
+                '}';
     }
 }

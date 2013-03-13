@@ -17,6 +17,11 @@ public class TableSide {
     private  int res1Income;
     private  int res2Income;
     private  int res3Income;
+
+    private  int res1;
+    private  int res2;
+    private  int res3;
+
     private GameManager manager;
     public TableSide(Deck userDeck,GameManager manager){
         this.manager=manager;
@@ -80,5 +85,29 @@ public class TableSide {
 
     public void setRes3Income(int res3Income) {
         this.res3Income = res3Income;
+    }
+
+    public int getRes1() {
+        return res1;
+    }
+
+    public void setRes1(int res1) {
+        this.res1 = res1;
+    }
+
+    public int getRes2() {
+        return res2;
+    }
+
+    public void setRes2(int res2) {
+        this.res2 = res2;
+    }
+
+    public int getRes3() {
+        return res3;
+    }
+
+    public void setRes3(int res3) {
+        this.res3 = res3;
     }
 }

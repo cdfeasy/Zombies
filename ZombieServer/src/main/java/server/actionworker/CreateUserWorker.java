@@ -65,7 +65,7 @@ public class CreateUserWorker implements IProcessor {
                 return ReplyBuilder.getErrorReplyBuilder().setErrorText("user already exist").build();
             }
             User usr = new User();
-            usr.setLevel(0);
+            usr.setLevel(1);
             usr.setXp(0);
             usr.setName(action.getCreateUserAction().getName());
             usr.setPass(action.getCreateUserAction().getPass());

@@ -44,6 +44,10 @@ public class Card {
     @JoinColumn(name="subFraction_id")
     private SubFraction subFraction;
 
+    @ManyToOne
+    @JoinColumn(name="uniqueAbility_id")
+    private Abilities uniqueAbility;
+
     private int resourceCost1;
     private int resourceCost2;
     private int resourceCost3;
@@ -224,5 +228,13 @@ public class Card {
 
     public void setDescriptionEng(String descriptionEng) {
         this.descriptionEng = descriptionEng;
+    }
+
+    public Abilities getUniqueAbility() {
+        return uniqueAbility;
+    }
+
+    public void setUniqueAbility(Abilities uniqueAbility) {
+        this.uniqueAbility = uniqueAbility;
     }
 }

@@ -14,10 +14,15 @@ import server.netty.Server;
  */
 public class App {
     public static void main(String[] args) throws Exception {
-        int port=18080;
+        int port = 18080;
         Injector injector = Guice.createInjector(new ServerModule());
 
-        Server server = injector.getInstance(Server.class);
+        final Server server = injector.getInstance(Server.class);
         server.run();
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+            }
+        });
     }
 }

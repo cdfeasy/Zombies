@@ -54,7 +54,11 @@ public class RequestManager implements Runnable {
         this.requestQueue = requestQueue;
     }
 
-    public void sendReply(Channel c,Reply reply) throws IOException {
+    public void sendReply(UserInfo ui,Reply reply) throws IOException {
+        String replyString=replyMapper.writeValueAsString(reply);
+        ui.getChannel().write(replyString);
+    }
+    private void send(Channel c,Reply reply) throws IOException{
         String replyString=replyMapper.writeValueAsString(reply);
         c.write(replyString);
     }
@@ -64,7 +68,7 @@ public class RequestManager implements Runnable {
         //   Date d=new Date();
             Reply reply= actionManager.processAction(act,channel);
             if(reply!=null){
-                 sendReply(channel,reply);
+                send(channel,reply);
             }
          //   Date d1=new Date();
          //   logger.info("request {} time {}",act,Long.toString(d1.getTime()-d.getTime()));

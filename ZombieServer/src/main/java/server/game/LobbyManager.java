@@ -9,6 +9,8 @@ import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.jboss.netty.channel.Channel;
+import server.game.play.AbilitiesProcessor;
+import server.game.play.GameEndProcessor;
 import server.game.play.GameManager;
 
 import java.io.IOException;
@@ -44,6 +46,10 @@ public class LobbyManager {
     NewGameStarter newGameStarterThread;
     @Inject
     RequestManager requestManager;
+    @Inject
+    GameEndProcessor gameEnd;
+    @Inject
+    AbilitiesProcessor ability;
 
     public LobbyManager(){
 
@@ -98,7 +104,13 @@ public class LobbyManager {
     }
 
     public void startGame(UserInfo user1,UserInfo user2) throws IOException {
-       runningGames.add(new GameManager(user1,user2,this));
+       runningGames.add(new GameManager(user1,user2,this,gameEnd, ability));
+
+    }
+
+    public void endGame(GameManager manager) throws IOException {
+
+        runningGames.remove(manager);
 
     }
 

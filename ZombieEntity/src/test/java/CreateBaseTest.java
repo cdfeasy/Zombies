@@ -3,6 +3,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import server.FriendList;
 import server.HibernateUtil;
 import server.User;
 import support.FillBase;
@@ -38,7 +39,7 @@ public class CreateBaseTest {
             u1.setName("User1");
             u1.setPass("12345");
 
-            User u2 = new User();
+            final User u2 = new User();
             u2.setLevel(2);
             u2.setXp(200);
             u2.setName("User2");
@@ -58,6 +59,10 @@ public class CreateBaseTest {
             ses.persist(u2);
             ses.persist(u3);
             ses.persist(u4);
+            FriendList f1=new FriendList();
+            f1.setFriends(new ArrayList<Long>(){{add(u2.getId());}});
+            u1.setFriendList(f1);
+            ses.merge(u1) ;
 
             ses.getTransaction().commit();
             ses.getTransaction().begin();

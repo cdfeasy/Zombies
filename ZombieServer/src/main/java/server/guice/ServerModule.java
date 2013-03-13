@@ -4,6 +4,8 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 import com.google.inject.name.Names;
 import server.actionworker.*;
+import server.base.DTOWorker;
+import server.game.play.GameEndProcessor;
 import server.game.play.GameManager;
 import server.netty.Server;
 import server.netty.ServerHandler;
@@ -33,10 +35,15 @@ public class ServerModule extends AbstractModule {
         bind(ConnectionWorker.class).in(Scopes.SINGLETON);
        bind(UserInfoWorker.class).in(Scopes.SINGLETON);
        bind(SearchWorker.class);
+       bind(GameManager.class);
        bind(StopSearchWorker.class);
        bind(TurnWorker.class);
        // bind(GameManager.class);
         bind(CardInfoWorker.class).in(Scopes.SINGLETON);
-        bind(CreateUserWorker.class).in(Scopes.SINGLETON);;
+        bind(CreateUserWorker.class).in(Scopes.SINGLETON);
+        bind(GameEndProcessor.class).in(Scopes.SINGLETON);
+        bind(DTOWorker.class);
+
+
     }
 }

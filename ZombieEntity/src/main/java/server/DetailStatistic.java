@@ -69,4 +69,16 @@ public class DetailStatistic {
     public void setUsed(Integer used) {
         this.used = used;
     }
+
+    @Override
+    public String toString() {
+        return "DetailStatistic{" +
+                "id=" + id +
+                ", user=" + user +
+                ", cardId=" + cardId +
+                ", killing=" + killing +
+                ", dead=" + dead +
+                ", used=" + used +
+                '}';
+    }
 }

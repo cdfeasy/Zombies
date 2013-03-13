@@ -17,6 +17,7 @@
         <mapping class="server.History"/>
         <mapping class="server.DetailStatistic"/>
         <mapping class="server.User"/>
+        <mapping class="server.FriendList"/>
         <mapping class="server.GameVersion"/>
 
     </session-factory>

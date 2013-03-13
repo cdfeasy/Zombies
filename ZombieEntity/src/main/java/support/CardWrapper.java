@@ -3,7 +3,6 @@ package support;
 import game.Card;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.io.IOException;
 
@@ -18,9 +17,10 @@ public class CardWrapper  {
     private Card card;
     private Long cardId;
     private int wrapperId;
-    private int strength;
-    private int hp;
-    private int armour;
+    private byte strengthBuff;
+    private byte hp;
+    private byte armourBuff;
+    private byte virus;
     private boolean active=false;
 
     public CardWrapper() {
@@ -28,9 +28,9 @@ public class CardWrapper  {
 
     public CardWrapper(Card card,int wrapperId) {
         this.card = card;
-        this.hp=card.getHp();
-        this.armour=card.getArmour();
-        this.strength=card.getStrength();
+        this.hp=(byte)card.getHp();
+        this.armourBuff =(byte)card.getArmour();
+        this.strengthBuff =(byte)card.getStrength();
         this.wrapperId = wrapperId;
         this.cardId=card.getId();
     }
@@ -39,9 +39,9 @@ public class CardWrapper  {
         this.card = card;
         this.active = active;
         this.wrapperId = wrapperId;
-        this.hp=card.getHp();
-        this.armour=card.getArmour();
-        this.strength=card.getStrength();
+        this.hp=(byte)card.getHp();
+        this.armourBuff =(byte)card.getArmour();
+        this.strengthBuff =(byte)card.getStrength();
         this.cardId=card.getId();
     }
     @JsonIgnore(value = true)
@@ -58,7 +58,7 @@ public class CardWrapper  {
     }
 
     public void setHp(int hp) {
-        this.hp = hp;
+        this.hp = (byte)hp;
     }
 
     public boolean isActive() {
@@ -69,20 +69,20 @@ public class CardWrapper  {
         this.active = active;
     }
 
-    public int getStrength() {
-        return strength;
+    public int getStrengthBuff() {
+        return strengthBuff;
     }
 
-    public void setStrength(int strength) {
-        this.strength = strength;
+    public void setStrengthBuff(int strengthBuff) {
+        this.strengthBuff = (byte)strengthBuff;
     }
 
-    public int getArmour() {
-        return armour;
+    public int getArmourBuff() {
+        return armourBuff;
     }
 
-    public void setArmour(int armour) {
-        this.armour = armour;
+    public void setArmourBuff(int armourBuff) {
+        this.armourBuff = (byte)armourBuff;
     }
 
     public int getWrapperId() {
@@ -101,6 +101,20 @@ public class CardWrapper  {
         this.cardId = cardId;
     }
 
+    public byte getVirus() {
+        return virus;
+    }
+
+    public void setVirus(byte virus) {
+        this.virus = virus;
+    }
+
+    public int resultArmour(){
+        return getCard().getArmour()+getArmourBuff();
+    }
+    public int resultDamage(){
+        return getCard().getStrength()+getStrengthBuff();
+    }
 
     public static void main(String[] args) throws IOException {
 

@@ -4,6 +4,7 @@ import game.Card;
 import game.Deck;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import support.DeckInfo;
+import support.GameInfo;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -40,16 +41,27 @@ public class User {
     @ManyToOne
     @JoinColumn(name="activedeck_id")
     private Deck activeDeck;
+
+    @OneToOne(cascade = CascadeType.ALL,optional = true)
+    private FriendList friendList;
+
     @Transient
     private DeckInfo activeDeckIds;
     private int level=0;
     private int xp=0;
     private int gold=0;
     private int payed=0;
+
+    private int zombieKilled=0;
+    private int survivalsKilled=0;
     @Basic(fetch= FetchType.LAZY)
     @Lob
     private byte[] avatar;
-     //1-zzmby 0-surv
+
+    public User() {
+    }
+
+    //1-zzmby 0-surv
     public Long getSide() {
         return side;
     }
@@ -138,6 +150,22 @@ public class User {
         this.payed = payed;
     }
 
+    public int getZombieKilled() {
+        return zombieKilled;
+    }
+
+    public void setZombieKilled(int zombieKilled) {
+        this.zombieKilled = zombieKilled;
+    }
+
+    public int getSurvivalsKilled() {
+        return survivalsKilled;
+    }
+
+    public void setSurvivalsKilled(int survivalsKilled) {
+        this.survivalsKilled = survivalsKilled;
+    }
+
     public byte[] getAvatar() {
         return avatar;
     }
@@ -170,12 +198,22 @@ public class User {
         this.activeDeckIds = activeDeckIds;
     }
 
+    public FriendList getFriendList() {
+        return friendList;
+    }
+
+    public void setFriendList(FriendList friendList) {
+        this.friendList = friendList;
+    }
+
     public User CopyUser(boolean withInfo,boolean privateInfo,boolean full, HashMap<Long,Card> cardMap){
         User u=new User();
         u.setName(this.getName());
         u.setLevel(this.getLevel());
         u.setAvatar(this.getAvatar());
         u.setSide(this.getSide());
+        u.setZombieKilled(this.getZombieKilled());
+        u.setSurvivalsKilled(this.getSurvivalsKilled());
         if(privateInfo){
          u.setXp(this.getXp());
          u.setGold(this.getGold());
