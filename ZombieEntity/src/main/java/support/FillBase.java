@@ -15,15 +15,15 @@ import java.io.IOException;
 public class FillBase {
     public static void  createZombies(Session ses) throws IOException {
         try{
-        Card slow = new Card("Медленный зомби", "Медленный зомби", 1, 10, 0, 4, CardTypeEnum.creature.getId(), 1, 0, 0,1);
-        Card zombie = new Card("Зомби", "Обычный зомби", 1, 10, 0, 5, CardTypeEnum.creature.getId(), 2, 0, 0,1);
-        Card fast = new Card("Быстрый зомби", "Быстрый зомби", 1, 5, 0, 4, CardTypeEnum.creature.getId(), 2, 0, 0,1);
-        Card fat = new Card("Толстяк", "Толстяк, очень много жизней", 1, 30, 0, 6, CardTypeEnum.bigCreature.getId(), 4, 0, 0,2);
-        Card half = new Card("Ползун", "Ползун, нападает через баррикады", 1, 10, 0, 1, CardTypeEnum.creature.getId(), 3, 0, 0,2);
+        Card slow = new Card(0l,"Медленный зомби", "Медленный зомби", 1, 10, 0, 4, CardTypeEnum.creature.getId(), 1, 0, 0,1);
+        Card zombie = new Card(1l,"Зомби", "Обычный зомби", 1, 10, 0, 5, CardTypeEnum.creature.getId(), 2, 0, 0,1);
+        Card fast = new Card(2l,"Быстрый зомби", "Быстрый зомби", 1, 5, 0, 4, CardTypeEnum.creature.getId(), 2, 0, 0,1);
+        Card fat = new Card(3l,"Толстяк", "Толстяк, очень много жизней", 1, 30, 0, 6, CardTypeEnum.bigCreature.getId(), 4, 0, 0,2);
+        Card half = new Card(4l,"Ползун", "Ползун, нападает через баррикады", 1, 10, 0, 1, CardTypeEnum.creature.getId(), 3, 0, 0,2);
 
-        Card hospital = new Card("Больница", "Увеличивает приток зомби", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0,1);
-        Card aero = new Card("Аэропорт", "Увеличивает приток вируса", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0,1);
-        Card tec = new Card("Теплоэлектростанция", "Увеличивает приток энергии", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0,1);
+        Card hospital = new Card(5l,"Больница", "Увеличивает приток зомби", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0,1);
+        Card aero = new Card(6l,"Аэропорт", "Увеличивает приток вируса", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0,1);
+        Card tec = new Card(7l,"Теплоэлектростанция", "Увеличивает приток энергии", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0,1);
 
         Abilities genereateCorpse = new Abilities("Увеличение притока тел", "Увеличение притока тел", "res1=2");
         Abilities genereateVirus = new Abilities("Увеличение притока вируса", "Увеличение притока вируса", "res2=2");
@@ -91,20 +91,20 @@ public class FillBase {
 
     public static void createPeoples(Session ses) {
         try{
-        Card peysan = new Card("Горожанин", "Обычный горожанин с топором", 1, 10, 0, 4, CardTypeEnum.creature.getId(), 1, 0, 0,1);
-        Card shotgun = new Card("Горожанин с дробовиком", "горожанин с дробовиком", 1, 10, 0, 5, CardTypeEnum.creature.getId(), 2, 0, 0,1);
-        Card medic = new Card("Медик", "Медик", 1, 5, 0, 4, CardTypeEnum.creature.getId(), 2, 0, 0,1);
-        Card molotov = new Card("Горожанин с коктейлем молотова", "Горожанин с коктейлем молотова", 1, 30, 0, 6, CardTypeEnum.creature.getId(), 4, 0, 0,2);
-        Card zombiebus = new Card("Зомбибус", "Автобус модифицированный для зомби апокалипсиса", 1, 30, 0, 6, CardTypeEnum.transport.getId(), 4, 0, 0,2);
-        Card barricade = new Card("Баррикада", "Сколоченные доски, защищающие от зомби", 1, 30, 0, 6, CardTypeEnum.bigCreature.getId(), 4, 0, 0,1);
+        Card peysan = new Card(1000l,"Горожанин", "Обычный горожанин с топором", 1, 10, 0, 4, CardTypeEnum.creature.getId(), 1, 0, 0,1);
+        Card shotgun = new Card(1001l,"Горожанин с дробовиком", "горожанин с дробовиком", 1, 10, 0, 5, CardTypeEnum.creature.getId(), 2, 0, 0,1);
+        Card medic = new Card(1002l,"Медик", "Медик", 1, 5, 0, 4, CardTypeEnum.creature.getId(), 2, 0, 0,1);
+        Card molotov = new Card(1003l,"Горожанин с коктейлем молотова", "Горожанин с коктейлем молотова", 1, 30, 0, 6, CardTypeEnum.creature.getId(), 4, 0, 0,2);
+        Card zombiebus = new Card(1004l,"Зомбибус", "Автобус модифицированный для зомби апокалипсиса", 1, 30, 0, 6, CardTypeEnum.transport.getId(), 4, 0, 0,2);
+        Card barricade = new Card(1005l,"Баррикада", "Сколоченные доски, защищающие от зомби", 1, 30, 0, 6, CardTypeEnum.bigCreature.getId(), 4, 0, 0,1);
 
-        Card napalm = new Card("Напалм", "Авиационная бомбардировка, бьет всех врагов", 0, 0, 0, 0, CardTypeEnum.damageSpell.getId(), 0, 0, 2,1);
-        Card armorBuff = new Card("Военные запасы", "Найденные военные запасы, добавляет атаку и защиту", 0, 0, 0, 0, CardTypeEnum.buffSpell.getId(), 0, 0, 2,2);
-        Card global = new Card("Пополнение", "Добавляет вам в руку три карты, убирает три карты у противника", 0, 0, 0, 0, CardTypeEnum.buffSpell.getId(), 0, 0, 2,2);
+        Card napalm = new Card(1006l,"Напалм", "Авиационная бомбардировка, бьет всех врагов", 0, 0, 0, 0, CardTypeEnum.damageSpell.getId(), 0, 0, 2,1);
+        Card armorBuff = new Card(1007l,"Военные запасы", "Найденные военные запасы, добавляет атаку и защиту", 0, 0, 0, 0, CardTypeEnum.buffSpell.getId(), 0, 0, 2,2);
+        Card global = new Card(1008l,"Пополнение", "Добавляет вам в руку три карты, убирает три карты у противника", 0, 0, 0, 0, CardTypeEnum.buffSpell.getId(), 0, 0, 2,2);
 
-        Card hospital = new Card("Больница", "Увеличивает приток горожан", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0,1);
-        Card tech = new Card("Автостоянка", "Увеличивает приток техники", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0,1);
-        Card market = new Card("Оружиейны магазин", "Увеличивает приток оружия", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0,1);
+        Card hospital = new Card(1009l,"Больница", "Увеличивает приток горожан", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0,1);
+        Card tech = new Card(1010l,"Автостоянка", "Увеличивает приток техники", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0,1);
+        Card market = new Card(1011l,"Оружиейны магазин", "Увеличивает приток оружия", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0,1);
 
         Abilities genereatePeoples = new Abilities("Увеличение притока людей", "Увеличение притока людей", "res1=2");
         Abilities genereateTech = new Abilities("Увеличение притока техники", "Увеличение притока техники", "res2=2");

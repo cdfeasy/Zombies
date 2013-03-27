@@ -20,6 +20,7 @@ import support.GameInfo;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
@@ -54,6 +55,8 @@ public class GameManager {
 
     GameEndProcessor gameEnd;
     AbilitiesProcessor ability;
+
+    Random rand=new Random();
 
 
     @Inject
@@ -190,10 +193,21 @@ public class GameManager {
         }
     }
     private void processPostCardAbilities(TurnReplyBuilder turnReplyBuilder) {
+        for (int i = 0; i < TableSide.CELL_COUNT; i++) {
+            SideCell p1cell = table.getPlayer1Side().getCell(i);
+            SideCell p2cell = table.getPlayer2Side().getCell(i);
+            GameManagerSupport.processHeal(turnReplyBuilder, p1cell, player1Info,ability);
+            GameManagerSupport.processHeal(turnReplyBuilder, p2cell, player2Info,ability);
+        }
 
     }
     private void processPreCardAbilities(TurnReplyBuilder turnReplyBuilder) {
-
+        for (int i = 0; i < TableSide.CELL_COUNT; i++) {
+            SideCell p1cell = table.getPlayer1Side().getCell(i);
+            SideCell p2cell = table.getPlayer2Side().getCell(i);
+            GameManagerSupport.processSplash(turnReplyBuilder, p1cell, p2cell,player1Info,ability);
+            GameManagerSupport.processSplash(turnReplyBuilder, p2cell, p1cell,player2Info,ability);
+        }
     }
 
     private void processCardDamage(TurnReplyBuilder turnReplyBuilder) {
@@ -202,8 +216,8 @@ public class GameManager {
         for (int i = 0; i < TableSide.CELL_COUNT; i++) {
             SideCell p1cell = table.getPlayer1Side().getCell(i);
             SideCell p2cell = table.getPlayer2Side().getCell(i);
-            spendHpUser2+= processCell(turnReplyBuilder, p1cell, p2cell,player1Info);
-            spendHpUser1+= processCell(turnReplyBuilder, p2cell, p1cell,player2Info);
+            spendHpUser2+= GameManagerSupport.processCell(turnReplyBuilder, p1cell, p2cell,player1Info,ability);
+            spendHpUser1+= GameManagerSupport.processCell(turnReplyBuilder, p2cell, p1cell,player2Info,ability);
         }
         if (spendHpUser1 > 0) {
             user1Hp -= spendHpUser1;
@@ -259,6 +273,14 @@ public class GameManager {
                     turnReplyBuilder.addActionInfo((int)c.getWrapperId(), String.format("%s dead", c.getCard().getName()));
                     if (player1.getUser().getSide() == 0) {
                         player2Info.incSurvivalsKilled();
+                        //убитый зараженный мирный житель становится зомби
+                        if(c.getVirus()>0){
+                           if(rand.nextInt(100)<c.getVirus()){
+                               addCreature(p2cell,lobbyManager.getCards().get(0l),turnReplyBuilder);
+                               c.setVirus((byte)0);
+                           }
+                        }
+
                     } else {
                         player2Info.incZombieKilled();
                     }
@@ -271,15 +293,42 @@ public class GameManager {
                     turnReplyBuilder.addActionInfo((int)c.getWrapperId(), String.format("%s dead", c.getCard().getName()));
                     if (player2.getUser().getSide() == 0) {
                         player1Info.incSurvivalsKilled();
+                        //убитый зараженный мирный житель становится зомби
+                        if(c.getVirus()>0){
+                            if(rand.nextInt(100)<c.getVirus()){
+                                addCreature(p1cell,lobbyManager.getCards().get(0l),turnReplyBuilder);
+                                c.setVirus((byte)0);
+                            }
+                        }
                     } else {
                         player1Info.incZombieKilled();
                     }
                     player2Info.incDead(c.getCard().getId());
                 }
             }
+
+
+            processZombyfication(player1,player2Info,p2cell,turnReplyBuilder);
+            processZombyfication(player2,player1Info,p1cell,turnReplyBuilder);
             p1cell.clearDead();
             p2cell.clearDead();
 
+        }
+
+    }
+
+    private void  processZombyfication(UserInfo player, GameInfo info,SideCell cell,TurnReplyBuilder turnReplyBuilder){
+        if (player.getUser().getSide() == 0) {
+            for (CardWrapper c : cell.getCards()){
+                if(c.getVirus()>0){
+                    c.setVirus((byte)(c.getVirus()+5));
+                }
+                if(c.getVirus()>=100){
+                    info.incSurvivalsKilled();
+                    //убитый зараженный мирный житель становится зомби
+                    addCreature(cell,lobbyManager.getCards().get(0l),turnReplyBuilder);
+                }
+            }
         }
 
     }
@@ -293,52 +342,7 @@ public class GameManager {
 
     }
 
-    /**
-     * Обработка удара, учитываются 2 абилки- удар сзади, меняющий направляение удара и зомбификейшн делающий убитого зомби
-     * @param turnReplyBuilder
-     * @param p1cell
-     * @param p2cell
-     * @param info
-     * @return
-     */
-    private int processCell(TurnReplyBuilder turnReplyBuilder, SideCell p1cell, SideCell p2cell,GameInfo info) {
-        int sumDmg = 0;
-        for (CardWrapper cr : p1cell.getCards()) {
-            if(!cr.isActive()){
-                continue;
-            }
-            //проверяем не промахнулся ли перс
-            if(ability.Miss(cr)){
-                continue;
-            }
 
-            boolean isTop= ability.isBackStabber(cr);
-            //проверяем не увернулась ли цель
-            if(ability.Evade(p2cell.getCard(isTop))){
-                continue;
-            }
-
-            int damage = cr.resultDamage();
-            int spend = 0;
-            CardWrapper cw = null;
-            while ((cw = p2cell.getCard(isTop)) != null && (spend = p2cell.hit(damage, cw)) > 0) {
-                turnReplyBuilder.addActionInfo((int)cr.getWrapperId(), String.format("%s hit %s on %s damage", cr.getCard().getName(), cw.getCard().getName(), Integer.toString(spend)));
-                damage = damage - spend;
-                int z=ability.Zombification(cr);
-                if(z>0){
-                   cw.setVirus((byte)(cw.getVirus()+z));
-                }
-                if(cw.getHp()==0){
-                    info.incKilled(cr.getCard().getId());
-                }
-            }
-            sumDmg += damage;
-            if(damage>0){
-                turnReplyBuilder.addActionInfo((int)cr.getWrapperId(), String.format("%s hit player on %s damage", cr.getCard().getName(), Integer.toString(damage)));
-            }
-        }
-        return sumDmg;
-    }
 
     private void addCreature(SideCell cell, Card card, TurnReplyBuilder builder) {
         CardWrapper cr = cell.addCard(card);

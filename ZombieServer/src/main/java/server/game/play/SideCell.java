@@ -38,17 +38,48 @@ public class SideCell {
 
     public int hit(int damage,CardWrapper c){
         int spend=0;
-        if(damage<c.resultDamage()){
+        if(damage<c.resultArmour()){
             return 0;
         }
 
-        if(damage>c.getHp()+c.resultDamage()){
-            spend=c.getHp()+c.resultDamage();
+        if(damage>c.getHp()+c.resultArmour()){
+            spend=c.getHp()+c.resultArmour();
             c.setHp(0);
             return spend;
         }
-        c.setHp(c.getHp()-damage+c.resultDamage());
+        c.setHp(c.getHp()-damage+c.resultArmour());
         return damage;
+    }
+
+    public List<CardWrapper> getAllLiveCard(){
+        List<CardWrapper> lst=new ArrayList<>();
+        for(int i=0;i<cards.size();i++){
+            if( !CardTypeEnum.getValue(cards.get(i).getCard().getCardType()).equals(CardTypeEnum.structure) && cards.get(i).getHp()>0){
+                 lst.add(cards.get(i)) ;
+            }
+        }
+        return lst;
+    }
+
+    public CardWrapper getDamagedCard(){
+        if(cards.isEmpty())
+            return null;
+        int index=-1;
+        int max=-1;
+        for(int i=0;i<cards.size();i++){
+            if( !CardTypeEnum.getValue(cards.get(i).getCard().getCardType()).equals(CardTypeEnum.structure)){
+                int tmp= cards.get(i).getCard().getHp()-cards.get(i).getHp();
+                if(tmp>max){
+                    max=tmp;
+                    index=i;
+                }
+
+            }
+        }
+        if(index!=-1){
+            return cards.get(index);
+        }
+        return null;
     }
 
     public CardWrapper getTopCard(){

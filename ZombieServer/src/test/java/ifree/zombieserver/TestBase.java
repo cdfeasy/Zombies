@@ -48,7 +48,7 @@ public class TestBase{
             server = injector.getInstance(Server.class);
             server.run();
         }catch (Exception ex){
-
+             ex.printStackTrace();
         }
 
 

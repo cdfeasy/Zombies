@@ -16,7 +16,6 @@ import java.util.List;
 @Entity
 public class Card {
     @Id
-    @GeneratedValue
     private Long id;
     private String name;
     private String nameEng;
@@ -55,7 +54,8 @@ public class Card {
     public Card() {
     }
 
-    public Card(String name, String description, int strength, int hp, int armour, int threadLevel, int cardType, int resourceCost1, int resourceCost2, int resourceCost3,int cardLevel) {
+    public Card(Long id,String name, String description, int strength, int hp, int armour, int threadLevel, int cardType, int resourceCost1, int resourceCost2, int resourceCost3,int cardLevel) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.strength = strength;

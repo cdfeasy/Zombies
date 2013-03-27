@@ -33,7 +33,9 @@ public class CardInfoTest {
             connectact.setConnectAction(ca);
 
 
-            Client c=new Client("78.47.52.69",18080);
+          //  Client c=new Client("78.47.52.69",18080);
+
+            Client c=new Client("192.168.0.10",18080);
             c.setMessage(mapper.writeValueAsString(connectact));
             c.run();
             c.send();

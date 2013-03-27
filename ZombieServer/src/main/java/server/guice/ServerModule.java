@@ -5,6 +5,7 @@ import com.google.inject.Scopes;
 import com.google.inject.name.Names;
 import server.actionworker.*;
 import server.base.DTOWorker;
+import server.game.play.AbilitiesProcessor;
 import server.game.play.GameEndProcessor;
 import server.game.play.GameManager;
 import server.netty.Server;
@@ -29,6 +30,7 @@ public class ServerModule extends AbstractModule {
        bind(RequestManager.class).in(Scopes.SINGLETON);
        bind(NewGameStarter.class).in(Scopes.SINGLETON);
        bind(LobbyManager.class).asEagerSingleton();
+       bind(AbilitiesProcessor.class).asEagerSingleton();
 
        bind(ActionManager.class);
 

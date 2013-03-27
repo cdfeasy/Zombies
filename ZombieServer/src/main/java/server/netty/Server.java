@@ -9,9 +9,15 @@ import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.Channels;
 import org.jboss.netty.channel.socket.ServerSocketChannel;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
+import org.jboss.netty.handler.codec.base64.Base64Decoder;
+import org.jboss.netty.handler.codec.base64.Base64Encoder;
+import org.jboss.netty.handler.codec.frame.DelimiterBasedFrameDecoder;
+import org.jboss.netty.handler.codec.frame.Delimiters;
 import org.jboss.netty.handler.codec.serialization.ClassResolvers;
 import org.jboss.netty.handler.codec.serialization.ObjectDecoder;
 import org.jboss.netty.handler.codec.serialization.ObjectEncoder;
+import org.jboss.netty.handler.codec.string.StringDecoder;
+import org.jboss.netty.handler.codec.string.StringEncoder;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
@@ -51,13 +57,15 @@ public class Server {
         // Set up the pipeline factory.
 
 
+    //    org.jboss.netty.handler.codec.frame. enc=new  DelimiterBasedFrameEncoder();
        // h.c=c;
         bootstrap.setPipelineFactory(new ChannelPipelineFactory() {
             public ChannelPipeline getPipeline() throws Exception {
                 return Channels.pipeline(
-                        new ObjectEncoder(),
-                        new ObjectDecoder(
-                                ClassResolvers.cacheDisabled(getClass().getClassLoader())),
+                        new DelimiterBasedFrameDecoder(
+                                8192, Delimiters.lineDelimiter()),
+                        new StringEncoder(),
+                        new StringDecoder(),
                         handler);
             }
         });

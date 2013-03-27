@@ -51,6 +51,8 @@ public class LobbyManager {
     @Inject
     AbilitiesProcessor ability;
 
+
+
     public LobbyManager(){
 
     }
@@ -84,6 +86,7 @@ public class LobbyManager {
         requestManager.setRequestQueue(requestQueue);
         requestParser.scheduleWithFixedDelay(requestManager,0,10,TimeUnit.MILLISECONDS);
         newGameStarter.scheduleWithFixedDelay(newGameStarterThread,0,1000,TimeUnit.MILLISECONDS);
+        ability.init();
     }
 
     public UserInfo getUser(String name){

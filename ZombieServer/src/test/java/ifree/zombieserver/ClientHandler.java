@@ -82,7 +82,7 @@ public class ClientHandler extends SimpleChannelUpstreamHandler {
             }
 
         System.out.println("send "+ message);
-        c.write(message);
+        c.write(message+'\n');
     }
 
     @Override
@@ -97,6 +97,7 @@ public class ClientHandler extends SimpleChannelUpstreamHandler {
     @Override
     public void exceptionCaught(
             ChannelHandlerContext ctx, ExceptionEvent e) {
+        e.getCause().printStackTrace();
         logger.log(
                 Level.WARNING,
                 "Unexpected exception from downstream.",

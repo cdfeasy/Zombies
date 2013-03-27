@@ -19,7 +19,7 @@ import java.io.IOException;
 public class SerializationTest {
     @Test
     public void SerializationTest() throws InterruptedException, IOException {
-        Card half = new Card("Ползун", "Ползун, нападает через баррикады", 1, 10, 0, 1, CardTypeEnum.creature.getId(), 3, 0, 0,1);
+        Card half = new Card(3l,"Ползун", "Ползун, нападает через баррикады", 1, 10, 0, 1, CardTypeEnum.creature.getId(), 3, 0, 0,1);
         half.setImg(new byte[]{1,2,4,5,6,7,8});
         ObjectMapper requestMapper = new ObjectMapper();
         requestMapper.generateJsonSchema(Card.class);

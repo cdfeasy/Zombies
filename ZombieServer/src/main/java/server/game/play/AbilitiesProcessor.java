@@ -7,11 +7,11 @@ import game.Card;
 import game.Fraction;
 import game.SubFraction;
 import server.game.LobbyManager;
-import server.game.play.GameManager;
 import support.CardWrapper;
 
 import java.util.HashMap;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,47 +22,56 @@ import java.util.Random;
  */
 public class AbilitiesProcessor {
 
-    private HashMap<Long,ability> abilities;
-    Random random=new Random();
-
-
+    private Random random=new Random();
+    private HashMap<type,HashMap<Long,Integer>> abilities=new HashMap<>();
     @Inject
-    public void init(LobbyManager manager){
+    private LobbyManager manager;
+
+
+   // @Inject
+    public void init(){
+        for(type t:type.values()){
+            abilities.put(t,new HashMap<Long,Integer>());
+        }
         for(Fraction fr:manager.getFractions().values()){
             for(SubFraction sub:fr.getSubFractions()) {
                for(Card c:sub.getDeck()){
                    for(Abilities ab:c.getAbilities()){
-                       if(!abilities.containsKey(ab.getId())){
-                           initAbility(ab);
-                       }
+                         initAbility(c,ab);
                    }
+                   initAbility(c,c.getUniqueAbility());
                }
             }
         }
 
+
+
+
     }
-    private void initAbility(Abilities ability){
+    private void initAbility(Card c,Abilities ability){
+        if(ability==null)
+            return;
         String val=ability.getAction();
         String[] parts=val.split("=");
 
-       ability ab=null;
+       tmpAbility ab=null;
         switch (parts[0]){
-            case "direct":ab=new ability(type.direct_damage,Integer.valueOf(parts[1]));break;
-            case "splash":ab=new ability(type.splash,Integer.valueOf(parts[1]));break;
-            case "buffdamage":ab=new ability(type.buffdamage,Integer.valueOf(parts[1]));break;
-            case "buffarmour":ab=new ability(type.buffarmour,Integer.valueOf(parts[1]));break;
-            case "heal":ab=new ability(type.heal,Integer.valueOf(parts[1]));break;
-            case "zombyfication":ab=new ability(type.zombyfication,Integer.valueOf(parts[1]));break;
-            case "addres1":ab=new ability(type.addres1,Integer.valueOf(parts[1]));break;
-            case "addres2":ab=new ability(type.addres2,Integer.valueOf(parts[1]));break;
-            case "addres3":ab=new ability(type.addres3,Integer.valueOf(parts[1]));break;
-            case "backstub":ab=new ability(type.backstub,0);break;
-            case "miss":ab=new ability(type.miss,Integer.valueOf(parts[1]));break;
-            case "evade":ab=new ability(type.evade,Integer.valueOf(parts[1]));break;
-            case "nolimit":ab=new ability(type.nolimit,0);break;
+            case "direct":ab=new tmpAbility(type.direct_damage,Integer.valueOf(parts[1]));break;
+            case "splash":ab=new tmpAbility(type.splash,Integer.valueOf(parts[1]));break;
+            case "buffdamage":ab=new tmpAbility(type.buffdamage,Integer.valueOf(parts[1]));break;
+            case "buffarmour":ab=new tmpAbility(type.buffarmour,Integer.valueOf(parts[1]));break;
+            case "heal":ab=new tmpAbility(type.heal,Integer.valueOf(parts[1]));break;
+            case "zombyfication":ab=new tmpAbility(type.zombyfication,Integer.valueOf(parts[1]));break;
+            case "addres1":ab=new tmpAbility(type.addres1,Integer.valueOf(parts[1]));break;
+            case "addres2":ab=new tmpAbility(type.addres2,Integer.valueOf(parts[1]));break;
+            case "addres3":ab=new tmpAbility(type.addres3,Integer.valueOf(parts[1]));break;
+            case "backstub":ab=new tmpAbility(type.backstub,0);break;
+            case "miss":ab=new tmpAbility(type.miss,Integer.valueOf(parts[1]));break;
+            case "evade":ab=new tmpAbility(type.evade,Integer.valueOf(parts[1]));break;
+            case "nolimit":ab=new tmpAbility(type.nolimit,0);break;
         }
-        abilities.put(ability.getId(),ab);
-
+        if(ab!=null)
+          abilities.get(ab.getType()).put(c.getId(),ab.getValue());
     }
 
 
@@ -85,7 +94,30 @@ public class AbilitiesProcessor {
      * @return
      */
     public byte Zombification(CardWrapper cw){
-      return 0;
+        if(cw==null)
+            return 0;
+        Integer val=abilities.get(type.zombyfication).get(cw.getCard().getId());
+        if(val==null)
+            return 0;
+      return val.byteValue();
+    }
+
+    public byte Heal(CardWrapper cw){
+        if(cw==null)
+            return 0;
+        Integer val=abilities.get(type.heal).get(cw.getCard().getId());
+        if(val==null)
+            return 0;
+        return val.byteValue();
+    }
+
+    public byte Splash(CardWrapper cw){
+        if(cw==null)
+            return 0;
+        Integer val=abilities.get(type.splash).get(cw.getCard().getId());
+        if(val==null)
+            return 0;
+        return val.byteValue();
     }
 
     /**
@@ -94,16 +126,28 @@ public class AbilitiesProcessor {
      * @return
      */
     public boolean isBackStabber(CardWrapper cw){
-        return false;
+        if(cw==null)
+            return false;
+        return abilities.get(type.backstub).containsKey(cw.getCard().getId());
     }
 
 
     public boolean Evade(CardWrapper cw){
-        return false;
+        if(cw==null)
+            return false;
+        Integer val=abilities.get(type.evade).get(cw.getCard().getId());
+        if(val==null)
+            return false;
+        return random.nextInt(100)<val;
     }
 
     public boolean Miss(CardWrapper cw){
-        return false;
+        if(cw==null)
+            return false;
+        Integer val=abilities.get(type.miss).get(cw.getCard().getId());
+        if(val==null)
+            return false;
+        return random.nextInt(100)<val;
     }
 
      private enum type{
@@ -123,12 +167,12 @@ public class AbilitiesProcessor {
      }
 
 
-    private class ability{
+    private class tmpAbility {
         //0-direct damage, 1-splash, 2-buff, 3-heal, 4-zombyfication, 5-addres1,6-addres2,7address3
         private type type;
         private int value;
 
-        private ability(type type, int value) {
+        private tmpAbility(type type, int value) {
             this.type = type;
             this.value = value;
         }
