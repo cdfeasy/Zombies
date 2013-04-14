@@ -1,15 +1,12 @@
 package ifree.zombieserver;
 
-import actions.*;
 import ifree.GameBot;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.junit.Test;
-import reply.Reply;
-import server.DetailStatistic;
-import server.HibernateUtil;
-import server.History;
+import zombies.entity.server.DetailStatistic;
+import zombies.entity.support.HibernateUtil;
+import zombies.entity.server.History;
 
 import java.io.IOException;
 import java.util.List;

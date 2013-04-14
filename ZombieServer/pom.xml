@@ -60,7 +60,7 @@
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
                             <classpathLayoutType>simple</classpathLayoutType>
-                            <mainClass>server.App</mainClass>
+                            <mainClass>zombies.server.App</mainClass>
                         </manifest>
                         <manifestEntries>
                             <Version>${buildNumber}</Version>

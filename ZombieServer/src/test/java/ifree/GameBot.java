@@ -1,15 +1,13 @@
 package ifree;
 
-import actions.*;
-import game.Card;
-import game.CardTypeEnum;
-import game.Fraction;
-import game.SubFraction;
+import zombies.dto.actions.*;
+import zombies.dto.reply.UserReply;
+import zombies.entity.game.Card;
+import zombies.entity.game.Fraction;
+import zombies.entity.game.SubFraction;
 import ifree.zombieserver.Client;
-import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
-import reply.Reply;
 
 import java.io.IOException;
 import java.util.*;
@@ -38,8 +36,8 @@ public class GameBot implements Runnable{
 
 
     public GameBot() throws JsonMappingException {
-        mapper.generateJsonSchema(Action.class);
-        reply.generateJsonSchema(Reply.class);
+        mapper.generateJsonSchema(UserAction.class);
+        reply.generateJsonSchema(UserReply.class);
     }
 
     public String getUsername() {
@@ -59,7 +57,7 @@ public class GameBot implements Runnable{
     }
 
     private void  create(Client c) throws IOException, InterruptedException {
-        Action createUser = new Action();
+        UserAction createUser = new UserAction();
         createUser.setAction(ActionTypeEnum.CREATE_USER.getId());
         CreateUserAction cra = new CreateUserAction(username, "12345");
         cra.setSide(side);
@@ -78,7 +76,7 @@ public class GameBot implements Runnable{
     }
 
     private String  connect(Client c) throws IOException, InterruptedException {
-        Action connectact = new Action();
+        UserAction connectact = new UserAction();
         connectact.setAction(ActionTypeEnum.CONNECT.getId());
         ConnectAction ca = new ConnectAction();
         ca.setPass("12345");
@@ -97,7 +95,7 @@ public class GameBot implements Runnable{
         currReceive++;
 
 
-        Reply rep = reply.readValue(receive, Reply.class);
+        UserReply rep = reply.readValue(receive, UserReply.class);
         final String token = rep.getConnectionReply().getToken();
         return token;
 
@@ -105,7 +103,7 @@ public class GameBot implements Runnable{
 
     private void  cardInfo(Client c,String token) throws IOException, InterruptedException {
         CardInfoAction getCardInfo=new CardInfoAction();
-        Action act=new Action();
+        UserAction act=new UserAction();
         act.setName(username);
         act.setToken(token);
         act.setAction(ActionTypeEnum.GET_CARD_INFO.getId());
@@ -122,7 +120,7 @@ public class GameBot implements Runnable{
         currReceive++;
 
 
-        Reply rep = reply.readValue(receive, Reply.class);
+        UserReply rep = reply.readValue(receive, UserReply.class);
         fr=rep.getCardInfoReply().getFractions();
         for(Fraction f:fr){
             for(SubFraction sub:f.getSubFractions()){
@@ -136,7 +134,7 @@ public class GameBot implements Runnable{
     }
 
     private void search(Client c,String token) throws IOException, InterruptedException {
-        Action act = new Action();
+        UserAction act = new UserAction();
         act.setName(username);
         act.setToken(token);
         act.setAction(ActionTypeEnum.SEARCH.getId());
@@ -153,7 +151,7 @@ public class GameBot implements Runnable{
     }
 
     private void doTurn(Client c,String token) throws IOException, InterruptedException {
-        Action act = new Action();
+        UserAction act = new UserAction();
         act.setName(username);
         act.setToken(token);
         act.setAction(ActionTypeEnum.TURN.getId());
@@ -183,7 +181,7 @@ public class GameBot implements Runnable{
                     break;
                 Thread.sleep(100);
             }
-            Reply rep = reply.readValue(c.getReceive().get(currReceive), Reply.class);
+            UserReply rep = reply.readValue(c.getReceive().get(currReceive), UserReply.class);
             currReceive++;
 
             if(rep.getGameStartedReply()==null){

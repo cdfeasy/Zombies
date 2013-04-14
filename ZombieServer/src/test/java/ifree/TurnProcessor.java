@@ -1,13 +1,12 @@
 package ifree;
 
-import actions.Action;
-import actions.ActionTypeEnum;
-import actions.TurnAction;
-import game.CardTypeEnum;
+import zombies.dto.actions.UserAction;
+import zombies.dto.actions.ActionTypeEnum;
+import zombies.dto.actions.TurnAction;
+import zombies.dto.reply.UserReply;
+import zombies.entity.game.CardTypeEnum;
 import ifree.zombieserver.Client;
-import org.codehaus.jackson.JsonParseException;
-import reply.Reply;
-import reply.TurnReply;
+import zombies.dto.reply.TurnReply;
 
 import java.io.IOException;
 import java.util.Date;
@@ -35,7 +34,7 @@ public class TurnProcessor implements Runnable {
         this.bot = bot;
     }
     private void process(String receive) throws IOException, InterruptedException {
-        Reply rep = bot.reply.readValue(receive, Reply.class);
+        UserReply rep = bot.reply.readValue(receive, UserReply.class);
         if(rep.getTurnReply()==null){
             System.out.println("ERROR!!!!!!"+bot.getUsername());
             System.out.println("ERROR!!!!!!"+rep.toString());
@@ -58,7 +57,7 @@ public class TurnProcessor implements Runnable {
         } else
         if(rep.getTurnReply().getAction()== TurnReply.actionEnum.endturn.ordinal()){
             if(rep.getTurnReply().getNextTurnUser()==bot.playerQueue){
-              //  System.out.println("turn reply "+bot.getUsername()+"/"+bot.currTurn+"/");
+              //  System.out.println("turn zombies.dto.reply "+bot.getUsername()+"/"+bot.currTurn+"/");
                 Date d=new Date();
                 endDate=d.getTime();
                 if(endDate>0 && start>0){
@@ -81,7 +80,7 @@ public class TurnProcessor implements Runnable {
     }
 
     private void sendCardAction() throws IOException {
-        Action act = new Action();
+        UserAction act = new UserAction();
         act.setName(bot.username);
         act.setToken(bot.token);
         act.setAction(ActionTypeEnum.TURN.getId());
@@ -103,7 +102,7 @@ public class TurnProcessor implements Runnable {
     }
 
     private void sendEndTurn() throws IOException {
-        Action act = new Action();
+        UserAction act = new UserAction();
         act.setName(bot.username);
         act.setToken(bot.token);
         act.setAction(ActionTypeEnum.TURN.getId());
@@ -118,7 +117,7 @@ public class TurnProcessor implements Runnable {
 
 
     private void sendSurrender() throws IOException {
-        Action act = new Action();
+        UserAction act = new UserAction();
         act.setName(bot.username);
         act.setToken(bot.token);
         act.setAction(ActionTypeEnum.TURN.getId());

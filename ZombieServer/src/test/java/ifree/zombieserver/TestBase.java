@@ -2,25 +2,19 @@ package ifree.zombieserver;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import game.*;
-import org.codehaus.jackson.map.ObjectMapper;
+import zombies.entity.game.*;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.Description;
-import org.junit.runner.Runner;
-import org.junit.runner.notification.RunNotifier;
-import server.HibernateUtil;
-import server.History;
-import server.User;
-import server.guice.ServerModule;
-import server.netty.Server;
-import support.FillBase;
+import zombies.entity.support.HibernateUtil;
+import zombies.entity.server.History;
+import zombies.entity.server.User;
+import zombies.server.guice.ServerModule;
+import zombies.server.netty.Server;
+import zombies.entity.support.FillBase;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -151,7 +145,7 @@ public class TestBase{
             Deck deck=new Deck();
             List<Card> av1=new ArrayList<Card>(zmb.getSubFractions().get(0).getDeck().size());
             av1.addAll(zmb.getSubFractions().get(0).getDeck());
-            deck.setDeck(av1);
+            deck.setDeckCards(av1);
             ses.persist(deck);
 
             u1.getDecks().add(deck);
@@ -170,7 +164,7 @@ public class TestBase{
             Deck deck1=new Deck();
             List<Card> av2=new ArrayList<Card>(zmb1.getSubFractions().get(0).getDeck().size());
             av2.addAll(zmb1.getSubFractions().get(0).getDeck());
-            deck1.setDeck(av1);
+            deck1.setDeckCards(av1);
             ses.persist(deck1);
 
             u2.getDecks().add(deck1);

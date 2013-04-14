@@ -1,9 +1,7 @@
 package ifree.zombieserver;
 
-import actions.Action;
-import game.Card;
-import game.CardTypeEnum;
-import org.codehaus.jackson.map.JsonMappingException;
+import zombies.entity.game.Card;
+import zombies.entity.game.CardTypeEnum;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 

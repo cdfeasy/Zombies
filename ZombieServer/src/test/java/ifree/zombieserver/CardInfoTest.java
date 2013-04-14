@@ -1,12 +1,12 @@
 package ifree.zombieserver;
 
-import actions.Action;
-import actions.ActionTypeEnum;
-import actions.ConnectAction;
-import actions.CardInfoAction;
+import zombies.dto.actions.UserAction;
+import zombies.dto.actions.ActionTypeEnum;
+import zombies.dto.actions.ConnectAction;
+import zombies.dto.actions.CardInfoAction;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
-import reply.Reply;
+import zombies.dto.reply.UserReply;
 
 import java.io.IOException;
 
@@ -18,14 +18,20 @@ import java.io.IOException;
  * To change this template use File | Settings | File Templates.
  */
 public class CardInfoTest {
+
     @Test
+    public void empty()   {
+
+    }
+
+    //@Test
     public void ConnectionTest() throws InterruptedException, IOException {
         try{
             ObjectMapper mapper = new ObjectMapper();
-            mapper.generateJsonSchema(Action.class);
+            mapper.generateJsonSchema(UserAction.class);
             ObjectMapper reply = new ObjectMapper();
-            mapper.generateJsonSchema(Reply.class);
-            Action connectact=new Action();
+            mapper.generateJsonSchema(UserReply.class);
+            UserAction connectact=new UserAction();
             connectact.setAction(ActionTypeEnum.CONNECT.getId());
             ConnectAction ca=new ConnectAction();
             ca.setPass("12345");
@@ -46,11 +52,11 @@ public class CardInfoTest {
                 Thread.sleep(100);
             }
             String receive= c.getReceive().get(0);
-            Reply rep=reply.readValue(receive,Reply.class);
+            UserReply rep=reply.readValue(receive,UserReply.class);
 
 
             CardInfoAction getCardInfo=new CardInfoAction();
-            Action act=new Action();
+            UserAction act=new UserAction();
             act.setName("User1");
             act.setToken(rep.getConnectionReply().getToken());
             act.setAction(ActionTypeEnum.GET_CARD_INFO.getId());

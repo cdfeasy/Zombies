@@ -1,12 +1,11 @@
 package ifree.zombieserver;
 
-import actions.*;
+import zombies.dto.actions.*;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import reply.Reply;
+import zombies.dto.reply.UserReply;
 
 import java.io.IOException;
 
@@ -22,10 +21,10 @@ public class UserInfoTest extends TestBase{
     public void ConnectionTest() throws InterruptedException, IOException {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            mapper.generateJsonSchema(Action.class);
+            mapper.generateJsonSchema(UserAction.class);
             ObjectMapper reply = new ObjectMapper();
-            mapper.generateJsonSchema(Reply.class);
-            Action connectact = new Action();
+            mapper.generateJsonSchema(UserReply.class);
+            UserAction connectact = new UserAction();
             connectact.setAction(ActionTypeEnum.CONNECT.getId());
             ConnectAction ca = new ConnectAction();
             ca.setPass("12345");
@@ -45,7 +44,7 @@ public class UserInfoTest extends TestBase{
                 Thread.sleep(100);
             }
             String receive = c.getReceive().get(0);
-            Reply rep = reply.readValue(receive, Reply.class);
+            UserReply rep = reply.readValue(receive, UserReply.class);
             final String token = rep.getConnectionReply().getToken();
 
             Thread[] th = new Thread[2];
@@ -55,14 +54,14 @@ public class UserInfoTest extends TestBase{
                         try {
                             Client cl = new Client("localhost", 18080);
                             CardInfoAction getCardInfo = new CardInfoAction();
-                            Action act = new Action();
+                            UserAction act = new UserAction();
                             act.setName("User1");
                             act.setToken(token);
                             act.setAction(ActionTypeEnum.GETUSERINFO.getId());
                             act.setUserInfo(new UserInfoAction("User1"));
                             ObjectMapper lmapper = new ObjectMapper();
 
-                            lmapper.generateJsonSchema(Action.class);
+                            lmapper.generateJsonSchema(UserAction.class);
                             cl.setMessage(lmapper.writeValueAsString(act));
                             cl.run();
                             Thread.sleep(5000);

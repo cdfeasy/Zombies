@@ -9,16 +9,16 @@
         <property name="hibernate.connection.password">wh40pass</property>
         <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="hibernate.show_sql">true</property>
-        <mapping class="game.Abilities"/>
-        <mapping class="game.Deck"/>
-        <mapping class="game.Fraction"/>
-        <mapping class="game.SubFraction"/>
-        <mapping class="game.Card"/>
-        <mapping class="server.History"/>
-        <mapping class="server.DetailStatistic"/>
-        <mapping class="server.User"/>
-        <mapping class="server.FriendList"/>
-        <mapping class="server.GameVersion"/>
+        <mapping class="zombies.entity.game.Abilities"/>
+        <mapping class="zombies.entity.game.Deck"/>
+        <mapping class="zombies.entity.game.Fraction"/>
+        <mapping class="zombies.entity.game.SubFraction"/>
+        <mapping class="zombies.entity.game.Card"/>
+        <mapping class="zombies.entity.server.History"/>
+        <mapping class="zombies.entity.server.DetailStatistic"/>
+        <mapping class="zombies.entity.server.User"/>
+        <mapping class="zombies.entity.server.FriendList"/>
+        <mapping class="zombies.entity.server.GameVersion"/>
 
     </session-factory>
 </hibernate-configuration>

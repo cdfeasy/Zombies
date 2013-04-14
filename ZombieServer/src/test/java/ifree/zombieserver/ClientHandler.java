@@ -19,8 +19,8 @@ import org.jboss.netty.channel.SimpleChannelUpstreamHandler;
 
 /**
  33   * Handler implementation for the object echo client.  It initiates the
- 34   * ping-pong traffic between the object echo client and server by sending the
- 35   * first message to the server.
+ 34   * ping-pong traffic between the object echo client and zombies.entity.server by sending the
+ 35   * first message to the zombies.entity.server.
  36   */
 public class ClientHandler extends SimpleChannelUpstreamHandler {
 
@@ -88,7 +88,7 @@ public class ClientHandler extends SimpleChannelUpstreamHandler {
     @Override
     public void messageReceived(
             ChannelHandlerContext ctx, MessageEvent e) {
-        // Echo back the received object to the server.
+        // Echo back the received object to the zombies.entity.server.
         receive.add(e.getMessage().toString());
         System.out.println("received"+e.toString());
         // e.getChannel().write(e.getMessage());

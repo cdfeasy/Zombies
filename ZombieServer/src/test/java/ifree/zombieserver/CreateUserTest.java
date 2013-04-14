@@ -1,11 +1,9 @@
 package ifree.zombieserver;
 
-import actions.*;
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
+import zombies.dto.actions.*;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
-import reply.Reply;
+import zombies.dto.reply.UserReply;
 
 import java.io.IOException;
 
@@ -25,18 +23,18 @@ public class CreateUserTest extends TestBase {
     public void ConnectionTest() throws InterruptedException, IOException {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            mapper.generateJsonSchema(Action.class);
+            mapper.generateJsonSchema(UserAction.class);
             ObjectMapper reply = new ObjectMapper();
-            mapper.generateJsonSchema(Reply.class);
+            mapper.generateJsonSchema(UserReply.class);
 
-            Action createUser = new Action();
+            UserAction createUser = new UserAction();
             createUser.setAction(ActionTypeEnum.CREATE_USER.getId());
             CreateUserAction cra = new CreateUserAction("User5", "12345");
             cra.setSide(0l);
             createUser.setCreateUserAction(cra);
 
 
-            Action connectact = new Action();
+            UserAction connectact = new UserAction();
             connectact.setAction(ActionTypeEnum.CONNECT.getId());
             ConnectAction ca = new ConnectAction();
             ca.setPass("12345");
@@ -67,18 +65,18 @@ public class CreateUserTest extends TestBase {
             receive = c.getReceive().get(1);
 
 
-            Reply rep = reply.readValue(receive, Reply.class);
+            UserReply rep = reply.readValue(receive, UserReply.class);
             final String token = rep.getConnectionReply().getToken();
 
             CardInfoAction getCardInfo = new CardInfoAction();
-            Action act = new Action();
+            UserAction act = new UserAction();
             act.setName("User5");
             act.setToken(token);
             act.setAction(ActionTypeEnum.GETUSERINFO.getId());
             act.setUserInfo(new UserInfoAction("User5"));
             ObjectMapper lmapper = new ObjectMapper();
 
-            lmapper.generateJsonSchema(Action.class);
+            lmapper.generateJsonSchema(UserAction.class);
             c.setMessage(lmapper.writeValueAsString(act));
             c.run();
             while (c.getReceive().size() ==2) {

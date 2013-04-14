@@ -1,16 +1,14 @@
-import game.*;
+import zombies.entity.game.*;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import server.FriendList;
-import server.HibernateUtil;
-import server.User;
-import support.FillBase;
+import zombies.entity.server.FriendList;
+import zombies.entity.support.HibernateUtil;
+import zombies.entity.server.User;
+import zombies.entity.support.FillBase;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -73,7 +71,7 @@ public class CreateBaseTest {
             Deck deck=new Deck();
             List<Card> av1=new ArrayList<Card>(zmb.getSubFractions().get(0).getDeck().size());
             av1.addAll(zmb.getSubFractions().get(0).getDeck());
-            deck.setDeck(av1);
+            deck.setDeckCards(av1);
             ses.persist(deck);
 
             u1.getDecks().add(deck);

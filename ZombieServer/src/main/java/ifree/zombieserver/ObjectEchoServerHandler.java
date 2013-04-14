@@ -16,7 +16,7 @@ package ifree.zombieserver;
   import org.jboss.netty.channel.SimpleChannelUpstreamHandler;
   
   /**
-   * Handles both client-side and server-side handler depending on which
+   * Handles both client-side and zombies.entity.server-side handler depending on which
    * constructor was called.
    */
   public class ObjectEchoServerHandler extends SimpleChannelUpstreamHandler {

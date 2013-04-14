@@ -20,7 +20,7 @@ import java.net.InetSocketAddress;
       }
   
       public void run() {
-          // Configure the server.
+          // Configure the zombies.entity.server.
           ServerBootstrap bootstrap = new ServerBootstrap(
                   new NioServerSocketChannelFactory(
                           Executors.newCachedThreadPool(),
