@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 using ZombieSharpClient.Entity.Game;
 using ZombieSharpClient.Entity.Server;
 using ZombieSharpClient.Entity.Support;
-namespace ZombieSharpClient.UserReply
+namespace ZombieSharpClient.UserReplys
 {
 	[DataContract]
-	public class ConnectionReply{
-		[DataMember(Name = "token")]
-		public string Token { get; set; }
-		[DataMember(Name = "version")]
-		public string Version { get; set; }
+	public class ErrorReply{
+		[DataMember(Name = "errorText")]
+		public string ErrorText { get; set; }
+		[DataMember(Name = "errorCode")]
+		public int ErrorCode { get; set; }
 	}
 }

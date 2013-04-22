@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" fx:controller="sample.Controller" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="792.0" prefWidth="1206.0" xmlns:fx="http://javafx.com/fxml">
+  <children>
+    <SplitPane dividerPositions="0.09973753280839895" focusTraversable="true" layoutX="14.0" layoutY="14.0" orientation="VERTICAL" prefHeight="764.0" prefWidth="1178.0">
+      <items>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="67.0" prefWidth="1128.0">
+          <children>
+            <ComboBox fx:id="fraction" layoutX="14.0" layoutY="15.0" prefHeight="21.0" prefWidth="188.0">
+              <items>
+                <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Item 1" />
+                  <String fx:value="Item 2" />
+                  <String fx:value="Item 3" />
+                </FXCollections>
+              </items>
+            </ComboBox>
+            <ComboBox fx:id="subfraction" layoutX="220.0" layoutY="16.0" prefHeight="21.0" prefWidth="188.0">
+              <items>
+                <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Item 1" />
+                  <String fx:value="Item 2" />
+                  <String fx:value="Item 3" />
+                </FXCollections>
+              </items>
+            </ComboBox>
+            <ComboBox fx:id="type" layoutX="423.0" layoutY="17.0" prefHeight="21.0" prefWidth="198.0">
+              <items>
+                <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Item 1" />
+                  <String fx:value="Item 2" />
+                  <String fx:value="Item 3" />
+                </FXCollections>
+              </items>
+            </ComboBox>
+            <Button fx:id="searh" layoutX="1058.0" layoutY="19.0" mnemonicParsing="false" onAction="#OnSearchClick" text="search" />
+          </children>
+        </AnchorPane>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="522.0" prefWidth="1128.0">
+          <children>
+            <TabPane layoutX="14.0" layoutY="14.0" prefHeight="656.0" prefWidth="1149.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab text="Untitled Tab 1">
+                  <content>
+                    <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="624.0" prefWidth="1101.0">
+                      <children>
+                        <TableView layoutX="14.0" layoutY="14.0" prefHeight="609.0" prefWidth="192.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="Column X" />
+                            <TableColumn prefWidth="75.0" text="Column X" />
+                          </columns>
+                        </TableView>
+                        <GridPane layoutX="220.0" layoutY="28.0" prefHeight="595.0" prefWidth="929.0000999999975">
+                          <children>
+                            <TextField fx:id="id" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                            <TextField fx:id="name" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                            <TextField fx:id="nameEng" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                            <TextField fx:id="description" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                            <TextField fx:id="descriptionEng" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                            <TextField fx:id="strength" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                            <TextField fx:id="hp" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                            <TextField fx:id="armour" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                            <TextField fx:id="threadLevel" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                            <TextField fx:id="imgResourceId" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                            <TextField fx:id="shortImgResourceId" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                            <TextField fx:id="cardType" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                            <TextField fx:id="cardLevel" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+                            <TextField fx:id="cardGoldCost" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                            <TextField fx:id="uniqueCard" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="8" />
+                            <TextField fx:id="uniqueAbility" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                            <TextField fx:id="abilities" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="9" />
+                            <TextField fx:id="resourceCost1" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                            <TextField fx:id="resourceCost2" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="10" />
+                            <TextField fx:id="resourceCost3" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                            <TextField fx:id="subFraction" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="11" />
+                            <Label prefWidth="122.0" text="id" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                            <Label prefWidth="122.0" text="name" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                            <Label prefWidth="122.0" text="description" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                            <Label prefWidth="122.0" text="strength" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                            <Label prefWidth="122.0" text="armour" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                            <Label prefWidth="122.0" text="imgResourceId" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                            <Label prefWidth="122.0" text="shortImgResourceId" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                            <Label prefWidth="122.0" text="cardType" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                            <Label prefWidth="122.0" text="cardGoldCost" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+                            <Label prefWidth="122.0" text="uniqueAbility" GridPane.columnIndex="0" GridPane.rowIndex="9" />
+                            <Label prefWidth="122.0" text="resourceCost1" GridPane.columnIndex="0" GridPane.rowIndex="10" />
+                            <Label prefWidth="122.0" text="resourceCost3" GridPane.columnIndex="0" GridPane.rowIndex="11" />
+                            <Label prefWidth="122.0" text="nameEng" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                            <Label prefWidth="122.0" text="descriptionEng" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                            <Label prefWidth="122.0" text="hp" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                            <Label prefWidth="122.0" text="threadLevel" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                            <Label prefWidth="122.0" text="cardLevel" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                            <Label prefWidth="122.0" text="uniqueCard" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+                            <Label prefWidth="122.0" text="abilities" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+                            <Label prefWidth="122.0" text="resourceCost2" GridPane.columnIndex="2" GridPane.rowIndex="10" />
+                            <Label prefWidth="122.0" text="subFraction" GridPane.columnIndex="2" GridPane.rowIndex="11" />
+                          </children>
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="467.0" minWidth="10.0" prefWidth="124.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="671.0" minWidth="10.0" prefWidth="312.0" />
+                            <ColumnConstraints maxWidth="320.0" prefWidth="85.0" />
+                            <ColumnConstraints maxWidth="409.0" prefWidth="409.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints maxHeight="260.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="381.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="569.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="439.0" prefHeight="45.0" />
+                            <RowConstraints maxHeight="445.0" prefHeight="45.0" />
+                            <RowConstraints maxHeight="453.0" prefHeight="130.0" />
+                            <RowConstraints maxHeight="437.0" prefHeight="130.0" />
+                            <RowConstraints maxHeight="432.0" prefHeight="45.0" />
+                            <RowConstraints maxHeight="441.0" prefHeight="45.0" />
+                            <RowConstraints maxHeight="423.0" prefHeight="45.0" />
+                            <RowConstraints maxHeight="415.0" prefHeight="45.0" />
+                            <RowConstraints maxHeight="413.0" prefHeight="45.0" />
+                          </rowConstraints>
+                        </GridPane>
+                      </children>
+                    </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab text="Untitled Tab 2">
+                  <content>
+                    <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  </content>
+                </Tab>
+              </tabs>
+            </TabPane>
+          </children>
+        </AnchorPane>
+      </items>
+    </SplitPane>
+  </children>
+</AnchorPane>

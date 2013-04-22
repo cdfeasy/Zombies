@@ -155,17 +155,18 @@
     <Compile Include="Entity\Support\GameInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Replys\AchievementsReply.cs" />
-    <Compile Include="Replys\CardInfoReply.cs" />
-    <Compile Include="Replys\ConnectionReply.cs" />
-    <Compile Include="Replys\ErrorReply.cs" />
-    <Compile Include="Replys\GameStartedReply.cs" />
-    <Compile Include="Replys\SaveDeckReply.cs" />
-    <Compile Include="Replys\SearchReply.cs" />
-    <Compile Include="Replys\StopSearchReply.cs" />
-    <Compile Include="Replys\SuccessReply.cs" />
-    <Compile Include="Replys\TurnReply.cs" />
-    <Compile Include="Replys\UserInfoReply.cs" />
+    <Compile Include="UserReplys\AchievementsReply.cs" />
+    <Compile Include="UserReplys\CardInfoReply.cs" />
+    <Compile Include="UserReplys\ConnectionReply.cs" />
+    <Compile Include="UserReplys\ErrorReply.cs" />
+    <Compile Include="UserReplys\GameStartedReply.cs" />
+    <Compile Include="UserReplys\SaveDeckReply.cs" />
+    <Compile Include="UserReplys\SearchReply.cs" />
+    <Compile Include="UserReplys\StopSearchReply.cs" />
+    <Compile Include="UserReplys\SuccessReply.cs" />
+    <Compile Include="UserReplys\TurnReply.cs" />
+    <Compile Include="UserReplys\UserInfoReply.cs" />
+    <Compile Include="UserReplys\UserReply.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

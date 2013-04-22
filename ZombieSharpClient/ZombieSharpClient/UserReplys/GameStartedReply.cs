@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using ZombieSharpClient.Entity.Game;
 using ZombieSharpClient.Entity.Server;
 using ZombieSharpClient.Entity.Support;
-namespace ZombieSharpClient.UserReply
+namespace ZombieSharpClient.UserReplys
 {
 	[DataContract]
 	public class GameStartedReply{

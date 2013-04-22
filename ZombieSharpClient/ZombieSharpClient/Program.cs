@@ -11,6 +11,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Timers;
 using ZombieSharpClient.Actions;
+using ZombieSharpClient.UserReplys;
 using System.Runtime.Serialization.Json;
 
 namespace ZombieSharpClient
@@ -34,9 +35,11 @@ namespace ZombieSharpClient
             action.ConnectAction = connect;
 
             byte[] finalData;
+            var serializer = new DataContractJsonSerializer(typeof(UserAction));
+            var deserializer = new DataContractJsonSerializer(typeof(UserReply));
             using (var stream = new MemoryStream())
             {
-                var serializer = new DataContractJsonSerializer(typeof(UserAction));
+               
                 serializer.WriteObject(stream, action);
                 finalData = stream.ToArray();
             }
@@ -47,7 +50,7 @@ namespace ZombieSharpClient
 
             Byte[] data = finalData;
 
-            Console.WriteLine(String.Join(",",data));   
+           // Console.WriteLine(String.Join(",",data));   
             client.GetStream();
             NetworkStream stream1 = client.GetStream();
 
@@ -55,17 +58,49 @@ namespace ZombieSharpClient
             stream1.Write(Encoding.UTF8.GetBytes("\n"), 0, 1);
             stream1.Flush();
 
-            data = new Byte[256];
+            data = new Byte[10000];
 
             String responseData = String.Empty;
 
             Int32 bytes = stream1.Read(data, 0, data.Length);
+            var res = new Byte[bytes];
+            System.Array.Copy(data,res,bytes);
             responseData = System.Text.Encoding.UTF8.GetString(data, 0, bytes);
-            Console.WriteLine("Received: {0}", responseData); 
-            int index1=responseData.IndexOf("token");
-            int index2=responseData.IndexOf(",",index1);
+            Console.WriteLine("Received: {0}", responseData);
+//            Byte[] dcopy = new Byte[bytes];
+//            for (int i = 0; i < bytes; i++)
+//            {
+//                dcopy[i] = data[i];
+//            }
+//            MemoryStream ms1 = new MemoryStream(dcopy);
+//            MemoryStream ms2 = new MemoryStream(data);
+//
+//            UserReply usr=new UserReply();
+//            usr.Reply = 70;
+//            ConnectionReply cnr=new ConnectionReply();
+//            cnr.Token = "234";
+//            usr.ConnectionReply = cnr;
+//            var tmp = new MemoryStream();
+//            deserializer.WriteObject(tmp,usr);
+//            var text1 = Encoding.UTF8.GetString(tmp.ToArray());
+//            Console.WriteLine("Sent111: {0}", text1);
+//            Console.ReadLine();
+//
+//            UserReply urs12= (UserReply)deserializer.ReadObject(new MemoryStream(tmp.ToArray()));
+//            Console.WriteLine("Sent222: {0}", urs12);
+//            Console.ReadLine();
+//
+//          //  var text2 = "{\"connectionReply\":{\"token\":\"234\",\"version\":null},\"reply\":70}";
+//            var text2 = "{\"reply\":70,\"connectionReply\":{\"token\":\"234\",\"version\":null}}\n";
+//            MemoryStream mstmp = new MemoryStream(Encoding.UTF8.GetBytes(text2));
+//            UserReply urs13 = (UserReply)deserializer.ReadObject(mstmp);
+//            Console.WriteLine("Sent333: {0}", urs13);
+//            Console.ReadLine();
 
-            String token = responseData.Substring(index1 + 8, index2 - index1 - 9);
+//            Console.WriteLine("dta: {0}", responseData);
+            UserReply readObject = (UserReply)deserializer.ReadObject(new MemoryStream(res));
+            String token = readObject.ConnectionReply.Token;
+          
             Console.WriteLine("token: {0}", token); 
             
             String requestCard="{\"name\":\"User1\",\"token\":\""+token+"\",\"action\":70}";

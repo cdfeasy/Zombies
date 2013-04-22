@@ -7,13 +7,11 @@ using System.Threading.Tasks;
 using ZombieSharpClient.Entity.Game;
 using ZombieSharpClient.Entity.Server;
 using ZombieSharpClient.Entity.Support;
-namespace ZombieSharpClient.UserReply
+namespace ZombieSharpClient.UserReplys
 {
 	[DataContract]
-	public class ErrorReply{
-		[DataMember(Name = "errorText")]
-		public string ErrorText { get; set; }
-		[DataMember(Name = "errorCode")]
-		public int ErrorCode { get; set; }
+	public class SaveDeckReply{
+		[DataMember(Name = "deckId")]
+		public int DeckId { get; set; }
 	}
 }

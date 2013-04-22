@@ -24,13 +24,8 @@ public class Card {
     private int strength;
     private int hp;
     private int armour;
-    @Basic(fetch= FetchType.LAZY)
-    @Lob
-    private byte[] img;
-
-    @Basic(fetch= FetchType.LAZY)
-    @Lob
-    private byte[] shortImg;
+    private int imgResourceId;
+    private int shortImgResourceId;
     private int threadLevel;
     private int cardType;
     private int cardLevel;
@@ -150,16 +145,20 @@ public class Card {
         this.abilities = abilities;
     }
 
-    public byte[] getImg() {
-        return img;
+    public int getImgResourceId() {
+        return imgResourceId;
     }
 
-    public void setImg(byte[] img) {
-        this.img = img;
+    public void setImgResourceId(int imgResourceId) {
+        this.imgResourceId = imgResourceId;
     }
 
-    public byte[] getShortImg() {
-        return shortImg;
+    public int getShortImgResourceId() {
+        return shortImgResourceId;
+    }
+
+    public void setShortImgResourceId(int shortImgResourceId) {
+        this.shortImgResourceId = shortImgResourceId;
     }
 
     public boolean isUniqueCard() {
@@ -168,10 +167,6 @@ public class Card {
 
     public void setUniqueCard(boolean uniqueCard) {
         this.uniqueCard = uniqueCard;
-    }
-
-    public void setShortImg(byte[] shortImg) {
-        this.shortImg = shortImg;
     }
 
     public int getResourceCost1() {
@@ -236,5 +231,32 @@ public class Card {
 
     public void setUniqueAbility(Abilities uniqueAbility) {
         this.uniqueAbility = uniqueAbility;
+    }
+
+    @Override
+    public String toString() {
+        return "Card{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", nameEng='" + nameEng + '\'' +
+                ", description='" + description + '\'' +
+                ", descriptionEng='" + descriptionEng + '\'' +
+                ", strength=" + strength +
+                ", hp=" + hp +
+                ", armour=" + armour +
+                ", imgResourceId=" + imgResourceId +
+                ", shortImgResourceId=" + shortImgResourceId +
+                ", threadLevel=" + threadLevel +
+                ", cardType=" + cardType +
+                ", cardLevel=" + cardLevel +
+                ", cardGoldCost=" + cardGoldCost +
+                ", uniqueCard=" + uniqueCard +
+                ", abilities=" + abilities +
+                ", uniqueAbility=" + uniqueAbility +
+                ", resourceCost1=" + resourceCost1 +
+                ", resourceCost2=" + resourceCost2 +
+                ", resourceCost3=" + resourceCost3 +
+                ", subFraction=" + subFraction +
+                '}';
     }
 }

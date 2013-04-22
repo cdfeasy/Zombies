@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 using ZombieSharpClient.Entity.Game;
 using ZombieSharpClient.Entity.Server;
 using ZombieSharpClient.Entity.Support;
-namespace ZombieSharpClient.UserReply
+namespace ZombieSharpClient.UserReplys
 {
 	[DataContract]
-	public class CardInfoReply{
-		[DataMember(Name = "fractions")]
-		public List<Fraction> Fractions { get; set; }
+	public class UserInfoReply{
+		[DataMember(Name = "user")]
+		public User User { get; set; }
 	}
 }
