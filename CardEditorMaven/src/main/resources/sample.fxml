@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" fx:controller="sample.Controller" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="792.0" prefWidth="1206.0" xmlns:fx="http://javafx.com/fxml">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns:fx="http://javafx.com/fxml" fx:controller="sample.Controller">
   <children>
     <SplitPane dividerPositions="0.09973753280839895" focusTraversable="true" layoutX="14.0" layoutY="14.0" orientation="VERTICAL" prefHeight="764.0" prefWidth="1178.0">
       <items>
@@ -50,9 +50,9 @@
                   <content>
                     <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="624.0" prefWidth="1101.0">
                       <children>
-                        <TableView layoutX="14.0" layoutY="14.0" prefHeight="609.0" prefWidth="192.0">
+                        <TableView fx:id="CardList" layoutX="14.0" layoutY="14.0" prefHeight="609.0" prefWidth="192.0">
                           <columns>
-                            <TableColumn prefWidth="75.0" text="Column X" />
+                            <TableColumn  prefWidth="75.0" text="Name" />
                             <TableColumn prefWidth="75.0" text="Column X" />
                           </columns>
                         </TableView>
