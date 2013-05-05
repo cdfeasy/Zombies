@@ -1,36 +1,26 @@
-package zombies.entity.game;
-
-/**
- * Created with IntelliJ IDEA.
- * User: dmitry
- * Date: 24.12.12
- * Time: 13:20
- * To change this template use File | Settings | File Templates.
- */
+package zombies.entity.server;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+/**
+ * Created with IntelliJ IDEA.
+ * User: dmitry
+ * Date: 01.05.13
+ * Time: 18:39
+ * To change this template use File | Settings | File Templates.
+ */
 @Entity
-public class Abilities {
+public class Achievement {
     @Id
+    @GeneratedValue
     private Long id;
     private String name;
     private String nameEng;
     private String description;
     private String descriptionEng;
     private String action;
-
-    public Abilities() {
-    }
-
-    public Abilities(Long id,String name, String description, String action) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.action = action;
-    }
 
     public Long getId() {
         return id;
@@ -48,22 +38,6 @@ public class Abilities {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getAction() {
-        return action;
-    }
-
-    public void setAction(String action) {
-        this.action = action;
-    }
-
     public String getNameEng() {
         return nameEng;
     }
@@ -72,11 +46,27 @@ public class Abilities {
         this.nameEng = nameEng;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getDescriptionEng() {
         return descriptionEng;
     }
 
     public void setDescriptionEng(String descriptionEng) {
         this.descriptionEng = descriptionEng;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
     }
 }

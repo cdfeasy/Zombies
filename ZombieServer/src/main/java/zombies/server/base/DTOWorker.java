@@ -20,7 +20,13 @@ import java.util.*;
 public class DTOWorker {
 
 
-
+    /**
+     * Процессит статистику пользователя, обвновляет значение экспы, левела итд. Сами значения меняются в GameEndProcessor
+     * @param ses
+     * @param player
+     * @param playerInfo
+     * @return
+     */
     private User processUser(Session ses,UserInfo player,GameInfo playerInfo) {
         Query query = ses.createQuery("select user from UserPlayer user where user.name=:name");
         query.setParameter("name", player.getUser().getName());
@@ -34,6 +40,12 @@ public class DTOWorker {
         return user;
     }
 
+    /**
+     * Процессит детальную статистику карт, сколько раз каждая карта была использована, сколько убила, сколько умерла
+     * @param ses
+     * @param player
+     * @param playerInfo
+     */
     private void processUserStatistic(Session ses,User player,GameInfo playerInfo) {
         Set<Long> usedCard=new HashSet<>();
         for(Long id:playerInfo.getUsed().keySet()){
@@ -88,6 +100,13 @@ public class DTOWorker {
         }
     }
 
+    /**
+     * Процессит в бд результат игры, обновляет статистику игроков
+     * @param playerWin
+     * @param playerLoose
+     * @param playerWinInfo
+     * @param playerLooseInfo
+     */
     public void processGameResult( UserInfo playerWin,UserInfo playerLoose, GameInfo playerWinInfo, GameInfo playerLooseInfo){
         Session ses = zombies.entity.support.HibernateUtil.getSessionFactory().openSession();
         ses.getTransaction().begin();

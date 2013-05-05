@@ -33,4 +33,11 @@ public enum CardTypeEnum {
         }
         return null;
     }
+    public static CardTypeEnum getValue(String value){
+        for(CardTypeEnum e:CardTypeEnum.values()){
+            if(e.name().equals(value))
+                return e;
+        }
+        return null;
+    }
 }

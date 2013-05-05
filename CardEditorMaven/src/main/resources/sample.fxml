@@ -4,59 +4,45 @@
 <?import javafx.collections.*?>
 <?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns:fx="http://javafx.com/fxml" fx:controller="sample.Controller">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1200.0000999999975" xmlns:fx="http://javafx.com/fxml" fx:controller="sample.ZombyesController">
   <children>
-    <SplitPane dividerPositions="0.09973753280839895" focusTraversable="true" layoutX="14.0" layoutY="14.0" orientation="VERTICAL" prefHeight="764.0" prefWidth="1178.0">
+    <SplitPane dividerPositions="0.04982618771726535" focusTraversable="true" layoutX="14.0" layoutY="15.0" orientation="VERTICAL" prefHeight="865.0" prefWidth="1178.0">
       <items>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="67.0" prefWidth="1128.0">
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="62.0" prefWidth="1176.0">
           <children>
-            <ComboBox fx:id="fraction" layoutX="14.0" layoutY="15.0" prefHeight="21.0" prefWidth="188.0">
+            <ComboBox fx:id="fraction" layoutX="14.0" layoutY="16.0" prefHeight="21.0" prefWidth="188.0" />
+            <ComboBox fx:id="subfraction" layoutX="220.0" layoutY="14.0" prefHeight="21.0" prefWidth="188.0" />
+            <ComboBox fx:id="type" layoutX="423.0" layoutY="14.0" prefHeight="21.0" prefWidth="198.0">
               <items>
                 <FXCollections fx:factory="observableArrayList">
-                  <String fx:value="Item 1" />
-                  <String fx:value="Item 2" />
-                  <String fx:value="Item 3" />
+                  <String fx:value="all" />
+                  <String fx:value="creature" />
+                  <String fx:value="bigCreature" />
+                  <String fx:value="vehicle" />
+                  <String fx:value="transport" />
+                  <String fx:value="structure" />
+                  <String fx:value="damageSpell" />
+                  <String fx:value="buffSpell" />
+                  <String fx:value="globalSpell" />
                 </FXCollections>
               </items>
             </ComboBox>
-            <ComboBox fx:id="subfraction" layoutX="220.0" layoutY="16.0" prefHeight="21.0" prefWidth="188.0">
-              <items>
-                <FXCollections fx:factory="observableArrayList">
-                  <String fx:value="Item 1" />
-                  <String fx:value="Item 2" />
-                  <String fx:value="Item 3" />
-                </FXCollections>
-              </items>
-            </ComboBox>
-            <ComboBox fx:id="type" layoutX="423.0" layoutY="17.0" prefHeight="21.0" prefWidth="198.0">
-              <items>
-                <FXCollections fx:factory="observableArrayList">
-                  <String fx:value="Item 1" />
-                  <String fx:value="Item 2" />
-                  <String fx:value="Item 3" />
-                </FXCollections>
-              </items>
-            </ComboBox>
-            <Button fx:id="searh" layoutX="1058.0" layoutY="19.0" mnemonicParsing="false" onAction="#OnSearchClick" text="search" />
+            <Button fx:id="searh" layoutX="648.0" layoutY="14.0" mnemonicParsing="false" onAction="#OnSearchClick" text="search" />
           </children>
         </AnchorPane>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="522.0" prefWidth="1128.0">
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="796.0" prefWidth="1176.0">
           <children>
-            <TabPane layoutX="14.0" layoutY="14.0" prefHeight="656.0" prefWidth="1149.0" tabClosingPolicy="UNAVAILABLE">
+            <TabPane layoutX="14.0" layoutY="14.0" prefHeight="803.0" prefWidth="1149.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
-                <Tab text="Untitled Tab 1">
+                <Tab text="Карты">
                   <content>
-                    <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="624.0" prefWidth="1101.0">
+                    <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="772.0" prefWidth="1149.0">
                       <children>
-                        <TableView fx:id="CardList" layoutX="14.0" layoutY="14.0" prefHeight="609.0" prefWidth="192.0">
-                          <columns>
-                            <TableColumn  prefWidth="75.0" text="Name" />
-                            <TableColumn prefWidth="75.0" text="Column X" />
-                          </columns>
-                        </TableView>
-                        <GridPane layoutX="220.0" layoutY="28.0" prefHeight="595.0" prefWidth="929.0000999999975">
+                        <TableView fx:id="CardList" layoutX="14.0" layoutY="14.0" prefHeight="745.0" prefWidth="192.0" />
+                        <GridPane layoutX="220.0" layoutY="14.0" prefHeight="715.0" prefWidth="930.0">
                           <children>
                             <TextField fx:id="id" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                             <TextField fx:id="name" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
@@ -69,16 +55,12 @@
                             <TextField fx:id="threadLevel" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
                             <TextField fx:id="imgResourceId" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                             <TextField fx:id="shortImgResourceId" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                            <TextField fx:id="cardType" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                             <TextField fx:id="cardLevel" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="7" />
                             <TextField fx:id="cardGoldCost" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                             <TextField fx:id="uniqueCard" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="8" />
-                            <TextField fx:id="uniqueAbility" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-                            <TextField fx:id="abilities" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="9" />
                             <TextField fx:id="resourceCost1" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="10" />
                             <TextField fx:id="resourceCost2" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="10" />
                             <TextField fx:id="resourceCost3" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="11" />
-                            <TextField fx:id="subFraction" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="11" />
                             <Label prefWidth="122.0" text="id" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                             <Label prefWidth="122.0" text="name" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                             <Label prefWidth="122.0" text="description" GridPane.columnIndex="0" GridPane.rowIndex="2" />
@@ -100,6 +82,61 @@
                             <Label prefWidth="122.0" text="abilities" GridPane.columnIndex="2" GridPane.rowIndex="9" />
                             <Label prefWidth="122.0" text="resourceCost2" GridPane.columnIndex="2" GridPane.rowIndex="10" />
                             <Label prefWidth="122.0" text="subFraction" GridPane.columnIndex="2" GridPane.rowIndex="11" />
+                            <ImageView fx:id="cardFullImg" fitHeight="140.0" fitWidth="186.66666666666666" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                            <ImageView fx:id="cardShortImg" fitHeight="33.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+                            <ComboBox fx:id="cardType" prefHeight="21.0" prefWidth="303.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                              <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                  <String fx:value="creature" />
+                                  <String fx:value="bigCreature" />
+                                  <String fx:value="vehicle" />
+                                  <String fx:value="transport" />
+                                  <String fx:value="structure" />
+                                  <String fx:value="damageSpell" />
+                                  <String fx:value="buffSpell" />
+                                  <String fx:value="globalSpell" />
+                                </FXCollections>
+                              </items>
+                            </ComboBox>
+                            <ComboBox fx:id="uniqueAbility" prefHeight="21.0" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                              <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                  <String fx:value="Item 1" />
+                                  <String fx:value="Item 2" />
+                                  <String fx:value="Item 3" />
+                                </FXCollections>
+                              </items>
+                            </ComboBox>
+                            <SplitPane dividerPositions="0.48894348894348894" focusTraversable="true" prefHeight="160.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="9">
+                              <items>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                  <children>
+                                    <TableView fx:id="cardAbilityTable" layoutY="3.0" prefHeight="255.0" prefWidth="200.0">
+                                      <columns>
+                                        <TableColumn prefWidth="75.0" text="Column X" />
+                                        <TableColumn prefWidth="75.0" text="Column X" />
+                                      </columns>
+                                    </TableView>
+                                  </children>
+                                </AnchorPane>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                  <children>
+                                    <Button id="cardDelAbilityCB" fx:id="cardAddAbilityCB" layoutX="9.0" layoutY="14.0" mnemonicParsing="false" onAction="#onCardAddAbilityCBClick" text="Добавить" />
+                                    <Button fx:id="cardDelAbilityCB" layoutX="103.0" layoutY="14.0" mnemonicParsing="false" onAction="#onCardDelAbilityCBClick" prefWidth="79.0" text="Удалить" />
+                                    <TextArea fx:id="abilityTextArea" layoutX="9.0" layoutY="45.0" prefHeight="199.0" prefWidth="188.0" wrapText="true" />
+                                  </children>
+                                </AnchorPane>
+                              </items>
+                            </SplitPane>
+                            <ComboBox fx:id="cardSubFraction" prefHeight="21.0" prefWidth="407.0" GridPane.columnIndex="3" GridPane.rowIndex="11">
+                              <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                  <String fx:value="Item 1" />
+                                  <String fx:value="Item 2" />
+                                  <String fx:value="Item 3" />
+                                </FXCollections>
+                              </items>
+                            </ComboBox>
                           </children>
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" maxWidth="467.0" minWidth="10.0" prefWidth="124.0" />
@@ -108,27 +145,95 @@
                             <ColumnConstraints maxWidth="409.0" prefWidth="409.0" />
                           </columnConstraints>
                           <rowConstraints>
-                            <RowConstraints maxHeight="260.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="381.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="569.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="439.0" prefHeight="45.0" />
-                            <RowConstraints maxHeight="445.0" prefHeight="45.0" />
-                            <RowConstraints maxHeight="453.0" prefHeight="130.0" />
-                            <RowConstraints maxHeight="437.0" prefHeight="130.0" />
-                            <RowConstraints maxHeight="432.0" prefHeight="45.0" />
-                            <RowConstraints maxHeight="441.0" prefHeight="45.0" />
-                            <RowConstraints maxHeight="423.0" prefHeight="45.0" />
-                            <RowConstraints maxHeight="415.0" prefHeight="45.0" />
-                            <RowConstraints maxHeight="413.0" prefHeight="45.0" />
+                            <RowConstraints maxHeight="260.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="381.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="569.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="439.0" prefHeight="30.0" />
+                            <RowConstraints maxHeight="445.0" prefHeight="30.0" />
+                            <RowConstraints maxHeight="453.0" prefHeight="140.0" />
+                            <RowConstraints maxHeight="437.0" prefHeight="48.0" />
+                            <RowConstraints maxHeight="432.0" prefHeight="30.0" />
+                            <RowConstraints maxHeight="441.0" prefHeight="30.0" />
+                            <RowConstraints maxHeight="423.0" prefHeight="260.0" />
+                            <RowConstraints maxHeight="415.0" prefHeight="30.0" />
+                            <RowConstraints maxHeight="413.0" prefHeight="30.0" />
                           </rowConstraints>
                         </GridPane>
+                        <Button fx:id="cardAdd" layoutX="216.0" layoutY="737.0" mnemonicParsing="false" onAction="#cardAddOnClick" text="Добавить" />
+                        <Button fx:id="cardEdit" layoutX="306.0" layoutY="737.0" mnemonicParsing="false" onAction="#cardEditOnClick" text="Редактировать" />
+                        <Button fx:id="cardDel" layoutX="422.0" layoutY="737.0" mnemonicParsing="false" onAction="#cardDelOnClick" prefWidth="81.0" text="Удалить" />
                       </children>
                     </AnchorPane>
                   </content>
                 </Tab>
-                <Tab text="Untitled Tab 2">
+                <Tab text="Фракции">
                   <content>
-                    <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                      <children>
+                        <TableView fx:id="subfractionTable" layoutX="14.0" layoutY="14.0" prefHeight="744.0" prefWidth="270.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="Column X" />
+                            <TableColumn prefWidth="75.0" text="Column X" />
+                          </columns>
+                        </TableView>
+                        <ComboBox fx:id="subfractionFraction" layoutX="506.0" layoutY="26.0" prefHeight="21.0" prefWidth="198.0">
+                          <items>
+                            <FXCollections fx:factory="observableArrayList">
+                              <String fx:value="Выжившие" />
+                              <String fx:value="Зомби" />
+                            </FXCollections>
+                          </items>
+                        </ComboBox>
+                        <TextField fx:id="subfractionId" layoutX="506.0" layoutY="71.0" prefWidth="200.0" />
+                        <TextField fx:id="subfractionName" layoutX="506.0" layoutY="108.0" prefWidth="200.0" />
+                        <TextField fx:id="subfractionNameEng" layoutX="506.0" layoutY="142.0" prefWidth="200.0" />
+                        <TextField fx:id="subfractionDescription" layoutX="506.0" layoutY="180.0" prefWidth="200.0" />
+                        <TextField fx:id="subfractionDescriptionEng" layoutX="506.0" layoutY="218.0" prefWidth="200.0" />
+                        <TextField fx:id="subfractionLevel" layoutX="506.0" layoutY="258.0" prefWidth="200.0" />
+                        <Label layoutX="294.0" layoutY="26.0" text="Фракция" />
+                        <Label layoutX="294.0" layoutY="71.0" text="id" />
+                        <Label layoutX="294.0" layoutY="100.0" text="name" />
+                        <Label layoutX="294.0" layoutY="134.0" text="nameEng" />
+                        <Label layoutX="294.0" layoutY="172.0" text="description" />
+                        <Label layoutX="294.0" layoutY="210.0" text="descriptionEng" />
+                        <Label layoutX="294.0" layoutY="250.0" text="level" />
+                        <TextField fx:id="subfractionRes1" layoutX="504.0" layoutY="300.0" prefWidth="200.0" />
+                        <TextField fx:id="subfractionRes2" layoutX="504.0" layoutY="339.0" prefWidth="200.0" />
+                        <TextField fx:id="subfractionRes3" layoutX="504.0" layoutY="375.0" prefWidth="200.0" />
+                        <Label layoutX="294.0" layoutY="300.0" text="Res1" />
+                        <Label layoutX="294.0" layoutY="331.0" text="Res2" />
+                        <Label layoutX="294.0" layoutY="367.0" text="Res3" />
+                        <Button fx:id="subfractionAddButton" layoutX="294.0" layoutY="433.0" mnemonicParsing="false" onAction="#OnSubfractionAddButtonClick" text="Добавить" />
+                        <Button fx:id="subfractionEditButton" layoutX="384.0" layoutY="433.0" mnemonicParsing="false" onAction="#OnSubfractionEditButtonClick" text="Редактировать" />
+                        <Button id="subfractionAddButton" fx:id="subfractionDelButton" layoutX="511.0" layoutY="433.0" mnemonicParsing="false" onAction="#OnSubfractionDelButtonClick" prefWidth="102.0" text="Удалить" />
+                        <Button fx:id="subfractionRefresh" layoutX="727.0" layoutY="26.0" mnemonicParsing="false" onAction="#OnSubfractionRefreshClick" prefWidth="110.0" text="Refresh" />
+                      </children>
+                    </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab text="Способности">
+                  <content>
+                    <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                      <children>
+                        <TableView fx:id="abilityGrid" layoutX="14.0" layoutY="14.0" prefHeight="597.0" prefWidth="687.0" />
+                        <TextField fx:id="abilityId" layoutX="871.0" layoutY="62.0" prefWidth="200.0" />
+                        <TextField fx:id="abilityName" layoutX="871.0" layoutY="102.0" prefWidth="200.0" />
+                        <TextField fx:id="abilityNameEng" layoutX="871.0" layoutY="138.0" prefWidth="200.0" />
+                        <TextField fx:id="abilityDescription" layoutX="871.0" layoutY="180.0" prefWidth="200.0" />
+                        <TextField fx:id="abilityDescriptionEng" layoutX="871.0" layoutY="222.0" prefWidth="200.0" />
+                        <Label layoutX="727.0" layoutY="68.0" text="id" />
+                        <Label layoutX="727.0" layoutY="108.0" text="name" />
+                        <Label layoutX="727.0" layoutY="152.0" text="nameEng" />
+                        <Label layoutX="727.0" layoutY="194.0" text="description" />
+                        <Label layoutX="727.0" layoutY="228.0" text="descriptionEng" />
+                        <Label layoutX="727.0" layoutY="268.0" text="action" />
+                        <TextField fx:id="abilityAction" layoutX="871.0" layoutY="262.0" prefWidth="200.0" />
+                        <Button fx:id="abilityRefresh" layoutX="716.0" layoutY="14.0" mnemonicParsing="false" onAction="#onAbilityRefreshClick" text="Refresh" />
+                        <Button fx:id="addAbility" layoutX="716.0" layoutY="313.0" mnemonicParsing="false" onAction="#onAddAbilityClick" text="Добавить" />
+                        <Button fx:id="saveAbility" layoutX="806.0" layoutY="313.0" mnemonicParsing="false" onAction="#onSaveAbilityClick" text="Редактировать" />
+                        <Button fx:id="delAbility" layoutX="927.0" layoutY="313.0" mnemonicParsing="false" onAction="#onDelAbilityClick" prefWidth="90.0" text="Удалить" />
+                      </children>
+                    </AnchorPane>
                   </content>
                 </Tab>
               </tabs>

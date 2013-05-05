@@ -25,18 +25,21 @@ public class FillBase {
         Card aero = new Card(6l,"Аэропорт", "Увеличивает приток вируса", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0,1);
         Card tec = new Card(7l,"Теплоэлектростанция", "Увеличивает приток энергии", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0,1);
 
-        Abilities genereateCorpse = new Abilities("Увеличение притока тел", "Увеличение притока тел", "res1=2");
-        Abilities genereateVirus = new Abilities("Увеличение притока вируса", "Увеличение притока вируса", "res2=2");
-        Abilities genereateEnergy = new Abilities("Увеличение притока энергии", "Увеличение притока энергии", "res3=2");
+
+        Abilities nonAbility = new Abilities(0l,"Без способностей", "Без способностей", "");
+
+        Abilities genereateCorpse = new Abilities(1l,"Увеличение притока тел", "Увеличение притока тел", "res1=2");
+        Abilities genereateVirus = new Abilities(2l,"Увеличение притока вируса", "Увеличение притока вируса", "res2=2");
+        Abilities genereateEnergy = new Abilities(3l,"Увеличение притока энергии", "Увеличение притока энергии", "res3=2");
 
         hospital.getAbilities().add(genereateCorpse);
         aero.getAbilities().add(genereateVirus);
         tec.getAbilities().add(genereateEnergy);
 
-        Abilities ignoreBlock = new Abilities("Атакует за баррикадами", "Атакует за баррикадами", "backstub");
-        Abilities meatmass = new Abilities("Без лимита на ячейку", "Без лимита на ячейку", "nolimit");
-        Abilities unweldy = new Abilities("Промахивается каждый третий удар", "Промахивается каждый третий удар", "miss=30");
-        Abilities evade = new Abilities("Игнорирует половину урона", "Игнорирует половину урона", "evade=50");
+        Abilities ignoreBlock = new Abilities(4l,"Атакует за баррикадами", "Атакует за баррикадами", "backstub");
+        Abilities meatmass = new Abilities(5l,"Без лимита на ячейку", "Без лимита на ячейку", "nolimit");
+        Abilities unweldy = new Abilities(6l,"Промахивается каждый третий удар", "Промахивается каждый третий удар", "miss=30");
+        Abilities evade = new Abilities(7l,"Игнорирует половину урона", "Игнорирует половину урона", "evade=50");
 
         slow.getAbilities().add(meatmass);
         slow.getAbilities().add(unweldy);
@@ -63,6 +66,7 @@ public class FillBase {
         aero.setSubFraction(simpleSombies);
         tec.setSubFraction(simpleSombies);
 
+            ses.persist(nonAbility);
         ses.persist(genereateCorpse);
         ses.persist(genereateVirus);
         ses.persist(genereateEnergy);
@@ -106,16 +110,16 @@ public class FillBase {
         Card tech = new Card(1010l,"Автостоянка", "Увеличивает приток техники", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0,1);
         Card market = new Card(1011l,"Оружиейны магазин", "Увеличивает приток оружия", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0,1);
 
-        Abilities genereatePeoples = new Abilities("Увеличение притока людей", "Увеличение притока людей", "res1=2");
-        Abilities genereateTech = new Abilities("Увеличение притока техники", "Увеличение притока техники", "res2=2");
-        Abilities genereateWeapon = new Abilities("Увеличение притока оружия", "Увеличение притока оружия", "res3=2");
+        Abilities genereatePeoples = new Abilities(10001l,"Увеличение притока людей", "Увеличение притока людей", "res1=2");
+        Abilities genereateTech = new Abilities(10002l,"Увеличение притока техники", "Увеличение притока техники", "res2=2");
+        Abilities genereateWeapon = new Abilities(10003l,"Увеличение притока оружия", "Увеличение притока оружия", "res3=2");
 
         hospital.getAbilities().add(genereatePeoples);
         tech.getAbilities().add(genereateTech);
         market.getAbilities().add(genereateWeapon);
 
-        Abilities molotovCoctail = new Abilities("Коктейл молотова", "Поджигает всех врагов", "splash=1");
-        Abilities healAbility = new Abilities("Лечение", "Лечит союзников", "heal=5");
+        Abilities molotovCoctail = new Abilities(10004l,"Коктейл молотова", "Поджигает всех врагов", "splash=1");
+        Abilities healAbility = new Abilities(10005l,"Лечение", "Лечит союзников", "heal=5");
 
         medic.getAbilities().add(healAbility);
         molotov.getAbilities().add(molotovCoctail);

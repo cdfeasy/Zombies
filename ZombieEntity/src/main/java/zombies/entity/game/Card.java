@@ -31,6 +31,7 @@ public class Card {
     private int cardLevel;
     private int cardGoldCost;
     private boolean uniqueCard;
+    private boolean enabled;
 
     @ManyToMany(cascade = CascadeType.REFRESH,fetch = FetchType.EAGER)
     private List<Abilities> abilities=new ArrayList<>();
@@ -68,169 +69,243 @@ public class Card {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-    @JsonIgnore
-    public SubFraction getSubFraction() {
-        return subFraction;
-    }
-
-    public void setSubFraction(SubFraction subFraction) {
-        this.subFraction = subFraction;
-        subFraction.addCard(this);
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getHp() {
-        return hp;
-    }
-
-    public void setHp(int hp) {
-        this.hp = hp;
-    }
-
-    public int getStrength() {
-        return strength;
-    }
-
-    public void setStrength(int strength) {
-        this.strength = strength;
-    }
-
-    public int getArmour() {
-        return armour;
-    }
-
-    public void setArmour(int block) {
-        this.armour = block;
-    }
-
-    public int getThreadLevel() {
-        return threadLevel;
-    }
-
-    public void setThreadLevel(int threadLevel) {
-        this.threadLevel = threadLevel;
-    }
-
-    public int getCardType() {
-        return cardType;
-    }
-
-    public void setCardType(int cardType) {
-        this.cardType = cardType;
-    }
-
-    public List<Abilities> getAbilities() {
-        return abilities;
-    }
-
-    public void setAbilities(List<Abilities> abilities) {
-        this.abilities = abilities;
-    }
-
-    public int getImgResourceId() {
-        return imgResourceId;
-    }
-
-    public void setImgResourceId(int imgResourceId) {
-        this.imgResourceId = imgResourceId;
-    }
-
-    public int getShortImgResourceId() {
-        return shortImgResourceId;
-    }
-
-    public void setShortImgResourceId(int shortImgResourceId) {
-        this.shortImgResourceId = shortImgResourceId;
-    }
-
-    public boolean isUniqueCard() {
-        return uniqueCard;
-    }
-
-    public void setUniqueCard(boolean uniqueCard) {
-        this.uniqueCard = uniqueCard;
-    }
-
-    public int getResourceCost1() {
-        return resourceCost1;
-    }
-
-    public void setResourceCost1(int resourceCost1) {
-        this.resourceCost1 = resourceCost1;
-    }
-
-    public int getResourceCost2() {
-        return resourceCost2;
-    }
-
-    public void setResourceCost2(int resourceCost2) {
-        this.resourceCost2 = resourceCost2;
-    }
-
-    public int getResourceCost3() {
-        return resourceCost3;
-    }
-
-    public void setResourceCost3(int resourceCost3) {
-        this.resourceCost3 = resourceCost3;
-    }
-
-    public int getCardLevel() {
-        return cardLevel;
-    }
-
-    public void setCardLevel(int cardLevel) {
-        this.cardLevel = cardLevel;
-    }
-
-    public int getCardGoldCost() {
-        return cardGoldCost;
-    }
-
-    public void setCardGoldCost(int cardGoldCost) {
-        this.cardGoldCost = cardGoldCost;
     }
 
     public String getNameEng() {
         return nameEng;
     }
 
-    public void setNameEng(String nameEng) {
-        this.nameEng = nameEng;
+    public String getDescription() {
+        return description;
     }
 
     public String getDescriptionEng() {
         return descriptionEng;
     }
 
-    public void setDescriptionEng(String descriptionEng) {
-        this.descriptionEng = descriptionEng;
+    public int getStrength() {
+        return strength;
+    }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public int getArmour() {
+        return armour;
+    }
+
+    public int getImgResourceId() {
+        return imgResourceId;
+    }
+
+    public int getShortImgResourceId() {
+        return shortImgResourceId;
+    }
+
+    public int getThreadLevel() {
+        return threadLevel;
+    }
+
+    public int getCardType() {
+        return cardType;
+    }
+
+    public int getCardLevel() {
+        return cardLevel;
+    }
+
+    public int getCardGoldCost() {
+        return cardGoldCost;
+    }
+
+    public boolean isUniqueCard() {
+        return uniqueCard;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public List<Abilities> getAbilities() {
+        return abilities;
+    }
+
+    public SubFraction getSubFraction() {
+        return subFraction;
     }
 
     public Abilities getUniqueAbility() {
         return uniqueAbility;
     }
 
+    public int getResourceCost1() {
+        return resourceCost1;
+    }
+
+    public int getResourceCost2() {
+        return resourceCost2;
+    }
+
+    public int getResourceCost3() {
+        return resourceCost3;
+    }
+
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setNameEng(String nameEng) {
+        this.nameEng = nameEng;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setDescriptionEng(String descriptionEng) {
+        this.descriptionEng = descriptionEng;
+    }
+
+    public void setStrength(int strength) {
+        this.strength = strength;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
+    public void setArmour(int armour) {
+        this.armour = armour;
+    }
+
+    public void setImgResourceId(int imgResourceId) {
+        this.imgResourceId = imgResourceId;
+    }
+
+    public void setShortImgResourceId(int shortImgResourceId) {
+        this.shortImgResourceId = shortImgResourceId;
+    }
+
+    public void setThreadLevel(int threadLevel) {
+        this.threadLevel = threadLevel;
+    }
+
+    public void setCardType(int cardType) {
+        this.cardType = cardType;
+    }
+
+    public void setCardLevel(int cardLevel) {
+        this.cardLevel = cardLevel;
+    }
+
+    public void setCardGoldCost(int cardGoldCost) {
+        this.cardGoldCost = cardGoldCost;
+    }
+
+    public void setUniqueCard(boolean uniqueCard) {
+        this.uniqueCard = uniqueCard;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public void setAbilities(List<Abilities> abilities) {
+        this.abilities = abilities;
+    }
+
+    public void setSubFraction(SubFraction subFraction) {
+        this.subFraction = subFraction;
+    }
+
     public void setUniqueAbility(Abilities uniqueAbility) {
         this.uniqueAbility = uniqueAbility;
+    }
+
+    public void setResourceCost1(int resourceCost1) {
+        this.resourceCost1 = resourceCost1;
+    }
+
+    public void setResourceCost2(int resourceCost2) {
+        this.resourceCost2 = resourceCost2;
+    }
+
+    public void setResourceCost3(int resourceCost3) {
+        this.resourceCost3 = resourceCost3;
+    }
+
+
+
+
+
+    public void setId(String id) {
+        this.id = Long.parseLong(id);
+    }
+
+
+
+    public void setStrength(String strength) {
+        this.strength = Integer.parseInt(strength);
+    }
+
+    public void setHp(String hp) {
+        this.hp = Integer.parseInt(hp);
+    }
+
+    public void setArmour(String armour) {
+        this.armour = Integer.parseInt(armour);
+    }
+
+    public void setImgResourceId(String imgResourceId) {
+        this.imgResourceId = Integer.parseInt(imgResourceId);
+    }
+
+    public void setShortImgResourceId(String shortImgResourceId) {
+        this.shortImgResourceId = Integer.parseInt(shortImgResourceId);
+    }
+
+    public void setThreadLevel(String threadLevel) {
+        this.threadLevel =Integer.parseInt( threadLevel);
+    }
+
+    public void setCardType(String cardType) {
+        this.cardType = Integer.parseInt(cardType);
+    }
+
+    public void setCardLevel(String cardLevel) {
+        this.cardLevel = Integer.parseInt(cardLevel);
+    }
+
+    public void setCardGoldCost(String cardGoldCost) {
+        this.cardGoldCost = Integer.parseInt(cardGoldCost);
+    }
+
+    public void setUniqueCard(String uniqueCard) {
+        this.uniqueCard = "true".equals(uniqueCard);
+    }
+
+    public void setEnabled(String enabled) {
+        this.enabled = "true".equals(enabled);
+    }
+
+    public void setResourceCost1(String resourceCost1) {
+        this.resourceCost1 = Integer.parseInt(resourceCost1);
+    }
+
+    public void setResourceCost2(String resourceCost2) {
+        this.resourceCost2 = Integer.parseInt(resourceCost2);
+    }
+
+    public void setResourceCost3(String resourceCost3) {
+        this.resourceCost3 = Integer.parseInt(resourceCost3);
     }
 
     @Override

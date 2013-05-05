@@ -34,6 +34,9 @@ public class User {
     @ManyToMany(cascade = CascadeType.REFRESH)
     private List<Card> availableCards =new ArrayList<>();
 
+    @ManyToMany(cascade = CascadeType.REFRESH)
+    private List<Achievement> achievements =new ArrayList<>();
+
     @Transient
     private List<Long> availableCardsIds;
 

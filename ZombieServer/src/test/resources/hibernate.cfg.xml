@@ -19,6 +19,7 @@
         <mapping class="zombies.entity.server.User"/>
         <mapping class="zombies.entity.server.FriendList"/>
         <mapping class="zombies.entity.server.GameVersion"/>
+        <mapping class="zombies.entity.server.Achievement"/>
 
     </session-factory>
 </hibernate-configuration>
