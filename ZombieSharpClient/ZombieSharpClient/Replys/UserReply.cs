@@ -11,29 +11,29 @@ namespace ZombieSharpClient.UserReplys
 {
 	[DataContract]
 	public class UserReply{
-        [DataMember(Name = "reply", EmitDefaultValue = false)]
+		[DataMember(Name = "reply")]
 		public int Reply { get; set; }
-        [DataMember(Name = "connectionReply", EmitDefaultValue = false)]
+		[DataMember(Name = "connectionReply")]
 		public ConnectionReply ConnectionReply { get; set; }
-        [DataMember(Name = "turnReply", EmitDefaultValue = false)]
+		[DataMember(Name = "turnReply")]
 		public TurnReply TurnReply { get; set; }
-        [DataMember(Name = "userInfoReply", EmitDefaultValue = false)]
+		[DataMember(Name = "userInfoReply")]
 		public UserInfoReply UserInfoReply { get; set; }
-        [DataMember(Name = "errorReply", EmitDefaultValue = false)]
+		[DataMember(Name = "errorReply")]
 		public ErrorReply ErrorReply { get; set; }
-        [DataMember(Name = "searchReply", EmitDefaultValue = false)]
+		[DataMember(Name = "searchReply")]
 		public SearchReply SearchReply { get; set; }
-        [DataMember(Name = "stopSearchReply", EmitDefaultValue = false)]
+		[DataMember(Name = "stopSearchReply")]
 		public StopSearchReply StopSearchReply { get; set; }
-        [DataMember(Name = "cardInfoReply", EmitDefaultValue = false)]
+		[DataMember(Name = "cardInfoReply")]
 		public CardInfoReply CardInfoReply { get; set; }
-        [DataMember(Name = "successReply", EmitDefaultValue = false)]
+		[DataMember(Name = "successReply")]
 		public SuccessReply SuccessReply { get; set; }
-        [DataMember(Name = "saveDeckReply", EmitDefaultValue = false)]
+		[DataMember(Name = "saveDeckReply")]
 		public SaveDeckReply SaveDeckReply { get; set; }
-        [DataMember(Name = "gameStartedReply", EmitDefaultValue = false)]
+		[DataMember(Name = "gameStartedReply")]
 		public GameStartedReply GameStartedReply { get; set; }
-        [DataMember(Name = "achievementsReply", EmitDefaultValue = false)]
+		[DataMember(Name = "achievementsReply")]
 		public AchievementsReply AchievementsReply { get; set; }
 	}
 }

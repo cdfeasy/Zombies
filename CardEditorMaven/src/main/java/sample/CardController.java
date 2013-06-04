@@ -1,8 +1,6 @@
 package sample;
 
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import org.hibernate.Query;
 import zombies.entity.game.Abilities;
@@ -121,26 +119,26 @@ public class CardController {
 
 
         Card card=new Card();
-        card.setId(controller.id.getText());
+        card.setIdString(controller.id.getText());
         card.setName(controller.name.getText());
         card.setNameEng(controller.nameEng.getText());
         card.setDescription(controller.description.getText());
         card.setDescriptionEng(controller.descriptionEng.getText());
-        card.setStrength(controller.strength.getText());
-        card.setHp(controller.hp.getText());
-        card.setArmour(controller.armour.getText());
-        card.setImgResourceId(controller.imgResourceId.getText());
-        card.setShortImgResourceId(controller.shortImgResourceId.getText());
-        card.setThreadLevel(controller.threadLevel.getText());
+        card.setStrengthString(controller.strength.getText());
+        card.setHpString(controller.hp.getText());
+        card.setArmourString(controller.armour.getText());
+        card.setImgResourceIdString(controller.imgResourceId.getText());
+        card.setShortImgResourceIdString(controller.shortImgResourceId.getText());
+        card.setThreadLevelString(controller.threadLevel.getText());
         card.setCardType(controller.cardType.getSelectionModel().getSelectedIndex());
-        card.setCardLevel(controller.cardLevel.getText());
+        card.setCardLevelString(controller.cardLevel.getText());
         card.setUniqueAbility(ab);
         card.setSubFraction(sf);
-        card.setCardGoldCost(controller.cardGoldCost.getText());
-        card.setUniqueCard(controller.uniqueCard.getText());
-        card.setResourceCost1(controller.resourceCost1.getText());
-        card.setResourceCost2(controller.resourceCost2.getText());
-        card.setResourceCost3(controller.resourceCost3.getText());
+        card.setCardGoldCostString(controller.cardGoldCost.getText());
+        card.setUniqueCardString(controller.uniqueCard.getText());
+        card.setResourceCost1String(controller.resourceCost1.getText());
+        card.setResourceCost2String(controller.resourceCost2.getText());
+        card.setResourceCost3String(controller.resourceCost3.getText());
         
 
         controller.ses.save(card);
@@ -163,26 +161,26 @@ public class CardController {
 
 
         Card card= (Card) query1.uniqueResult();
-        card.setId(controller.id.getText());
+        card.setIdString(controller.id.getText());
         card.setName(controller.name.getText());
         card.setNameEng(controller.nameEng.getText());
         card.setDescription(controller.description.getText());
         card.setDescriptionEng(controller.descriptionEng.getText());
-        card.setStrength(controller.strength.getText());
-        card.setHp(controller.hp.getText());
-        card.setArmour(controller.armour.getText());
-        card.setImgResourceId(controller.imgResourceId.getText());
-        card.setShortImgResourceId(controller.shortImgResourceId.getText());
-        card.setThreadLevel(controller.threadLevel.getText());
+        card.setStrengthString(controller.strength.getText());
+        card.setHpString(controller.hp.getText());
+        card.setArmourString(controller.armour.getText());
+        card.setImgResourceIdString(controller.imgResourceId.getText());
+        card.setShortImgResourceIdString(controller.shortImgResourceId.getText());
+        card.setThreadLevelString(controller.threadLevel.getText());
         card.setCardType(controller.cardType.getSelectionModel().getSelectedIndex());
-        card.setCardLevel(controller.cardLevel.getText());
-        card.setCardGoldCost(controller.cardGoldCost.getText());
-        card.setUniqueCard(controller.uniqueCard.getText());
+        card.setCardLevelString(controller.cardLevel.getText());
+        card.setCardGoldCostString(controller.cardGoldCost.getText());
+        card.setUniqueCardString(controller.uniqueCard.getText());
         card.setUniqueAbility(ab);
         card.setSubFraction(sf);
-        card.setResourceCost1(controller.resourceCost1.getText());
-        card.setResourceCost2(controller.resourceCost2.getText());
-        card.setResourceCost3(controller.resourceCost3.getText());
+        card.setResourceCost1String(controller.resourceCost1.getText());
+        card.setResourceCost2String(controller.resourceCost2.getText());
+        card.setResourceCost3String(controller.resourceCost3.getText());
 
 
         controller.ses.merge(card);

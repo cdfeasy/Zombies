@@ -6,12 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using ZombieSharpClient.Entity.Game;
 using ZombieSharpClient.Entity.Server;
-using ZombieSharpClient.Entity.Support;
-namespace ZombieSharpClient.UserActions
+namespace ZombieSharpClient.Entity.Support
 {
 	[DataContract]
-	public class SetDeckActiveAction{
-		[DataMember(Name = "deckId")]
-		public int DeckId { get; set; }
+	public class ImagePack{
+		[DataMember(Name = "images")]
+		public List<ImageResource> Images { get; set; }
 	}
 }

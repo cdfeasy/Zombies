@@ -24,7 +24,7 @@ public class CardInfoTest {
 
     }
 
-    //@Test
+    @Test
     public void ConnectionTest() throws InterruptedException, IOException {
         try{
             ObjectMapper mapper = new ObjectMapper();
@@ -34,14 +34,14 @@ public class CardInfoTest {
             UserAction connectact=new UserAction();
             connectact.setAction(ActionTypeEnum.CONNECT.getId());
             ConnectAction ca=new ConnectAction();
-            ca.setPass("12345");
-            connectact.setName("User1");
+            ca.setPass("123456");
+            connectact.setName("User2");
             connectact.setConnectAction(ca);
 
 
-          //  Client c=new Client("78.47.52.69",18080);
+            Client c=new Client("78.47.52.69",18080);
 
-            Client c=new Client("192.168.0.10",18080);
+          //  Client c=new Client("192.168.0.10",18080);
             c.setMessage(mapper.writeValueAsString(connectact));
             c.run();
             c.send();

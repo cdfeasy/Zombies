@@ -108,6 +108,8 @@ public class LobbyManager {
     }
 
     public void startGame(UserInfo user1,UserInfo user2) throws IOException {
+      //  System.out.println(user1);
+     //   System.out.println(user2);
        runningGames.add(new GameManager(user1,user2,this,gameEnd, ability));
 
     }

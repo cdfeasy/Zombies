@@ -26,10 +26,10 @@ namespace ZombieSharpClient.Entity.Game
 		public int Hp { get; set; }
 		[DataMember(Name = "armour")]
 		public int Armour { get; set; }
-		[DataMember(Name = "img")]
-		public byte[] Img { get; set; }
-		[DataMember(Name = "shortImg")]
-		public byte[] ShortImg { get; set; }
+		[DataMember(Name = "imgResourceId")]
+		public int ImgResourceId { get; set; }
+		[DataMember(Name = "shortImgResourceId")]
+		public int ShortImgResourceId { get; set; }
 		[DataMember(Name = "threadLevel")]
 		public int ThreadLevel { get; set; }
 		[DataMember(Name = "cardType")]
@@ -40,6 +40,8 @@ namespace ZombieSharpClient.Entity.Game
 		public int CardGoldCost { get; set; }
 		[DataMember(Name = "uniqueCard")]
 		public bool UniqueCard { get; set; }
+		[DataMember(Name = "enabled")]
+		public bool Enabled { get; set; }
 		[DataMember(Name = "abilities")]
 		public List<Abilities> Abilities { get; set; }
 		[DataMember(Name = "subFraction")]

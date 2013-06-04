@@ -1,5 +1,7 @@
 package zombies.entity.server;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import javax.persistence.*;
 
 /**
@@ -29,7 +31,7 @@ public class DetailStatistic {
     public void setId(Long id) {
         this.id = id;
     }
-
+    @JsonIgnore(value = true)
     public User getUser() {
         return user;
     }

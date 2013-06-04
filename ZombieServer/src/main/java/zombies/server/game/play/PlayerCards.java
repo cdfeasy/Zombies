@@ -32,7 +32,7 @@ public class PlayerCards {
     private int baseRes3 = 0;
 
     public PlayerCards(List<Card> playerDeck) {
-        this.playerDeck = playerDeck;
+        this.playerDeck.addAll(playerDeck);
 
         HashMap<SubFraction, Integer> cardCount = new HashMap<SubFraction, Integer>();
         for (Card c : playerDeck) {
@@ -114,6 +114,9 @@ public class PlayerCards {
                 resurrectFromGraveyard();
                 c = getRandomCard();
             }
+            if(c==null){
+                System.out.println(this);
+            }
 
             playerHand.add(c);
         }
@@ -146,4 +149,18 @@ public class PlayerCards {
         return baseRes2;
     }
 
+    @Override
+    public String toString() {
+        return "PlayerCards{" +
+                "handSize=" + handSize +
+                ", fractionSize=" + fractionSize +
+                ", rand=" + rand +
+                ", playerDeck=" + playerDeck +
+                ", playerGraveyard=" + playerGraveyard +
+                ", playerHand=" + playerHand +
+                ", baseRes1=" + baseRes1 +
+                ", baseRes2=" + baseRes2 +
+                ", baseRes3=" + baseRes3 +
+                '}';
+    }
 }

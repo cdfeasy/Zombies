@@ -57,6 +57,9 @@ public class DTOWorker {
         for(Long id:playerInfo.getKilled().keySet()){
             usedCard.add(id);
         }
+        if(usedCard.isEmpty()){
+            return;
+        }
         Query query = ses.createQuery("select dt from DetailStatistic dt where dt.user.name=:name and cardId in (:ids)");
         query.setParameter("name", player.getName());
         query.setParameterList("ids",usedCard);
@@ -112,7 +115,7 @@ public class DTOWorker {
         ses.getTransaction().begin();
         try {
             User user1 = processUser(ses, playerWin, playerWinInfo);
-            User user2 = processUser(ses,playerLoose,playerLooseInfo);
+            User user2 = processUser(ses, playerLoose,playerLooseInfo);
 
             History history=new History();
             history.setPlayer1(user1);

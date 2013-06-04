@@ -30,28 +30,36 @@ public class CreateBaseTest {
             // Query query = ses.createQuery("select card from Card card").setMaxResults(10);
             FillBase.createZombies(ses);
             FillBase.createPeoples(ses);
+            ses.getTransaction().commit();
+            ses.close();
+            ses = HibernateUtil.getSessionFactory().openSession();
+            ses.getTransaction().begin();
 
             User u1 = new User();
             u1.setLevel(1);
             u1.setXp(100);
             u1.setName("User1");
             u1.setPass("12345");
+            u1.setSide(0l);
 
             final User u2 = new User();
             u2.setLevel(2);
             u2.setXp(200);
             u2.setName("User2");
             u2.setPass("123456");
+            u2.setSide(1l);
             User u3 = new User();
             u3.setLevel(3);
             u3.setXp(300);
             u3.setName("User3");
             u3.setPass("1234567");
+            u3.setSide(0l);
             User u4 = new User();
             u4.setLevel(4);
             u4.setXp(400);
             u4.setName("User4");
             u4.setPass("12345678");
+            u4.setSide(1l);
 
             ses.persist(u1);
             ses.persist(u2);
@@ -64,28 +72,15 @@ public class CreateBaseTest {
 
             ses.getTransaction().commit();
             ses.getTransaction().begin();
-            Query query = ses.createQuery("select fraction from Fraction fraction where name=\'Выжившие\'");
-            List<Fraction> f=query.list();
-            Fraction zmb=f.get(0);
-            zmb.getSubFractions();
-            Deck deck=new Deck();
-            List<Card> av1=new ArrayList<Card>(zmb.getSubFractions().get(0).getDeck().size());
-            av1.addAll(zmb.getSubFractions().get(0).getDeck());
-            deck.setDeckCards(av1);
-            ses.persist(deck);
-
-            u1.getDecks().add(deck);
-            u1.setActiveDeck(deck);
-            List<Card> av=new ArrayList<Card>(zmb.getSubFractions().get(0).getDeck().size());
-            av.addAll(zmb.getSubFractions().get(0).getDeck());
-            u1.setAvailableCards(av);
-            ses.merge(u1);
-            ses.save(u1);
+           addDeck(u1,ses);
+            addDeck(u2,ses);
+            addDeck(u3,ses);
+            addDeck(u4,ses);
 
             ObjectMapper requestMapper = new ObjectMapper();
             requestMapper.generateJsonSchema(Fraction.class);
-            String s=requestMapper.writeValueAsString(f.get(0));
-            System.out.println(s);
+            //String s=requestMapper.writeValueAsString(f.get(0));
+           // System.out.println(s);
 
             //List<Long> itemlist=query.list();
             ses.getTransaction().commit();
@@ -93,5 +88,37 @@ public class CreateBaseTest {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+    private void addDeck(User u,Session ses){
+        Query query;
+        if(u.getSide()==0)   {
+             query = ses.createQuery("select fraction from Fraction fraction where fraction.id=0");
+        }  else{
+            query = ses.createQuery("select fraction from Fraction fraction where fraction.id=1");
+        }
+        List<Fraction> f=query.list();
+        List<Card> av1=new ArrayList<Card>();
+        for(SubFraction sub:f.get(0).getSubFractions() ){
+            if(sub.getLevel()==1){
+                for(Card c:sub.getDeck()){
+                    if(c.getCardLevel()==1){
+                        av1.add(c);
+                    }
+                }
+            }
+        }
+
+
+        Fraction zmb=f.get(0);
+        zmb.getSubFractions();
+        Deck deck=new Deck();
+        deck.setDeckCards(av1);
+        ses.persist(deck);
+
+        u.getDecks().add(deck);
+        u.setActiveDeck(deck);
+        u.setAvailableCards(av1);
+        ses.merge(u);
+      //  ses.save(u);
     }
 }

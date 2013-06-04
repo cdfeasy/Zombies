@@ -7,6 +7,7 @@ import zombies.entity.support.DeckInfo;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -262,7 +263,7 @@ public class User {
             }
             u.setActiveDeck(dCopy);
             u.setAvailableCards(new ArrayList<Card>());
-            for(Card c:u.getAvailableCards()){
+            for(Card c:this.getAvailableCards()){
                 u.getAvailableCards().add(cardMap.get(c.getId()));
             }
         }
@@ -294,9 +295,22 @@ public class User {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", pass='" + pass + '\'' +
-                ", deck=" + decks +
+                ", side=" + side +
+                ", decks=" + decks +
+                ", decksIds=" + decksIds +
+                ", availableCards=" + availableCards +
+                ", achievements=" + achievements +
+                ", availableCardsIds=" + availableCardsIds +
+                ", activeDeck=" + activeDeck +
+                ", friendList=" + friendList +
+                ", activeDeckIds=" + activeDeckIds +
                 ", level=" + level +
                 ", xp=" + xp +
+                ", gold=" + gold +
+                ", payed=" + payed +
+                ", zombieKilled=" + zombieKilled +
+                ", survivalsKilled=" + survivalsKilled +
+                ", avatar=" + Arrays.toString(avatar) +
                 '}';
     }
 }

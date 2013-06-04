@@ -132,7 +132,7 @@ public class Card {
     public List<Abilities> getAbilities() {
         return abilities;
     }
-
+    @JsonIgnore(value = true)
     public SubFraction getSubFraction() {
         return subFraction;
     }
@@ -245,66 +245,66 @@ public class Card {
 
 
 
-
-    public void setId(String id) {
+    @JsonIgnore
+    public void setIdString(String id) {
         this.id = Long.parseLong(id);
     }
 
 
-
-    public void setStrength(String strength) {
+    @JsonIgnore
+    public void setStrengthString(String strength) {
         this.strength = Integer.parseInt(strength);
     }
-
-    public void setHp(String hp) {
+    @JsonIgnore
+    public void setHpString(String hp) {
         this.hp = Integer.parseInt(hp);
     }
-
-    public void setArmour(String armour) {
+    @JsonIgnore
+    public void setArmourString(String armour) {
         this.armour = Integer.parseInt(armour);
     }
-
-    public void setImgResourceId(String imgResourceId) {
+    @JsonIgnore
+    public void setImgResourceIdString(String imgResourceId) {
         this.imgResourceId = Integer.parseInt(imgResourceId);
     }
-
-    public void setShortImgResourceId(String shortImgResourceId) {
+    @JsonIgnore
+    public void setShortImgResourceIdString(String shortImgResourceId) {
         this.shortImgResourceId = Integer.parseInt(shortImgResourceId);
     }
-
-    public void setThreadLevel(String threadLevel) {
+    @JsonIgnore
+    public void setThreadLevelString(String threadLevel) {
         this.threadLevel =Integer.parseInt( threadLevel);
     }
-
-    public void setCardType(String cardType) {
+    @JsonIgnore
+    public void setCardTypeString(String cardType) {
         this.cardType = Integer.parseInt(cardType);
     }
-
-    public void setCardLevel(String cardLevel) {
+    @JsonIgnore
+    public void setCardLevelString(String cardLevel) {
         this.cardLevel = Integer.parseInt(cardLevel);
     }
-
-    public void setCardGoldCost(String cardGoldCost) {
+    @JsonIgnore
+    public void setCardGoldCostString(String cardGoldCost) {
         this.cardGoldCost = Integer.parseInt(cardGoldCost);
     }
-
-    public void setUniqueCard(String uniqueCard) {
+    @JsonIgnore
+    public void setUniqueCardString(String uniqueCard) {
         this.uniqueCard = "true".equals(uniqueCard);
     }
-
-    public void setEnabled(String enabled) {
+    @JsonIgnore
+    public void setEnabledString(String enabled) {
         this.enabled = "true".equals(enabled);
     }
-
-    public void setResourceCost1(String resourceCost1) {
+    @JsonIgnore
+    public void setResourceCost1String(String resourceCost1) {
         this.resourceCost1 = Integer.parseInt(resourceCost1);
     }
-
-    public void setResourceCost2(String resourceCost2) {
+    @JsonIgnore
+    public void setResourceCost2String(String resourceCost2) {
         this.resourceCost2 = Integer.parseInt(resourceCost2);
     }
-
-    public void setResourceCost3(String resourceCost3) {
+    @JsonIgnore
+    public void setResourceCost3String(String resourceCost3) {
         this.resourceCost3 = Integer.parseInt(resourceCost3);
     }
 
@@ -331,7 +331,7 @@ public class Card {
                 ", resourceCost1=" + resourceCost1 +
                 ", resourceCost2=" + resourceCost2 +
                 ", resourceCost3=" + resourceCost3 +
-                ", subFraction=" + subFraction +
+                ", subFraction=" + subFraction.getName() +
                 '}';
     }
 }

@@ -23,12 +23,22 @@ public class ComplexGameTest extends TestBase {
 
     @Test
     public void ConnectionTest() throws InterruptedException, IOException {
+        startBots(true);
+        startBots(false);
+        startBots(false);
+        startBots(false);
+        startBots(false);
+        startBots(false);
+    }
+
+    private void startBots(boolean needCreate) {
         try {
             Thread[] t=new Thread[cnt];
             for(int i=0;i<cnt;i++)    {
                 GameBot r1=new GameBot();
                 r1.setUsername("user10"+Integer.toString(i));
                 r1.setSide((long)(i%2));
+                r1.setNeedCreate(needCreate);
                 t[i]=new Thread(r1);
             }
 
@@ -57,4 +67,6 @@ public class ComplexGameTest extends TestBase {
             th.printStackTrace();
         }
     }
+
+
 }

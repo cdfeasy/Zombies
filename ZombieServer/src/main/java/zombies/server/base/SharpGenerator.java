@@ -77,7 +77,7 @@ public class SharpGenerator {
             sb.append("using ZombieSharpClient.Entity.Game;\n");
             sb.append("using ZombieSharpClient.Entity.Server;\n");
             sb.append("using ZombieSharpClient.Entity.Support;\n");
-            sb.append("namespace ZombieSharpClient.Actions\n{\n");
+            sb.append("namespace ZombieSharpClient.UserActions\n{\n");
             sb.append("\t[DataContract]\n");
             sb.append("\tpublic class ");
             sb.append(c.getSimpleName()).append("{\n");
@@ -106,7 +106,7 @@ public class SharpGenerator {
             sb.append("using ZombieSharpClient.Entity.Game;\n");
             sb.append("using ZombieSharpClient.Entity.Server;\n");
             sb.append("using ZombieSharpClient.Entity.Support;\n");
-            sb.append("namespace ZombieSharpClient.UserReply\n{\n");
+            sb.append("namespace ZombieSharpClient.UserReplys\n{\n");
             sb.append("\t[DataContract]\n");
             sb.append("\tpublic class ");
             sb.append(c.getSimpleName()).append("{\n");
@@ -154,7 +154,9 @@ public class SharpGenerator {
             }
             if (!("CardWrapper".equals(c.getSimpleName()) ||
                     "DeckInfo".equals(c.getSimpleName()) ||
-                    "GameInfo".equals(c.getSimpleName())))  {
+                    "GameInfo".equals(c.getSimpleName()) ||
+                    "ImagePack".equals(c.getSimpleName())||
+                    "ImageResource".equals(c.getSimpleName())))  {
                 continue;
             }
             StringBuilder sb = new StringBuilder();
@@ -189,7 +191,9 @@ public class SharpGenerator {
                     "FriendList".equals(c.getSimpleName()) ||
                     "GameVersion".equals(c.getSimpleName()) ||
                     "History".equals(c.getSimpleName()) ||
-                    "User".equals(c.getSimpleName()))) {
+                    "User".equals(c.getSimpleName())||
+                    "FriendList".equals(c.getSimpleName())||
+                    "Achievement".equals(c.getSimpleName()))) {
                 continue;
             }
 

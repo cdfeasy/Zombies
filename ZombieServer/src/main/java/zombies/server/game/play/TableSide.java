@@ -2,6 +2,8 @@ package zombies.server.game.play;
 
 import zombies.entity.game.Deck;
 
+import java.util.Arrays;
+
 /**
  * Created with IntelliJ IDEA.
  * User: dmitry
@@ -24,7 +26,7 @@ public class TableSide {
 
     private GameManager manager;
     public TableSide(Deck userDeck,GameManager manager){
-        this.manager=manager;
+       this.manager=manager;
        cards=new PlayerCards(userDeck.getDeckCards());
        for(int i=0;i<CELL_COUNT;i++)
            cells[i]=new SideCell(manager);
@@ -109,5 +111,21 @@ public class TableSide {
 
     public void setRes3(int res3) {
         this.res3 = res3;
+    }
+
+    @Override
+    public String toString() {
+        return "TableSide{" +
+                "cells=" + Arrays.toString(cells) +
+                ", structures=" + structures +
+                ", cards=" + cards +
+                ", res1Income=" + res1Income +
+                ", res2Income=" + res2Income +
+                ", res3Income=" + res3Income +
+                ", res1=" + res1 +
+                ", res2=" + res2 +
+                ", res3=" + res3 +
+                ", manager=" + manager +
+                '}';
     }
 }

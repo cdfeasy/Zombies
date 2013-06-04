@@ -32,12 +32,21 @@ public class GameBot implements Runnable{
     public int currReceive=0;
     public int currTurn=0;
     public int playerQueue=0;
+    private boolean needCreate=true;
 
 
 
     public GameBot() throws JsonMappingException {
         mapper.generateJsonSchema(UserAction.class);
         reply.generateJsonSchema(UserReply.class);
+    }
+
+    public boolean isNeedCreate() {
+        return needCreate;
+    }
+
+    public void setNeedCreate(boolean needCreate) {
+        this.needCreate = needCreate;
     }
 
     public String getUsername() {
@@ -169,7 +178,8 @@ public class GameBot implements Runnable{
         try {
             Client c = new Client("localhost", 18080);
             c.run();
-            create(c);
+            if(needCreate)
+              create(c);
             String _token=connect(c);
             this.token=_token;
             cardInfo(c,_token);

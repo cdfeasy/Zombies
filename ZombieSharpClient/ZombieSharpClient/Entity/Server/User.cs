@@ -24,6 +24,8 @@ namespace ZombieSharpClient.Entity.Server
 		public List<DeckInfo> DecksIds { get; set; }
 		[DataMember(Name = "availableCards")]
 		public List<Card> AvailableCards { get; set; }
+		[DataMember(Name = "achievements")]
+		public List<Achievement> Achievements { get; set; }
 		[DataMember(Name = "availableCardsIds")]
 		public List<long> AvailableCardsIds { get; set; }
 		[DataMember(Name = "activeDeck")]

@@ -102,6 +102,7 @@ public class GameManager {
 
     public void sendGameStartedMessage(UserInfo player1, UserInfo player2) throws IOException {
         logger.info("new zombies.entity.game started {} {}",player1.getUser().getName(),player2.getUser().getName());
+      //  logger.info("new zombies.entity.game started {} {}",table.getPlayer1Side().getCards(),table.getPlayer2Side().getCards());
         GameStartedReplyBuilder replyBuilder1 = ReplyBuilder.getGameStartedReplyBuilder().setUser(player1.getUser()).setCards(table.getPlayer2Side().getCards().getPlayerHand()).setPosition(1);
         replyBuilder1.setRes(table.getPlayer2Side().getRes1Income(),table.getPlayer2Side().getRes2Income(),table.getPlayer2Side().getRes3Income()) ;
         GameStartedReplyBuilder replyBuilder2 = ReplyBuilder.getGameStartedReplyBuilder().setUser(player2.getUser()).setCards(table.getPlayer1Side().getCards().getPlayerHand()).setPosition(0);
