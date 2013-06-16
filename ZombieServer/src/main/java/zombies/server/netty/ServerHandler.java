@@ -29,7 +29,8 @@ public class ServerHandler  extends SimpleChannelUpstreamHandler{
            // System.out.println(e.toString());
           //  System.out.println(((ChannelStateEvent) e).getValue());
         }
-        System.out.println(e.toString());
+
+       // System.out.println(e.toString());
         super.handleUpstream(ctx, e);
     }
 
@@ -39,7 +40,7 @@ public class ServerHandler  extends SimpleChannelUpstreamHandler{
         // Echo back the received object to the client.
 
        // logger.debug("received+" + e.toString());
-        System.out.println("onnmessage "+e.toString());
+     //   System.out.println("onnmessage "+e.toString());
 //        if(e.toString().contains("turnAction")) {
 //            logger.info(String.format("parse %s, %s, %s", e.toString(),new Date().toString(),Long.toString(new Date().getTime())));
 //        }
@@ -48,6 +49,7 @@ public class ServerHandler  extends SimpleChannelUpstreamHandler{
 //        } catch (InterruptedException ex) {
 //            logger.error("error",ex);
 //        }
+        logger.info("incoming request:"+e.getMessage().toString());
         manager.parseRequest(e.getChannel(),e.getMessage().toString());
     }
 

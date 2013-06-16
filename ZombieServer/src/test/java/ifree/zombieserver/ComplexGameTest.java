@@ -24,11 +24,18 @@ public class ComplexGameTest extends TestBase {
     @Test
     public void ConnectionTest() throws InterruptedException, IOException {
         startBots(true);
-        startBots(false);
-        startBots(false);
-        startBots(false);
-        startBots(false);
-        startBots(false);
+//        startBots(false);
+//        startBots(false);
+//        startBots(false);
+//        startBots(false);
+//        startBots(false);
+//        startBots(false);
+//        startBots(false);
+//        startBots(false);
+//        startBots(false);
+//        startBots(false);
+//        startBots(false);
+//        startBots(false);
     }
 
     private void startBots(boolean needCreate) {

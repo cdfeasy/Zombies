@@ -64,7 +64,7 @@ public class NewGameStarter implements Runnable {
                 UserInfo first= queue.get(index);
                 for(int i=index-1;i>=0;i--){
                     UserInfo second= queue.get(i);
-                    if(first.getUser().getLevel()-second.getUser().getLevel()<levelconst) {
+                   // if(first.getUser().getLevel()-second.getUser().getLevel()<levelconst) {
                         try{
                          manager.startGame(first,second);
                         }catch (Exception io){
@@ -77,11 +77,11 @@ public class NewGameStarter implements Runnable {
 
                         index=queue.size()-1;
                         break;
-                    }
-                    else{
-                        index--;
-                        break;
-                    }
+                //    }
+//                    else{
+//                        index--;
+//                        break;
+//                    }
                 }
 
             }

@@ -55,11 +55,12 @@ public class RequestManager implements Runnable {
     public void sendReply(UserInfo ui,UserReply userReply) throws IOException {
         String replyString=replyMapper.writeValueAsString(userReply);
         ui.getChannel().write(replyString+'\n');
-        System.out.println("sended"+replyString);
+        logger.info("sended:"+replyString);
     }
     private void send(Channel c,UserReply userReply) throws IOException{
         String replyString=replyMapper.writeValueAsString(userReply);
         c.write(replyString+'\n');
+        logger.info("sended responce:"+replyString);
     }
 
     private void proccessAction(UserAction act, Channel channel){

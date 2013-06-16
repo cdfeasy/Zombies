@@ -64,7 +64,7 @@ public class GameEndProcessor {
         gm.running.set(false);
         playerWinInfo.setWin(true);
         playerLooseInfo.setWin(false);
-        int winExp=10-playerWin.getUser().getLevel()+playerLoose.getUser().getLevel()*100;
+        int winExp=(10-(playerWin.getUser().getLevel()+playerLoose.getUser().getLevel()));
         int looseExp=(10-playerLoose.getUser().getLevel()+playerWin.getUser().getLevel())/2;
         int winGold=10+playerLoose.getUser().getLevel();
         int looseGold=(10+playerWin.getUser().getLevel())/2;

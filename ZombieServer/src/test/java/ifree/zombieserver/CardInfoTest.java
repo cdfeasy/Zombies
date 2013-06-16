@@ -24,7 +24,7 @@ public class CardInfoTest {
 
     }
 
-    @Test
+   // @Test
     public void ConnectionTest() throws InterruptedException, IOException {
         try{
             ObjectMapper mapper = new ObjectMapper();

@@ -65,7 +65,7 @@ public class CreateUserWorker implements IProcessor {
             }
             User usr = new User();
             usr.setLevel(1);
-            usr.setXp(100);
+            usr.setXp(0);
             usr.setName(userAction.getCreateUserAction().getName());
             usr.setPass(userAction.getCreateUserAction().getPass());
             usr.setSide(userAction.getCreateUserAction().getSide());
