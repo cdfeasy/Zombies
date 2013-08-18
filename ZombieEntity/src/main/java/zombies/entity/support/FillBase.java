@@ -1,9 +1,15 @@
 package zombies.entity.support;
 
-import zombies.entity.game.*;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.hibernate.Query;
 import org.hibernate.Session;
+import zombies.entity.game.*;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,80 +19,177 @@ import java.io.IOException;
  * To change this template use File | Settings | File Templates.
  */
 public class FillBase {
-    public static void  createZombies(Session ses) throws IOException {
-        try{
-        Card slow = new Card(0l,"Медленный зомби", "Медленный зомби", 1, 10, 0, 4, CardTypeEnum.creature.getId(), 1, 0, 0,1);
-        Card zombie = new Card(1l,"Зомби", "Обычный зомби", 1, 10, 0, 5, CardTypeEnum.creature.getId(), 2, 0, 0,1);
-        Card fast = new Card(2l,"Быстрый зомби", "Быстрый зомби", 1, 5, 0, 4, CardTypeEnum.creature.getId(), 2, 0, 0,1);
-        Card fat = new Card(3l,"Толстяк", "Толстяк, очень много жизней", 1, 30, 0, 6, CardTypeEnum.bigCreature.getId(), 4, 0, 0,2);
-        Card half = new Card(4l,"Ползун", "Ползун, нападает через баррикады", 1, 10, 0, 1, CardTypeEnum.creature.getId(), 3, 0, 0,2);
-
-        Card hospital = new Card(5l,"Больница", "Увеличивает приток зомби", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0,1);
-        Card aero = new Card(6l,"Аэропорт", "Увеличивает приток вируса", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0,1);
-        Card tec = new Card(7l,"Теплоэлектростанция", "Увеличивает приток энергии", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0,1);
 
 
-        Abilities nonAbility = new Abilities(0l,"Без способностей", "Без способностей", "");
+    public static ByteArrayOutputStream SaveBaseToString(Session ses) throws IOException {
+        Query query1 = ses.createQuery("select fraction from Fraction fraction");
+        List<Fraction> fract = query1.list();
+        Query query2 = ses.createQuery("select ability from Abilities ability");
+        List<Abilities> abs = query2.list();
+        GameCards gm = new GameCards();
+        gm.setFractions(fract);
+        gm.setAbilitieses(abs);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.generateJsonSchema(GameCards.class);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        mapper.writeValue(baos, gm);
+        return baos;
+    }
 
-        Abilities genereateCorpse = new Abilities(1l,"Увеличение притока тел", "Увеличение притока тел", "res1=2");
-        Abilities genereateVirus = new Abilities(2l,"Увеличение притока вируса", "Увеличение притока вируса", "res2=2");
-        Abilities genereateEnergy = new Abilities(3l,"Увеличение притока энергии", "Увеличение притока энергии", "res3=2");
+    public static GameCards LoadBaseFromString(InputStream data, Session ses) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.generateJsonSchema(GameCards.class);
+        GameCards gameCards = mapper.readValue(data, GameCards.class);
+        for (Abilities ab : gameCards.getAbilitieses()) {
+            Query query = ses.createQuery("select ability from Abilities ability where id=" + Long.toString(ab.getId()));
+            List<Abilities> abs = query.list();
+            if (abs.size() > 0) {
+                ses.merge(ab);
+            } else {
+                ses.persist(ab);
+            }
+        }
+        for (Fraction f : gameCards.getFractions()) {
+            for (SubFraction sb : f.getSubFractions()) {
+                List<Abilities> localList = new ArrayList<>();
+                for (Abilities ab : sb.getAbilities()) {
+                    for (Abilities savedAb : gameCards.getAbilitieses()) {
+                        if (ab.getId() == savedAb.getId()) {
+                            localList.add(savedAb);
+                        }
+                    }
+                }
+                sb.setAbilities(localList);
+                for (Card card : sb.getDeck()) {
+                    List<Abilities> localCardList = new ArrayList<>();
+                    for (Abilities ab : card.getAbilities()) {
+                        for (Abilities savedAb : gameCards.getAbilitieses()) {
+                            if (ab.getId() == savedAb.getId()) {
+                                localCardList.add(savedAb);
+                            }
+                        }
+                    }
+                    if(card.getUniqueAbility()!=null){
+                        for (Abilities savedAb : gameCards.getAbilitieses()) {
+                            if (card.getUniqueAbility().getId() == savedAb.getId()) {
+                                card.setUniqueAbility(savedAb);
+                            }
+                        }
+                    }
+                    card.setAbilities(localCardList);
+                }
+            }
+        }
 
-        hospital.getAbilities().add(genereateCorpse);
-        aero.getAbilities().add(genereateVirus);
-        tec.getAbilities().add(genereateEnergy);
+        for (Fraction f : gameCards.getFractions()) {
+            Query query1 = ses.createQuery("select fraction from Fraction fraction where id=" + Long.toString(f.getId()));
+            List<SubFraction> abs1 = query1.list();
+            if (abs1.size() > 0) {
+                ses.merge(f);
+            } else {
+                ses.persist(f);
+            }
+            for (SubFraction sb : f.getSubFractions()) {
+                sb.setFraction(f);
+                Query query2 = ses.createQuery("select subFraction from SubFraction subFraction where id=" + Long.toString(sb.getId()));
+                List<SubFraction> abs2 = query2.list();
+                if (abs2.size() > 0) {
+                    ses.merge(sb);
+                } else {
+                    ses.persist(sb);
+                }
+                for (Card card : sb.getDeck()) {
+                    card.setSubFraction(sb);
+                    Query query3 = ses.createQuery("select card from Card card where id=" + Long.toString(card.getId()));
+                    List<Card> abs3 = query3.list();
+                    if (abs3.size() > 0) {
+                        ses.merge(card);
+                    } else {
+                        ses.persist(card);
+                    }
+                }
+                ses.merge(sb);
+            }
+            ses.merge(f);
 
-        Abilities ignoreBlock = new Abilities(4l,"Атакует за баррикадами", "Атакует за баррикадами", "backstub");
-        Abilities meatmass = new Abilities(5l,"Без лимита на ячейку", "Без лимита на ячейку", "nolimit");
-        Abilities unweldy = new Abilities(6l,"Промахивается каждый третий удар", "Промахивается каждый третий удар", "miss=30");
-        Abilities evade = new Abilities(7l,"Игнорирует половину урона", "Игнорирует половину урона", "evade=50");
+        }
+        return gameCards;
+    }
 
-        slow.getAbilities().add(meatmass);
-        slow.getAbilities().add(unweldy);
-        half.getAbilities().add(ignoreBlock);
-        fast.getAbilities().add(evade);
+    public static void createZombies(Session ses) throws IOException {
+        try {
+            Card slow = new Card(0l, "Медленный зомби", "Медленный зомби", 1, 10, 0, 4, CardTypeEnum.creature.getId(), 1, 0, 0, 1);
+            Card zombie = new Card(1l, "Зомби", "Обычный зомби", 1, 10, 0, 5, CardTypeEnum.creature.getId(), 2, 0, 0, 1);
+            Card fast = new Card(2l, "Быстрый зомби", "Быстрый зомби", 1, 5, 0, 4, CardTypeEnum.creature.getId(), 2, 0, 0, 1);
+            Card fat = new Card(3l, "Толстяк", "Толстяк, очень много жизней", 1, 30, 0, 6, CardTypeEnum.bigCreature.getId(), 4, 0, 0, 2);
+            Card half = new Card(4l, "Ползун", "Ползун, нападает через баррикады", 1, 10, 0, 1, CardTypeEnum.creature.getId(), 3, 0, 0, 2);
+
+            Card hospital = new Card(5l, "Больница", "Увеличивает приток зомби", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0, 1);
+            Card aero = new Card(6l, "Аэропорт", "Увеличивает приток вируса", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0, 1);
+            Card tec = new Card(7l, "Теплоэлектростанция", "Увеличивает приток энергии", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0, 1);
 
 
-        SubFraction simpleSombies = new SubFraction("Простые зомби", "Простые зомби");
-        simpleSombies.setLevel(1);
+            Abilities nonAbility = new Abilities(0l, "Без способностей", "Без способностей", "");
+
+            Abilities genereateCorpse = new Abilities(1l, "Увеличение притока тел", "Увеличение притока тел", "res1=2");
+            Abilities genereateVirus = new Abilities(2l, "Увеличение притока вируса", "Увеличение притока вируса", "res2=2");
+            Abilities genereateEnergy = new Abilities(3l, "Увеличение притока энергии", "Увеличение притока энергии", "res3=2");
+
+            hospital.getAbilities().add(genereateCorpse);
+            aero.getAbilities().add(genereateVirus);
+            tec.getAbilities().add(genereateEnergy);
+
+            Abilities ignoreBlock = new Abilities(4l, "Атакует за баррикадами", "Атакует за баррикадами", "backstub");
+            Abilities meatmass = new Abilities(5l, "Без лимита на ячейку", "Без лимита на ячейку", "nolimit");
+            Abilities unweldy = new Abilities(6l, "Промахивается каждый третий удар", "Промахивается каждый третий удар", "miss=30");
+            Abilities evade = new Abilities(7l, "Игнорирует половину урона", "Игнорирует половину урона", "evade=50");
+
+            slow.getAbilities().add(meatmass);
+            slow.getAbilities().add(unweldy);
+            half.getAbilities().add(ignoreBlock);
+            fast.getAbilities().add(evade);
+
+
+            SubFraction simpleSombies = new SubFraction("Простые зомби", "Простые зомби");
+            simpleSombies.setLevel(1);
             simpleSombies.setRes1(2);
             simpleSombies.setRes2(0);
             simpleSombies.setRes3(0);
-        Fraction zombies = new Fraction("Зомби", "Зомби");
-        zombies.setId(1l);
-        simpleSombies.setFraction(zombies);
+            Fraction zombies = new Fraction("Зомби", "Зомби");
+            zombies.setId(1l);
+            simpleSombies.setFraction(zombies);
 
 
-        slow.setSubFraction(simpleSombies);
-        zombie.setSubFraction(simpleSombies);
-        fast.setSubFraction(simpleSombies);
-        fat.setSubFraction(simpleSombies);
-        half.setSubFraction(simpleSombies);
-        hospital.setSubFraction(simpleSombies);
-        aero.setSubFraction(simpleSombies);
-        tec.setSubFraction(simpleSombies);
+            slow.setSubFraction(simpleSombies);
+            zombie.setSubFraction(simpleSombies);
+            fast.setSubFraction(simpleSombies);
+            fat.setSubFraction(simpleSombies);
+            half.setSubFraction(simpleSombies);
+            hospital.setSubFraction(simpleSombies);
+            aero.setSubFraction(simpleSombies);
+            tec.setSubFraction(simpleSombies);
 
             ses.persist(nonAbility);
-        ses.persist(genereateCorpse);
-        ses.persist(genereateVirus);
-        ses.persist(genereateEnergy);
-        ses.persist(ignoreBlock);
-        ses.persist(meatmass);
-        ses.persist(unweldy);
-        ses.persist(evade);
+            ses.persist(genereateCorpse);
+            ses.persist(genereateVirus);
+            ses.persist(genereateEnergy);
+            ses.persist(ignoreBlock);
+            ses.persist(meatmass);
+            ses.persist(unweldy);
+            ses.persist(evade);
 
-        ses.persist(slow);
-        ses.persist(zombie);
-        ses.persist(fast);
-        ses.persist(fat);
-        ses.persist(half);
-        ses.persist(hospital);
-        ses.persist(aero);
-        ses.persist(tec);
+            ses.persist(slow);
+            ses.persist(zombie);
+            ses.persist(fast);
+            ses.persist(fat);
+            ses.persist(half);
+            ses.persist(hospital);
+            ses.persist(aero);
+            ses.persist(tec);
 
-        ses.persist(simpleSombies);
-        ses.persist(zombies);
-        } catch (Throwable th){
+            ses.persist(simpleSombies);
+            ses.persist(zombies);
+        } catch (Throwable th) {
             th.printStackTrace();
         }
 
@@ -94,81 +197,81 @@ public class FillBase {
     }
 
     public static void createPeoples(Session ses) {
-        try{
-        Card peysan = new Card(1000l,"Горожанин", "Обычный горожанин с топором", 1, 10, 0, 4, CardTypeEnum.creature.getId(), 1, 0, 0,1);
-        Card shotgun = new Card(1001l,"Горожанин с дробовиком", "горожанин с дробовиком", 1, 10, 0, 5, CardTypeEnum.creature.getId(), 2, 0, 0,1);
-        Card medic = new Card(1002l,"Медик", "Медик", 1, 5, 0, 4, CardTypeEnum.creature.getId(), 2, 0, 0,1);
-        Card molotov = new Card(1003l,"Горожанин с коктейлем молотова", "Горожанин с коктейлем молотова", 1, 30, 0, 6, CardTypeEnum.creature.getId(), 4, 0, 0,2);
-        Card zombiebus = new Card(1004l,"Зомбибус", "Автобус модифицированный для зомби апокалипсиса", 1, 30, 0, 6, CardTypeEnum.transport.getId(), 4, 0, 0,2);
-        Card barricade = new Card(1005l,"Баррикада", "Сколоченные доски, защищающие от зомби", 1, 30, 0, 6, CardTypeEnum.bigCreature.getId(), 4, 0, 0,1);
+        try {
+            Card peysan = new Card(1000l, "Горожанин", "Обычный горожанин с топором", 1, 10, 0, 4, CardTypeEnum.creature.getId(), 1, 0, 0, 1);
+            Card shotgun = new Card(1001l, "Горожанин с дробовиком", "горожанин с дробовиком", 1, 10, 0, 5, CardTypeEnum.creature.getId(), 2, 0, 0, 1);
+            Card medic = new Card(1002l, "Медик", "Медик", 1, 5, 0, 4, CardTypeEnum.creature.getId(), 2, 0, 0, 1);
+            Card molotov = new Card(1003l, "Горожанин с коктейлем молотова", "Горожанин с коктейлем молотова", 1, 30, 0, 6, CardTypeEnum.creature.getId(), 4, 0, 0, 2);
+            Card zombiebus = new Card(1004l, "Зомбибус", "Автобус модифицированный для зомби апокалипсиса", 1, 30, 0, 6, CardTypeEnum.transport.getId(), 4, 0, 0, 2);
+            Card barricade = new Card(1005l, "Баррикада", "Сколоченные доски, защищающие от зомби", 1, 30, 0, 6, CardTypeEnum.bigCreature.getId(), 4, 0, 0, 1);
 
-        Card napalm = new Card(1006l,"Напалм", "Авиационная бомбардировка, бьет всех врагов", 0, 0, 0, 0, CardTypeEnum.damageSpell.getId(), 0, 0, 2,1);
-        Card armorBuff = new Card(1007l,"Военные запасы", "Найденные военные запасы, добавляет атаку и защиту", 0, 0, 0, 0, CardTypeEnum.buffSpell.getId(), 0, 0, 2,2);
-        Card global = new Card(1008l,"Пополнение", "Добавляет вам в руку три карты, убирает три карты у противника", 0, 0, 0, 0, CardTypeEnum.buffSpell.getId(), 0, 0, 2,2);
+            Card napalm = new Card(1006l, "Напалм", "Авиационная бомбардировка, бьет всех врагов", 0, 0, 0, 0, CardTypeEnum.damageSpell.getId(), 0, 0, 2, 1);
+            Card armorBuff = new Card(1007l, "Военные запасы", "Найденные военные запасы, добавляет атаку и защиту", 0, 0, 0, 0, CardTypeEnum.buffSpell.getId(), 0, 0, 2, 2);
+            Card global = new Card(1008l, "Пополнение", "Добавляет вам в руку три карты, убирает три карты у противника", 0, 0, 0, 0, CardTypeEnum.buffSpell.getId(), 0, 0, 2, 2);
 
-        Card hospital = new Card(1009l,"Больница", "Увеличивает приток горожан", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0,1);
-        Card tech = new Card(1010l,"Автостоянка", "Увеличивает приток техники", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0,1);
-        Card market = new Card(1011l,"Оружиейны магазин", "Увеличивает приток оружия", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0,1);
+            Card hospital = new Card(1009l, "Больница", "Увеличивает приток горожан", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0, 1);
+            Card tech = new Card(1010l, "Автостоянка", "Увеличивает приток техники", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0, 1);
+            Card market = new Card(1011l, "Оружиейны магазин", "Увеличивает приток оружия", 0, 0, 0, 0, CardTypeEnum.structure.getId(), 5, 0, 0, 1);
 
-        Abilities genereatePeoples = new Abilities(10001l,"Увеличение притока людей", "Увеличение притока людей", "res1=2");
-        Abilities genereateTech = new Abilities(10002l,"Увеличение притока техники", "Увеличение притока техники", "res2=2");
-        Abilities genereateWeapon = new Abilities(10003l,"Увеличение притока оружия", "Увеличение притока оружия", "res3=2");
+            Abilities genereatePeoples = new Abilities(10001l, "Увеличение притока людей", "Увеличение притока людей", "res1=2");
+            Abilities genereateTech = new Abilities(10002l, "Увеличение притока техники", "Увеличение притока техники", "res2=2");
+            Abilities genereateWeapon = new Abilities(10003l, "Увеличение притока оружия", "Увеличение притока оружия", "res3=2");
 
-        hospital.getAbilities().add(genereatePeoples);
-        tech.getAbilities().add(genereateTech);
-        market.getAbilities().add(genereateWeapon);
+            hospital.getAbilities().add(genereatePeoples);
+            tech.getAbilities().add(genereateTech);
+            market.getAbilities().add(genereateWeapon);
 
-        Abilities molotovCoctail = new Abilities(10004l,"Коктейл молотова", "Поджигает всех врагов", "splash=1");
-        Abilities healAbility = new Abilities(10005l,"Лечение", "Лечит союзников", "heal=5");
+            Abilities molotovCoctail = new Abilities(10004l, "Коктейл молотова", "Поджигает всех врагов", "splash=1");
+            Abilities healAbility = new Abilities(10005l, "Лечение", "Лечит союзников", "heal=5");
 
-        medic.getAbilities().add(healAbility);
-        molotov.getAbilities().add(molotovCoctail);
+            medic.getAbilities().add(healAbility);
+            molotov.getAbilities().add(molotovCoctail);
 
-        SubFraction simplePeoples = new SubFraction("Горожане", "Горожане");
-        simplePeoples.setLevel(1);
+            SubFraction simplePeoples = new SubFraction("Горожане", "Горожане");
+            simplePeoples.setLevel(1);
             simplePeoples.setRes1(2);
             simplePeoples.setRes2(0);
             simplePeoples.setRes3(0);
-        Fraction survival = new Fraction("Выжившие", "Выжившие");
-        survival.setId(0l);
-        simplePeoples.setFraction(survival);
+            Fraction survival = new Fraction("Выжившие", "Выжившие");
+            survival.setId(0l);
+            simplePeoples.setFraction(survival);
 
-        peysan.setSubFraction(simplePeoples);
-        shotgun.setSubFraction(simplePeoples);
-        medic.setSubFraction(simplePeoples);
-        molotov.setSubFraction(simplePeoples);
-        barricade.setSubFraction(simplePeoples);
-        zombiebus.setSubFraction(simplePeoples);
-        peysan.setSubFraction(simplePeoples);
-        hospital.setSubFraction(simplePeoples);
-        tech.setSubFraction(simplePeoples);
-        market.setSubFraction(simplePeoples);
+            peysan.setSubFraction(simplePeoples);
+            shotgun.setSubFraction(simplePeoples);
+            medic.setSubFraction(simplePeoples);
+            molotov.setSubFraction(simplePeoples);
+            barricade.setSubFraction(simplePeoples);
+            zombiebus.setSubFraction(simplePeoples);
+            peysan.setSubFraction(simplePeoples);
+            hospital.setSubFraction(simplePeoples);
+            tech.setSubFraction(simplePeoples);
+            market.setSubFraction(simplePeoples);
 
-        ses.persist(genereatePeoples);
-        ses.persist(genereateTech);
-        ses.persist(genereateWeapon);
-        ses.persist(molotovCoctail);
-        ses.persist(healAbility);
+            ses.persist(genereatePeoples);
+            ses.persist(genereateTech);
+            ses.persist(genereateWeapon);
+            ses.persist(molotovCoctail);
+            ses.persist(healAbility);
 
 
-        ses.persist(peysan);
-        ses.persist(barricade);
-        ses.persist(shotgun);
-        ses.persist(medic);
-        ses.persist(molotov);
-        ses.persist(zombiebus);
+            ses.persist(peysan);
+            ses.persist(barricade);
+            ses.persist(shotgun);
+            ses.persist(medic);
+            ses.persist(molotov);
+            ses.persist(zombiebus);
 
-        ses.persist(hospital);
-        ses.persist(tech);
-        ses.persist(market);
+            ses.persist(hospital);
+            ses.persist(tech);
+            ses.persist(market);
 
-        ses.persist(napalm);
-        ses.persist(armorBuff);
-        ses.persist(global);
+            ses.persist(napalm);
+            ses.persist(armorBuff);
+            ses.persist(global);
 
-        ses.persist(simplePeoples);
-        ses.persist(survival);
-        } catch (Throwable th){
+            ses.persist(simplePeoples);
+            ses.persist(survival);
+        } catch (Throwable th) {
             th.printStackTrace();
         }
     }

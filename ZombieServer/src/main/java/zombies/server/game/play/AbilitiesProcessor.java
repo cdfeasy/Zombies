@@ -67,6 +67,7 @@ public class AbilitiesProcessor {
             case "backstub":ab=new tmpAbility(type.backstub,0);break;
             case "miss":ab=new tmpAbility(type.miss,Integer.valueOf(parts[1]));break;
             case "evade":ab=new tmpAbility(type.evade,Integer.valueOf(parts[1]));break;
+            case "regeneration":ab=new tmpAbility(type.regeneration,Integer.valueOf(parts[1]));break;
             case "nolimit":ab=new tmpAbility(type.nolimit,0);break;
         }
         if(ab!=null)
@@ -105,6 +106,15 @@ public class AbilitiesProcessor {
         if(cw==null)
             return 0;
         Integer val=abilities.get(type.heal).get(cw.getCard().getId());
+        if(val==null)
+            return 0;
+        return val.byteValue();
+    }
+
+    public byte Regeneration(CardWrapper cw){
+        if(cw==null)
+            return 0;
+        Integer val=abilities.get(type.regeneration).get(cw.getCard().getId());
         if(val==null)
             return 0;
         return val.byteValue();
@@ -162,7 +172,8 @@ public class AbilitiesProcessor {
          backstub,
          miss,
          evade,
-         nolimit;
+         nolimit,
+         regeneration;
      }
 
 

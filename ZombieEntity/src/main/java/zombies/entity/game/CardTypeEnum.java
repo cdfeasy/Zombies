@@ -9,13 +9,15 @@ package zombies.entity.game;
  */
 public enum CardTypeEnum {
     creature(0),
-    bigCreature(1),
-    vehicle(2),
-    transport(3),
-    structure(4),
-    damageSpell(5),
-    buffSpell(6),
-    globalSpell(7);
+    support(2),
+    general(3),
+    bigCreature(4),
+    mechanical(5),
+    transport(6),
+    structure(7),
+    damageSpell(8),
+    buffSpell(9),
+    globalSpell(10);
 
     int id;
 

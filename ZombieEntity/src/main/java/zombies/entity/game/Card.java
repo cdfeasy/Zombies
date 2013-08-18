@@ -31,6 +31,8 @@ public class Card {
     private int cardLevel;
     private int cardGoldCost;
     private boolean uniqueCard;
+    private byte rarity;
+    private int dropChanse;
     private boolean enabled;
 
     @ManyToMany(cascade = CascadeType.REFRESH,fetch = FetchType.EAGER)
@@ -63,6 +65,8 @@ public class Card {
         this.resourceCost2 = resourceCost2;
         this.resourceCost3 = resourceCost3;
         this.cardLevel=cardLevel;
+        this.rarity=1;
+        this.dropChanse=1;
     }
 
     public Long getId() {
@@ -242,15 +246,36 @@ public class Card {
         this.resourceCost3 = resourceCost3;
     }
 
+    public byte getRarity() {
+        return rarity;
+    }
 
+    public void setRarity(byte rarity) {
+        this.rarity = rarity;
+    }
 
+    public int getDropChanse() {
+        return dropChanse;
+    }
+
+    public void setDropChanse(int dropChanse) {
+        this.dropChanse = dropChanse;
+    }
+
+    @JsonIgnore
+    public void setRarityString(String rarityString) {
+        this.rarity=(byte)Integer.parseInt(rarityString);
+    }
+
+    @JsonIgnore
+    public void setDropChanseString(String dropChanse) {
+        this.dropChanse=Integer.parseInt(dropChanse);
+    }
 
     @JsonIgnore
     public void setIdString(String id) {
         this.id = Long.parseLong(id);
     }
-
-
     @JsonIgnore
     public void setStrengthString(String strength) {
         this.strength = Integer.parseInt(strength);

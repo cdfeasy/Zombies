@@ -197,10 +197,11 @@ public class GameManager {
         for (int i = 0; i < TableSide.CELL_COUNT; i++) {
             SideCell p1cell = table.getPlayer1Side().getCell(i);
             SideCell p2cell = table.getPlayer2Side().getCell(i);
+            GameManagerSupport.processRegeneration(turnReplyBuilder, p1cell, player1Info,ability);
+            GameManagerSupport.processRegeneration(turnReplyBuilder, p2cell, player2Info,ability);
             GameManagerSupport.processHeal(turnReplyBuilder, p1cell, player1Info,ability);
             GameManagerSupport.processHeal(turnReplyBuilder, p2cell, player2Info,ability);
         }
-
     }
     private void processPreCardAbilities(TurnReplyBuilder turnReplyBuilder) {
         for (int i = 0; i < TableSide.CELL_COUNT; i++) {

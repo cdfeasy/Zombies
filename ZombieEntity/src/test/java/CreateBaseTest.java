@@ -8,6 +8,8 @@ import zombies.entity.support.HibernateUtil;
 import zombies.entity.server.User;
 import zombies.entity.support.FillBase;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,9 +23,23 @@ import java.util.List;
 public class CreateBaseTest {
 
 
-
     @Test
-    public void create() {
+    public void createFromFile() throws IOException {
+        InputStream ios=this.getClass().getResourceAsStream("GameCards.txt");
+        Session ses = HibernateUtil.getSessionFactory().openSession();
+        ses.getTransaction().begin();
+        FillBase.LoadBaseFromString(ios,ses);
+        ses.getTransaction().commit();
+        ses.close();
+        Session ses1 = HibernateUtil.getSessionFactory().openSession();
+        ses1.getTransaction().begin();
+        System.out.println(FillBase.SaveBaseToString(ses1));
+        ses1.getTransaction().commit();
+        ses1.close();
+    }
+
+   // @Test
+    public void create() throws IOException {
         try {
             Session ses = HibernateUtil.getSessionFactory().openSession();
             ses.getTransaction().begin();
@@ -88,6 +104,11 @@ public class CreateBaseTest {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        Session ses = HibernateUtil.getSessionFactory().openSession();
+        ses.getTransaction().begin();
+        System.out.println(FillBase.SaveBaseToString(ses));
+        ses.getTransaction().commit();
+        ses.close();
     }
     private void addDeck(User u,Session ses){
         Query query;

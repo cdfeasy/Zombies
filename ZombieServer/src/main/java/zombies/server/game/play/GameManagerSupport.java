@@ -101,4 +101,19 @@ public class GameManagerSupport {
         }
     }
 
+    public static void processRegeneration(TurnReplyBuilder turnReplyBuilder, SideCell p1cell,GameInfo info,AbilitiesProcessor ability) {
+        for (CardWrapper cr : p1cell.getCards()) {
+            if(!cr.isActive()){
+                continue;
+            }
+            byte heal= ability.Regeneration(cr);
+            if(heal>0){
+                if(cr.getHp()<cr.getCard().getHp()){
+                    cr.setHp(Math.min(cr.getHp()+heal,cr.getCard().getHp()));
+                    turnReplyBuilder.addActionInfo((int)cr.getWrapperId(), String.format("%s regenerate %s", cr.getCard().getName(),Integer.toString(heal)));
+                }
+            }
+        }
+    }
+
 }
