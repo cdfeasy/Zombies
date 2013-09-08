@@ -19,7 +19,7 @@ public class CreateUserTest extends TestBase {
     public void test(){
 
     }
-   // @Test
+    @Test
     public void ConnectionTest() throws InterruptedException, IOException {
         try {
             ObjectMapper mapper = new ObjectMapper();

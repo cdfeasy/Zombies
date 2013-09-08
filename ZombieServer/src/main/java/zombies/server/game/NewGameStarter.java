@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import org.slf4j.LoggerFactory;
 import zombies.entity.server.User;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -40,7 +41,15 @@ public class NewGameStarter implements Runnable {
     public void registerPlayerInQueue(UserInfo user){
         lock.lock();
         try{
-          queue.add(user);
+          if(user.getManager()==null || !user.getManager().running.get() ){
+             queue.add(user);
+          } else{
+              try {
+                  user.getManager().resendGameInfo(user);
+              } catch (IOException e) {
+                  e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+              }
+          }
         }finally{
             lock.unlock();
         }

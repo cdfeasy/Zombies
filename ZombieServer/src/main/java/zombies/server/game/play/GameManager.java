@@ -109,7 +109,20 @@ public class GameManager {
         replyBuilder2.setRes(table.getPlayer1Side().getRes1Income(),table.getPlayer1Side().getRes2Income(),table.getPlayer1Side().getRes3Income()) ;
         lobbyManager.getRequestManager().sendReply(player1, replyBuilder2.build());
         lobbyManager.getRequestManager().sendReply(player2, replyBuilder1.build());
+    }
 
+    public void resendGameInfo(UserInfo player) throws IOException {
+        logger.info("resend info {} {}");
+        if(player.getId()==player1.getId()){
+            GameStartedReplyBuilder replyBuilder2 = ReplyBuilder.getGameStartedReplyBuilder().setUser(player2.getUser()).setCards(table.getPlayer1Side().getCards().getPlayerHand()).setPosition(0);
+            replyBuilder2.setRes(table.getPlayer1Side().getRes1Income(),table.getPlayer1Side().getRes2Income(),table.getPlayer1Side().getRes3Income()) ;
+            lobbyManager.getRequestManager().sendReply(player1, replyBuilder2.build());
+        }
+        if(player.getId()==player2.getId()){
+            GameStartedReplyBuilder replyBuilder1 = ReplyBuilder.getGameStartedReplyBuilder().setUser(player1.getUser()).setCards(table.getPlayer2Side().getCards().getPlayerHand()).setPosition(1);
+            replyBuilder1.setRes(table.getPlayer2Side().getRes1Income(),table.getPlayer2Side().getRes2Income(),table.getPlayer2Side().getRes3Income()) ;
+            lobbyManager.getRequestManager().sendReply(player2, replyBuilder1.build());
+        }
     }
 
     protected void processTurn(int turnNumber) {

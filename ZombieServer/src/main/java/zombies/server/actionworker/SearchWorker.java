@@ -2,6 +2,7 @@ package zombies.server.actionworker;
 
 import zombies.dto.actions.UserAction;
 import com.google.inject.Inject;
+import zombies.dto.builder.ReplyBuilder;
 import zombies.dto.reply.UserReply;
 import zombies.server.game.LobbyManager;
 import zombies.server.game.NewGameStarter;
@@ -25,6 +26,6 @@ public class SearchWorker implements IProcessor{
     public UserReply processAction(UserAction userAction, Object... params) throws Exception {
         UserInfo ui=lobby.getUser(userAction.getName());
         searcher.registerPlayerInQueue(ui);
-        return null;//ReplyBuilder.getSearchReplyBuilder().build();
+        return ReplyBuilder.getSearchReplyBuilder().build();
     }
 }

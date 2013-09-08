@@ -1,5 +1,6 @@
 package zombies.testclient;
 
+import org.codehaus.jackson.JsonParseException;
 import org.jboss.netty.bootstrap.ClientBootstrap;
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
@@ -10,6 +11,7 @@ import org.jboss.netty.handler.codec.frame.Delimiters;
 import org.jboss.netty.handler.codec.string.StringDecoder;
 import org.jboss.netty.handler.codec.string.StringEncoder;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,6 +29,8 @@ public class Client {
     private String message;
     private List<String> receive= Collections.synchronizedList(new ArrayList());
     final ClientHandler ch=new ClientHandler();
+    private listener listener;
+
     org.jboss.netty.channel.ChannelFuture ftr;
         private final String host;
         private final int port;
@@ -37,8 +41,18 @@ public class Client {
             ch.setReceive(receive);
         }
 
+    public void close(){
+        ftr.cancel();
+        ch.close();
+    }
+
     public String getMessage() {
         return message;
+    }
+
+    public void setListener(listener listener){
+        this.listener=listener;
+        ch.setListener(listener);
     }
 
     public void setMessage(String message) {
@@ -79,11 +93,12 @@ public class Client {
                         ch);
             }
         });
-
         // Start the connection attempt.
         ftr= bootstrap.connect(new InetSocketAddress(host, port));
     }
-
+    public static interface listener{
+        void onMessageReceived(String message) throws IOException;
+    }
 }
 
 

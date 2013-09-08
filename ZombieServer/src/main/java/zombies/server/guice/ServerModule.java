@@ -44,7 +44,9 @@ public class ServerModule extends AbstractModule {
         bind(CardInfoWorker.class).in(Scopes.SINGLETON);
         bind(CreateUserWorker.class).in(Scopes.SINGLETON);
         bind(GameEndProcessor.class).in(Scopes.SINGLETON);
+        bind(SaveDeckWorker.class).in(Scopes.SINGLETON);
         bind(DTOWorker.class);
+
 
 
     }

@@ -150,13 +150,13 @@ public class GameBot implements Runnable{
         //   act.setSearchAction(new SearchAction());
         c.setMessage(mapper.writeValueAsString(act));
         c.send();
-//        int i = 0;
-//        while (c.getReceive().size() ==currReceive) {
-//            if (i++ > 10000)
-//                break;
-//            Thread.sleep(100);
-//        }
-//        currReceive++;
+        int i = 0;
+        while (c.getReceive().size() ==currReceive) {
+            if (i++ > 10000)
+                break;
+            Thread.sleep(100);
+        }
+        currReceive++;
     }
 
     private void doTurn(Client c,String token) throws IOException, InterruptedException {
@@ -176,7 +176,7 @@ public class GameBot implements Runnable{
     @Override
     public void run() {
         try {
-            Client c = new Client("localhost", 18080);
+            Client c = new Client("78.47.52.69", 18080);
             c.run();
             if(needCreate)
               create(c);

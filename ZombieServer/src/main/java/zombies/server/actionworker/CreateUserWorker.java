@@ -46,14 +46,15 @@ public class CreateUserWorker implements IProcessor {
          //   query.setParameter("id", userAction.getCreateUserAction().getSide());
          //   List<Card> list = (List<Card>) query.list();
             List<Card> list = new ArrayList<>();
+            //TODO на время теста у юзера все карты
             for(SubFraction sub:lobbyManager.getFractions().get(userAction.getCreateUserAction().getSide()).getSubFractions() ){
-                if(sub.getLevel()==1){
+               // if(sub.getLevel()==1){
                    for(Card c:sub.getDeck()){
-                       if(c.getCardLevel()==1){
+                    //   if(c.getCardLevel()==1){
                            list.add(c);
-                       }
+                      // }
                    }
-                }
+              //  }
 
             }
 

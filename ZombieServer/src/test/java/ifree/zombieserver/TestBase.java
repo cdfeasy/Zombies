@@ -15,6 +15,8 @@ import zombies.server.guice.ServerModule;
 import zombies.server.netty.Server;
 import zombies.entity.support.FillBase;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +59,15 @@ public class TestBase{
 
         }
 
+    }
+
+    public static void createFromFile() throws IOException {
+        InputStream ios= TestBase.class.getResourceAsStream("/GameCards.txt");
+        Session ses = HibernateUtil.getSessionFactory().openSession();
+        ses.getTransaction().begin();
+        FillBase.LoadBaseFromString(ios,ses);
+        ses.getTransaction().commit();
+        ses.close();
     }
 
     public static void create() {
@@ -103,11 +114,7 @@ public class TestBase{
             ses.close();
             ses = HibernateUtil.getSessionFactory().openSession();
 
-            ses.getTransaction().begin();
-            // Query query = ses.createQuery("select card from Card card").setMaxResults(10);
-            FillBase.createZombies(ses);
-            FillBase.createPeoples(ses);
-            ses.getTransaction().commit();
+            createFromFile();
             ses.getTransaction().begin();
             User u1 = new User();
             u1.setLevel(1);

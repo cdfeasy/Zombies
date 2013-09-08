@@ -16,6 +16,9 @@ public class DeckInfo {
     private Long deckId;
     private List<Long> deckCardsIds;
 
+    public DeckInfo() {
+    }
+
     public DeckInfo(Long deckId, List<Card> cards) {
         this.deckId = deckId;
         if(!cards.isEmpty()){

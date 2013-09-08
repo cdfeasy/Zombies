@@ -33,6 +33,8 @@ public class ActionManager implements IProcessor{
     @Inject
     CreateUserWorker createUserWorker;
     @Inject
+    SaveDeckWorker saveDeckWorker;
+    @Inject
     LobbyManager manager;
 
 
@@ -73,6 +75,9 @@ public class ActionManager implements IProcessor{
                 break;
             case CREATE_USER:
                 rep= createUserWorker.processAction(userAction);
+                break;
+            case SAVE_DECK:
+                rep= saveDeckWorker.processAction(userAction);
                 break;
         }
         return rep;

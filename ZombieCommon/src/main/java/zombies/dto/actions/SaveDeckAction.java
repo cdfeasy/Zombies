@@ -11,14 +11,17 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class SaveDeckAction {
-    private Integer deckId;
+    private Long deckId;
+    private String name;
+    private String description;
     private List<Integer> cardsIds;
 
-    public Integer getDeckId() {
+
+    public Long getDeckId() {
         return deckId;
     }
 
-    public void setDeckId(Integer deckId) {
+    public void setDeckId(Long deckId) {
         this.deckId = deckId;
     }
 
@@ -28,5 +31,21 @@ public class SaveDeckAction {
 
     public void setCardsIds(List<Integer> cardsIds) {
         this.cardsIds = cardsIds;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

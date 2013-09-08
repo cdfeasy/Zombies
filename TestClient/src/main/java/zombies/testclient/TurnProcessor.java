@@ -5,10 +5,14 @@ import zombies.dto.actions.TurnAction;
 import zombies.dto.actions.UserAction;
 import zombies.dto.reply.TurnReply;
 import zombies.dto.reply.UserReply;
+import zombies.entity.game.Card;
 import zombies.entity.game.CardTypeEnum;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.concurrent.Semaphore;
 
 
 /**
@@ -18,22 +22,44 @@ import java.util.Date;
  * Time: 23:49
  * To change this template use File | Settings | File Templates.
  */
-public class TurnProcessor implements Runnable {
+public class TurnProcessor  {
     private GameBot bot;
     private boolean isAlive=true;
     private int curReceive;
-    Client client;
+    private GameClient client;
     private long endDate=0;
     private long start=0;
     private long sumDate=0;
-    private int  turnCnt=0;
+    private int currTurn=1;
+    public int playerQueue=0;
+    private List<Card> currCards=new ArrayList<>();
+    private Semaphore endSem=new Semaphore(0);
+    private GameClient.GameClientListener listener=new GameClient.GameClientListener() {
+        @Override
+        public void turnReceived(UserReply reply) {
+            try {
+                Thread.sleep(100);
+                process(reply);
+            } catch (IOException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (InterruptedException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+        }
+    };
 
-    public TurnProcessor(Client client, GameBot bot) {
+    public TurnProcessor(GameClient client, GameBot bot,List<Card> currCards, int playerQueue) {
         this.client = client;
         this.bot = bot;
+        this.currCards=currCards;
+        this.playerQueue=playerQueue;
+        client.setListener(listener);
     }
-    private void process(String receive) throws IOException, InterruptedException {
-        UserReply rep = bot.reply.readValue(receive, UserReply.class);
+    public void awaitEnd() throws InterruptedException {
+        endSem.acquire();
+    }
+
+    private void process(UserReply rep) throws IOException, InterruptedException {
         if(rep.getTurnReply()==null){
             System.out.println("ERROR!!!!!!"+bot.getUsername());
             System.out.println("ERROR!!!!!!"+rep.toString());
@@ -44,18 +70,20 @@ public class TurnProcessor implements Runnable {
         }
         if(rep.getTurnReply().getAction()== TurnReply.actionEnum.uwin.ordinal()){
             isAlive=false;
-            System.out.println("END!!!!"+Long.toString(sumDate) +"/"+ Long.toString(sumDate/bot.currTurn) );
+            endSem.release();
+            System.out.println("END!!!!"+Long.toString(sumDate) +"/"+ Long.toString(sumDate/currTurn) );
         }
         if(rep.getTurnReply().getAction()== TurnReply.actionEnum.ulose.ordinal()){
             isAlive=false;
-            System.out.println("END!!!!"+Long.toString(sumDate)+"/"+ Long.toString(sumDate/bot.currTurn) );
+            endSem.release();
+            System.out.println("END!!!!"+Long.toString(sumDate)+"/"+ Long.toString(sumDate/currTurn) );
         }
-        if(bot.currTurn>=50){
+        if(currTurn>=50){
             sendSurrender();
             System.out.println("Surrender" );
         } else
         if(rep.getTurnReply().getAction()== TurnReply.actionEnum.endturn.ordinal()){
-            if(rep.getTurnReply().getNextTurnUser()==bot.playerQueue){
+            if(rep.getTurnReply().getNextTurnUser()==playerQueue){
               //  System.out.println("turn zombies.dto.reply "+bot.getUsername()+"/"+bot.currTurn+"/");
                 Date d=new Date();
                 endDate=d.getTime();
@@ -63,10 +91,10 @@ public class TurnProcessor implements Runnable {
                     sumDate+=endDate-start-1000;
                 }
                 start=d.getTime();
-                bot.currCards.clear();
-                bot.currTurn=  rep.getTurnReply().getTurnNumber()+1;
+                currCards.clear();
+                currTurn=  rep.getTurnReply().getTurnNumber()+1;
                 for(Long l:rep.getTurnReply().getPlayerHand())   {
-                    bot.currCards.add(bot.cards.get(l));
+                    currCards.add(client.cards.get(l));
                 }
                 sendCardAction();
                 Thread.sleep(100);
@@ -78,75 +106,51 @@ public class TurnProcessor implements Runnable {
 
     }
 
-    private void sendCardAction() throws IOException {
+    private void sendCardAction() throws IOException, InterruptedException {
         UserAction act = new UserAction();
         act.setName(bot.username);
         act.setToken(bot.token);
         act.setAction(ActionTypeEnum.TURN.getId());
         TurnAction ta=new TurnAction();
         ta.setAction(TurnAction.actionEnum.turn.ordinal());
-        for(int i=0;i<bot.currCards.size();i++){
-            if(bot.currCards.get(i).getCardType()== CardTypeEnum.creature.getId()){
-                ta.setCardId(bot.currCards.get(i).getId());
+        for(int i=0;i<currCards.size();i++){
+            if(currCards.get(i).getCardType()== CardTypeEnum.creature.getId()){
+                ta.setCardId(currCards.get(i).getId());
                 break;
             }
         }
         if(ta.getCardId()==null)
             return;
         ta.setPosition(0);
-        ta.setTurnNumber(bot.currTurn);
+        ta.setTurnNumber(currTurn);
         act.setTurnAction(ta);
-        client.setMessage(bot.mapper.writeValueAsString(act));
-        client.send();
+        client.doTurn(act);
     }
 
-    private void sendEndTurn() throws IOException {
+    public void sendEndTurn() throws IOException, InterruptedException {
         UserAction act = new UserAction();
         act.setName(bot.username);
         act.setToken(bot.token);
         act.setAction(ActionTypeEnum.TURN.getId());
         TurnAction ta=new TurnAction();
         ta.setAction(TurnAction.actionEnum.endturn.ordinal());
-        ta.setTurnNumber(bot.currTurn);
+        ta.setTurnNumber(currTurn);
         act.setTurnAction(ta);
-        client.setMessage(bot.mapper.writeValueAsString(act));
-        client.send();
+        client.doTurn(act);
 
     }
 
 
-    private void sendSurrender() throws IOException {
+    private void sendSurrender() throws IOException, InterruptedException {
         UserAction act = new UserAction();
         act.setName(bot.username);
         act.setToken(bot.token);
         act.setAction(ActionTypeEnum.TURN.getId());
         TurnAction ta=new TurnAction();
         ta.setAction(TurnAction.actionEnum.surrender.ordinal());
-        ta.setTurnNumber(bot.currTurn);
+        ta.setTurnNumber(currTurn);
         act.setTurnAction(ta);
-        client.setMessage(bot.mapper.writeValueAsString(act));
-        client.send();
-
-    }
-
-    @Override
-    public void run() {
-        try{
-        curReceive=client.getReceive().size();
-        while (isAlive)  {
-            while (isAlive && client.getReceive().size() ==curReceive) {
-                Thread.sleep(100);
-            }
-            if(!isAlive){
-                break;
-            }
-            String receive= client.getReceive().get(curReceive);
-            process(receive);
-            curReceive++;
-
-        }
-        }catch (Throwable th){
-            th.printStackTrace();
-        }
+        client.doTurn(act);
+       // process(receive);
     }
 }
