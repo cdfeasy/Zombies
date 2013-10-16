@@ -36,6 +36,11 @@ public class GameBot implements Runnable{
         this.needCreate=needCreate;
         gc=new GameClient(c,username,side);
     }
+    public void restart() throws JsonMappingException {
+        c = new Client("78.47.52.69", 18080);
+        c.run();
+        gc=new GameClient(c,username,side);
+    }
     public String getUsername() {
         return username;
     }
@@ -70,6 +75,7 @@ public class GameBot implements Runnable{
             }
             System.out.println("await end");
             tp.awaitEnd();
+            gc.close();
             c.close();
             System.out.println("end");
         } catch (Throwable th) {

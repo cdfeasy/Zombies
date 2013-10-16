@@ -42,8 +42,10 @@ public class Client {
         }
 
     public void close(){
+        ftr.getChannel().disconnect();
+        ftr.getChannel().getCloseFuture().awaitUninterruptibly();
+        ftr.getChannel().close().awaitUninterruptibly();
         ftr.cancel();
-        ch.close();
     }
 
     public String getMessage() {

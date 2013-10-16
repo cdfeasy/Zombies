@@ -8,6 +8,8 @@ import zombies.server.game.LobbyManager;
 import zombies.server.game.NewGameStarter;
 import zombies.server.game.UserInfo;
 
+import java.io.IOException;
+
 /**
  * Created with IntelliJ IDEA.
  * User: dmitry
@@ -25,7 +27,13 @@ public class SearchWorker implements IProcessor{
     @Override
     public UserReply processAction(UserAction userAction, Object... params) throws Exception {
         UserInfo ui=lobby.getUser(userAction.getName());
-        searcher.registerPlayerInQueue(ui);
+        if(!searcher.registerPlayerInQueue(ui)){
+            try {
+                ui.getManager().resendGameInfo(ui);
+            } catch (IOException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+        }
         return ReplyBuilder.getSearchReplyBuilder().build();
     }
 }

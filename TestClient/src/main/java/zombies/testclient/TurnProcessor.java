@@ -38,7 +38,7 @@ public class TurnProcessor  {
         @Override
         public void turnReceived(UserReply reply) {
             try {
-                Thread.sleep(100);
+                Thread.sleep(1000);
                 process(reply);
             } catch (IOException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

@@ -32,6 +32,7 @@ public class ClientHandler extends SimpleChannelUpstreamHandler {
     public ClientHandler() {
     }
     public void close(){
+        c.disconnect();
        c.close();
     }
 

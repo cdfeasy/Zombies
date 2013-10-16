@@ -38,17 +38,16 @@ public class NewGameStarter implements Runnable {
         StartGames();
     }
 
-    public void registerPlayerInQueue(UserInfo user){
+    public boolean registerPlayerInQueue(UserInfo user){
         lock.lock();
         try{
           if(user.getManager()==null || !user.getManager().running.get() ){
-             queue.add(user);
+            if(!queue.contains(user)){
+               queue.add(user);
+            }
+             return true;
           } else{
-              try {
-                  user.getManager().resendGameInfo(user);
-              } catch (IOException e) {
-                  e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-              }
+              return false;
           }
         }finally{
             lock.unlock();

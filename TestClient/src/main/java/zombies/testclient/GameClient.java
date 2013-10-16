@@ -35,6 +35,7 @@ public class GameClient {
     private int deckSize = 30;
     private ObjectMapper reply = new ObjectMapper();
     private AtomicReference<UserReply> lastReply = new AtomicReference<>();
+    private AtomicReference<UserReply> lastGameStartedReply = new AtomicReference<>();
     private GameClientListener listener;
     private Semaphore gameStarted = new Semaphore(0);
     private Semaphore connect = new Semaphore(0);
@@ -44,6 +45,16 @@ public class GameClient {
     private Semaphore turn = new Semaphore(0);
     private Semaphore saveDeck = new Semaphore(0);
     private Semaphore success = new Semaphore(0);
+    public void close(){
+       gameStarted .release();
+       connect.release();
+       cardInfo.release();
+       userInfo.release();
+       search .release();
+       turn.release();
+       saveDeck.release();
+       success .release();
+    }
 
     public GameClient(Client client,String username,Long side) throws JsonMappingException {
         this.client = client;
@@ -56,7 +67,7 @@ public class GameClient {
 
     public UserReply awaitGameStart() throws InterruptedException {
         gameStarted.acquire();
-        return lastReply.get();
+        return lastGameStartedReply.get();
     }
 
     public GameClientListener getListener() {
@@ -215,6 +226,7 @@ public class GameClient {
                     break;
                 case GAME_STARTED:
                     gameStarted.release();
+                    lastGameStartedReply.set(rep);
                     break;
             }
         }
