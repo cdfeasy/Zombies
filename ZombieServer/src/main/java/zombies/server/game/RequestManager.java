@@ -1,5 +1,6 @@
 package zombies.server.game;
 
+import org.codehaus.jackson.JsonParseException;
 import zombies.dto.actions.UserAction;
 import zombies.dto.actions.ActionTypeEnum;
 import com.google.inject.Inject;
@@ -53,14 +54,18 @@ public class RequestManager implements Runnable {
     }
 
     public void sendReply(UserInfo ui,UserReply userReply) throws IOException {
-        String replyString=replyMapper.writeValueAsString(userReply);
-        ui.getChannel().write(replyString+'\n');
-        logger.info("sended:"+replyString);
+        if(ui.getChannel().isOpen()){
+            String replyString=replyMapper.writeValueAsString(userReply);
+            ui.getChannel().write(replyString+'\n');
+            logger.info("sended:"+replyString);
+        }
     }
     private void send(Channel c,UserReply userReply) throws IOException{
-        String replyString=replyMapper.writeValueAsString(userReply);
-        c.write(replyString+'\n');
-        logger.info("sended responce:"+replyString);
+        if(c.isOpen()){
+            String replyString=replyMapper.writeValueAsString(userReply);
+            c.write(replyString+'\n');
+            logger.info("sended responce:"+replyString);
+        }
     }
 
     private void proccessAction(UserAction act, Channel channel){
@@ -73,7 +78,12 @@ public class RequestManager implements Runnable {
          //   Date d1=new Date();
          //   logger.info("request {} time {}",act,Long.toString(d1.getTime()-d.getTime()));
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error while process action",e);
+            try {
+                send(channel,actionManager.processError("Unknown error"));
+            } catch (IOException e1) {
+                e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
         }
     }
 
@@ -95,8 +105,14 @@ public class RequestManager implements Runnable {
                 }else{
                     fastActions.execute(new OperationProcess(act, r.getChannel()));
                 }
+            } catch (JsonParseException json){
+                try {
+                    send(r.getChannel(), actionManager.processError("Incorrect Request Error"));
+                } catch (IOException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
             } catch (Exception e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                logger.error("error while parsing",e);
             }
         }
     }

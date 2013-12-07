@@ -47,6 +47,14 @@
             <Pattern>${PATTERN_FORMAT}</Pattern>
         </encoder>
     </appender>
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <encoder>
+            <Pattern>${CTX_PATTERN_FORMAT}</Pattern>
+        </encoder>
+    </appender>
 
 
     <!--<logger name="ru.befree.ibs.logger.service.MessageStatesListenerService" level="${GLOBAL_LOG_LEVEL}"-->
@@ -57,6 +65,7 @@
     <!--</logger>-->
 
     <root level="INFO">
+        <appender-ref ref="Console"/>
         <appender-ref ref="Runtime"/>
         <appender-ref ref="Error"/>
     </root>

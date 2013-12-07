@@ -14,6 +14,8 @@ import org.jboss.netty.handler.codec.serialization.ObjectDecoder;
 import org.jboss.netty.handler.codec.serialization.ObjectEncoder;
 import org.jboss.netty.handler.codec.string.StringDecoder;
 import org.jboss.netty.handler.codec.string.StringEncoder;
+import zombies.server.netty.FramePacketDecoder;
+import zombies.server.netty.FramePacketEncoder;
 
 import javax.tools.JavaCompiler;
 import java.net.InetSocketAddress;
@@ -76,14 +78,13 @@ public class Client {
 
         // Set up the pipeline factory.
 
-
+        final FramePacketDecoder decoder = new FramePacketDecoder();
+        final FramePacketEncoder encoder = new FramePacketEncoder();
         bootstrap.setPipelineFactory(new ChannelPipelineFactory() {
             public ChannelPipeline getPipeline() throws Exception {
                 return Channels.pipeline(
-                        new DelimiterBasedFrameDecoder(
-                                20000, Delimiters.lineDelimiter()),
-                        new StringEncoder(),
-                        new StringDecoder(),
+                        decoder,
+                        encoder,
                         ch);
             }
         });

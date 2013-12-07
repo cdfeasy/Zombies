@@ -176,7 +176,7 @@ public class GameBot implements Runnable{
     @Override
     public void run() {
         try {
-            Client c = new Client("78.47.52.69", 18080);
+            Client c = new Client("localhost", 18080);
             c.run();
             if(needCreate)
               create(c);

@@ -37,6 +37,10 @@ public class ActionManager implements IProcessor{
     @Inject
     LobbyManager manager;
 
+    public UserReply processError(String text){
+        return ReplyBuilder.getErrorReplyBuilder().setErrorText(text).build();
+    }
+
 
     public UserReply processAction(UserAction userAction,Object... params) throws Exception {
         logger.debug("Start process userAction "+ userAction);
@@ -52,8 +56,9 @@ public class ActionManager implements IProcessor{
 
 
         UserReply rep=null;
-        if(type==null)
-            throw new Exception("неизвестный тип");
+        if(type==null) {
+            processError("неизвестный тип");
+        }
         switch (type){
             case CONNECT:
                 rep= connectionWorker.processAction(userAction,params[0]);

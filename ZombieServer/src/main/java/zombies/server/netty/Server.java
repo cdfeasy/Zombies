@@ -56,17 +56,16 @@ public class Server {
                         ioExec,4));
 
         // Set up the pipeline factory.
-         FrameDecoder dec;
+        final FramePacketDecoder decoder = new FramePacketDecoder();
+        final FramePacketEncoder encoder = new FramePacketEncoder();
 
     //    org.jboss.netty.handler.codec.frame. enc=new  DelimiterBasedFrameEncoder();
        // h.c=c;
         bootstrap.setPipelineFactory(new ChannelPipelineFactory() {
             public ChannelPipeline getPipeline() throws Exception {
                 return Channels.pipeline(
-                        new DelimiterBasedFrameDecoder(
-                                8192, Delimiters.lineDelimiter()),
-                        new StringEncoder(),
-                        new StringDecoder(),
+                        decoder,
+                        encoder,
                         handler);
             }
         });
